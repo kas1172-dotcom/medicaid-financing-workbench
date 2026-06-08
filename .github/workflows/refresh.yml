@@ -1,8 +1,6 @@
 name: Refresh dashboard data
 
 on:
-  schedule:
-    - cron: "0 14 * * 1"   # every Monday 9am ET (14:00 UTC)
   workflow_dispatch:         # manual trigger from GitHub Actions tab
 
 permissions:
