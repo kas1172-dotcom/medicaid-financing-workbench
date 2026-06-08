@@ -1,37 +1,40 @@
-name: Refresh dashboard data
+name: Refresh site data
 
-# This workflow runs mfw build — the non-interactive build command.
-# It never prompts for files. For any stale manual source, it proceeds
-# with the last-good data in data/current/ and surfaces the "as of"
-# date on the site rather than failing.
+# Fetches live API sources (CMS-64, Census ACS) then rebuilds and publishes
+# the dashboard. Manual-upload sources (KFF provider taxes, KFF CBO
+# allocations, CMS managed care enrollment) cannot be automated — ingest those
+# locally with `mfw refresh`, commit data/current/, then re-run this action.
 #
-# To ingest new manual uploads, run `mfw refresh` locally, commit the
-# updated data/current/ files, and push before triggering this action.
+# Required secret: ANTHROPIC_API_KEY (for LLM narrative; falls back to
+# reviewed stubs if absent — the action will not fail without it).
 
 on:
-  workflow_dispatch:         # manual trigger from GitHub Actions tab
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  refresh:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
         run: pip install -e .
 
-      - name: Build dashboard (non-interactive)
-        run: mfw build
+      - name: Fetch live API sources
+        run: mfw refresh
+        # Updates data/current/ provenance for cms64 and census_acs.
+        # Skips manual-upload sources gracefully (no inbox files present).
+
+      - name: Build dashboard
+        run: mfw build --live
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
@@ -39,6 +42,6 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add dashboard/dashboard_data.json dashboard_data.json outputs/charts/
+          git add data/current/ dashboard/dashboard_data.json dashboard_data.json outputs/charts/
           git diff --cached --quiet || git commit -m "chore: refresh dashboard data [$(date -u +%Y-%m-%d)]"
           git push
