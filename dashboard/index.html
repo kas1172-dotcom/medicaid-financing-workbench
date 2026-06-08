@@ -346,7 +346,7 @@ document.getElementById('tab-bar').addEventListener('click', function(e) {
 // ════════════════════════════════════════════════════════════════════
 // Narrative tell/show/so-what builder
 // ════════════════════════════════════════════════════════════════════
-function buildNarrative(containerId, narr) {
+function buildNarrative(containerId, narr, chartPath) {
   if (!narr) return;
   const el = document.getElementById(containerId);
   if (!el) return;
@@ -367,7 +367,12 @@ function buildNarrative(containerId, narr) {
   const tellHtml = `<div class="npanel active" id="${containerId}-tell"><p>${escHtml(narr.tell_me || '')}</p></div>`;
 
   const sm = narr.show_me || {};
+  const chartHtml = chartPath
+    ? `<img class="chart-img" src="${escHtml(chartPath)}" alt="Chart"
+         onerror="this.outerHTML='<div class=\\'chart-missing\\'>Chart not available</div>'">`
+    : '';
   const showHtml = `<div class="npanel" id="${containerId}-show">
+    ${chartHtml}
     <p><strong>Computation:</strong> ${escHtml(sm.computation || '')}</p>
     <p><strong>Figure:</strong> ${escHtml(sm.figure_description || '')}</p>
     <p class="sources"><strong>Sources:</strong> ${(sm.sources || []).map(escHtml).join(' · ')}</p>
@@ -829,8 +834,9 @@ async function loadDashboard() {
 
     // Financing tab
     const narr = data.narrative || {};
-    buildNarrative('narrative-provider_tax', narr.provider_tax);
-    buildNarrative('narrative-work_requirements', narr.work_requirements);
+    const charts = data.charts || {};
+    buildNarrative('narrative-provider_tax', narr.provider_tax, charts.provider_tax);
+    buildNarrative('narrative-work_requirements', narr.work_requirements, charts.work_requirements);
 
     const analyses = data.analyses || {};
     if (analyses.provider_tax) buildProviderTaxTable(analyses.provider_tax.rows || []);
