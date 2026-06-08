@@ -22,33 +22,47 @@ sources:
   - id: cms64
     name: "CMS-64 Medicaid Financial Management Data"
     tier: api
-    method: "REST API via data.medicaid.gov (no key required)"
-    url: "https://data.medicaid.gov/dataset/medicaid-financial-management-data"
+    method: >
+      REST API via data.medicaid.gov — "Medicaid CMS-64 New Adult Group
+      Expenditures" dataset (ID 00505e90-f8ac-5921-b12f-5e23ba7ffcf3).
+      Four quarters are summed to produce annual federal fiscal year totals.
+      No API key required.
+    url: "https://data.medicaid.gov/dataset/medicaid-cms-64-new-adult-group-expenditures"
     expected_filename: null
-    refresh_frequency: weekly
+    refresh_frequency: quarterly
     validate_against: null
     uses:
       - total_medicaid_fed_spend
       - nonfederal_share
       - total_medicaid_spend
     description: >
-      Authoritative record of what states actually spent on Medicaid and the
-      federal match they drew down, by state and fiscal year (CMS-64 reports).
+      Authoritative quarterly state-level Medicaid expenditure data including
+      total computable amount and federal share, summed to the most recent
+      complete federal fiscal year.
 
-  - id: census_acs
-    name: "Census ACS — Medicaid/Public Coverage Enrollment"
+  - id: cms_enrollment
+    name: "CMS Medicaid Beneficiary Enrollment Data"
     tier: api
-    method: "Census Bureau ACS API (S2704 table, no key required for light use)"
-    url: "https://api.census.gov/data/2023/acs/acs1/subject"
+    method: >
+      REST API via data.medicaid.gov — three datasets combined:
+      (1) "Program Information for Medicaid and CHIP Beneficiaries by Year"
+          (ID 5c267647-50e9-4a81-b2f2-8f23cec6631a) for total enrollment;
+      (2) "Major Eligibility Group Information by Year"
+          (ID bffd757a-3ae9-42fc-809a-820c2919496b) for expansion adults;
+      (3) "Dual Status Information by Year"
+          (ID 93b36a8e-4dd5-4ff4-9a8b-8c6537684705) for dual eligibles.
+      No API key required.
+    url: "https://data.medicaid.gov/collections/beneficiaries"
     expected_filename: null
     refresh_frequency: annual
     validate_against: null
     uses:
       - enrollment
       - expansion_adults
+      - duals
     description: >
-      State-level Medicaid and public-coverage enrollment estimates from the
-      American Community Survey 1-year subject table.
+      State-level Medicaid enrollment by program type, eligibility group, and
+      dual status — sourced from CMS MBES/T-MSIS data via data.medicaid.gov.
 
   - id: kff_provider_taxes
     name: "KFF State Health Facts — Provider Taxes by Class"

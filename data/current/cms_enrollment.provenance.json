@@ -1,0 +1,9 @@
+{
+  "source_id": "cms_enrollment",
+  "source_name": "CMS Medicaid Beneficiary Enrollment Data",
+  "tier": "api",
+  "method": "data.medicaid.gov enrollment + eligibility + dual datasets",
+  "retrieved_date": "2026-06-08",
+  "row_count": 51,
+  "validation_status": "pending"
+}

@@ -145,21 +145,70 @@ def cmd_refresh(args, params):
 
 
 def _refresh_api_source(source_id: str, name: str):
-    """Auto-fetch an API-tier source and promote to data/current/."""
-    import time
+    """Auto-fetch an API-tier source, parse, write CSV to data/current/, update provenance."""
+    import pandas as pd
+    Path("data/current").mkdir(parents=True, exist_ok=True)
 
     if source_id == "cms64":
-        from mfw.sources.cms64 import fetch_cms64, FetchError
+        from mfw.sources.cms64 import fetch_cms64, parse_spending_by_state, FetchError
+        from mfw.sources._state_map import cms_name_to_abbr, abbr_to_fips
         rows = fetch_cms64()
-        _write_simple_provenance(source_id, name, "api", "REST API via data.medicaid.gov", len(rows))
+        spending = parse_spending_by_state(rows)
+        # Build a clean DataFrame keyed by state abbr
+        out_rows = []
+        for cms_name, vals in spending.items():
+            abbr = cms_name_to_abbr(cms_name)
+            if not abbr or abbr not in _ANALYSIS_ABBRS():
+                continue
+            out_rows.append({
+                "abbr":                  abbr,
+                "total_medicaid_spend":  vals["total_millions"],
+                "total_medicaid_fed_spend": vals["fed_millions"],
+                "nonfederal_share":      vals["nonfed_millions"],
+                "ffy":                   vals["ffy"],
+            })
+        df = pd.DataFrame(out_rows).sort_values("abbr").reset_index(drop=True)
+        df.to_csv(Path("data/current") / "cms64.csv", index=False)
+        sample = spending.get("California") or next(iter(spending.values()))
+        print(f"  ✓ {len(df)} states, FFY{sample['ffy']}")
+        _write_simple_provenance(source_id, name, "api",
+                                 "data.medicaid.gov CMS-64 New Adult Group quarterly", len(df))
+
+    elif source_id == "cms_enrollment":
+        from mfw.sources.cms_enrollment import fetch_enrollment, FetchError
+        from mfw.sources._state_map import cms_name_to_abbr
+        enrollment = fetch_enrollment()
+        import pandas as pd
+        out_rows = []
+        for cms_name, vals in enrollment.items():
+            abbr = cms_name_to_abbr(cms_name)
+            if not abbr or abbr not in _ANALYSIS_ABBRS():
+                continue
+            out_rows.append({
+                "abbr":             abbr,
+                "enrollment":       vals["enrollment"],
+                "expansion_adults": vals["expansion_adults"],
+                "duals":            vals["duals"],
+                "enroll_year":      vals.get("enroll_year", ""),
+            })
+        df = pd.DataFrame(out_rows).sort_values("abbr").reset_index(drop=True)
+        df.to_csv(Path("data/current") / "cms_enrollment.csv", index=False)
+        sample_year = df["enroll_year"].iloc[0] if not df.empty else "?"
+        print(f"  ✓ {len(df)} states, year={sample_year}")
+        _write_simple_provenance(source_id, name, "api",
+                                 "data.medicaid.gov enrollment + eligibility + dual datasets", len(df))
 
     elif source_id == "census_acs":
-        from mfw.sources.census_acs import fetch_acs_coverage, FetchError
-        rows = fetch_acs_coverage()
-        _write_simple_provenance(source_id, name, "api", "Census ACS API", len(rows))
+        # Census ACS now requires an API key; skip gracefully.
+        print("  – Census ACS skipped (API key required; enrollment sourced from CMS instead)")
 
     else:
         raise ValueError(f"Unknown API source: {source_id}")
+
+
+def _ANALYSIS_ABBRS():
+    from mfw.sources._state_map import ANALYSIS_ABBRS
+    return ANALYSIS_ABBRS
 
 
 def _ingest_manual_source(source_id: str, inbox_file: Path):

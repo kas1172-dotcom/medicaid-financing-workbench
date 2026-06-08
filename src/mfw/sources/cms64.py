@@ -1,64 +1,161 @@
 """
 CMS-64 Medicaid expenditures — data.medicaid.gov.
 
-The CMS-64 is the authoritative record of what states actually spent and the
-federal match they drew down. It is the backbone of any Medicaid financing
-analysis. Published as the "Medicaid Financial Management Data" dataset.
+Uses the "Medicaid CMS-64 New Adult Group Expenditures" dataset which has
+quarterly state-level totals back to 2014 and is the most current available.
 
-Public API (no key required):
-    https://data.medicaid.gov/api/1/datastore/query/{dataset_id}/0
+Dataset: Medicaid CMS-64 New Adult Group Expenditures
+ID:      00505e90-f8ac-5921-b12f-5e23ba7ffcf3
+Fields used:
+  state                                                        — state name (CMS format)
+  quarter_end_date                                             — YYYY-MM-DD
+  total_computable_all_medical_assistance_expenditures         — total Medicaid spend ($)
+  total_federal_share_all_medical_assistance_expenditures      — federal share ($)
 
-This module fetches, caches the raw pull to data/raw/, and exposes a clean
-state-year frame. On any network failure it raises FetchError; the ETL layer
-catches that and falls back to seed data, tagging provenance accordingly.
+We sum the four quarters of the most recent complete federal fiscal year
+(FFY = Oct 1 – Sep 30, so quarters ending Dec, Mar, Jun, Sep of the same FFY).
 """
 
 from __future__ import annotations
 
 import json
 import time
+from collections import defaultdict
 from pathlib import Path
 
 import requests
 
-# "Medicaid Financial Management Data" — state-by-state CMS-64 expenditures.
-# Resource id from the data.gov catalog (medicaid-financial-management-data.7kua-37xz).
-DATASET_ID = "7kua-37xz"
+DATASET_ID = "00505e90-f8ac-5921-b12f-5e23ba7ffcf3"
 BASE = "https://data.medicaid.gov/api/1/datastore/query"
 RAW_DIR = Path("data/raw")
+PAGE_SIZE = 5000
 
 
 class FetchError(RuntimeError):
     pass
 
 
-def fetch_cms64(limit: int = 5000, timeout: int = 30) -> list[dict]:
-    """Pull CMS-64 rows from data.medicaid.gov, cache raw JSON, return records."""
+def _parse_dollars(s: str) -> int:
+    if not s or s.strip() in ("N/A", "", "null"):
+        return 0
+    return int(s.replace(",", "").replace("$", "").strip())
+
+
+def fetch_cms64(timeout: int = 60) -> list[dict]:
+    """
+    Pull all rows from the CMS-64 quarterly dataset, cache raw JSON, return records.
+    Raises FetchError on network or empty-response errors.
+    """
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     url = f"{BASE}/{DATASET_ID}/0"
-    params = {"limit": limit}
-    try:
-        resp = requests.get(url, params=params, timeout=timeout)
-        resp.raise_for_status()
-        payload = resp.json()
-    except (requests.RequestException, ValueError) as exc:
-        raise FetchError(f"CMS-64 fetch failed: {exc}") from exc
+    all_rows: list[dict] = []
+    offset = 0
+    while True:
+        try:
+            resp = requests.get(
+                url, params={"limit": PAGE_SIZE, "offset": offset}, timeout=timeout
+            )
+            resp.raise_for_status()
+            payload = resp.json()
+        except (requests.RequestException, ValueError) as exc:
+            raise FetchError(f"CMS-64 fetch failed at offset {offset}: {exc}") from exc
+
+        rows = payload.get("results", payload.get("data", []))
+        all_rows.extend(rows)
+        total = payload.get("count", 0)
+        offset += len(rows)
+        if offset >= total or not rows:
+            break
+
+    if not all_rows:
+        raise FetchError("CMS-64 response contained no rows")
 
     stamp = time.strftime("%Y%m%dT%H%M%S")
-    (RAW_DIR / f"cms64_{stamp}.json").write_text(json.dumps(payload, indent=2))
+    (RAW_DIR / f"cms64_{stamp}.json").write_text(json.dumps(all_rows, indent=2))
+    return all_rows
 
-    results = payload.get("results", payload.get("data", []))
-    if not results:
-        raise FetchError("CMS-64 response contained no rows")
-    return results
+
+def parse_spending_by_state(rows: list[dict]) -> dict[str, dict]:
+    """
+    Aggregate rows to most-recent complete FFY state totals.
+
+    Returns dict keyed by CMS state name:
+      { "California": {"total_millions": 143780, "fed_millions": 87931,
+                       "nonfed_millions": 55849, "ffy": 2024} }
+    """
+    # Build per (state, quarter_end_date) sums
+    by_state_quarter: dict[tuple, dict] = {}
+    for r in rows:
+        state = r.get("state", "").strip()
+        qdate = r.get("quarter_end_date", "")
+        if not state or not qdate or state == "National Totals":
+            continue
+        key = (state, qdate)
+        if key not in by_state_quarter:
+            by_state_quarter[key] = {"total": 0, "federal": 0}
+        by_state_quarter[key]["total"] += _parse_dollars(
+            r.get("total_computable_all_medical_assistance_expenditures", "0")
+        )
+        by_state_quarter[key]["federal"] += _parse_dollars(
+            r.get("total_federal_share_all_medical_assistance_expenditures", "0")
+        )
+
+    # A quarter belongs to FFY Y if it ends in Dec(Y-1), Mar(Y), Jun(Y), or Sep(Y)
+    def quarter_to_ffy(qdate: str) -> int:
+        year, month = int(qdate[:4]), int(qdate[5:7])
+        return year if month <= 9 else year + 1
+
+    state_ffy_quarters: dict[str, dict[int, list]] = defaultdict(
+        lambda: defaultdict(list)
+    )
+    for state, qdate in by_state_quarter:
+        state_ffy_quarters[state][quarter_to_ffy(qdate)].append(qdate)
+
+    # Find the latest FFY where >= 40 states have all 4 quarters
+    all_ffys = sorted(
+        {ffy for s in state_ffy_quarters.values() for ffy in s}, reverse=True
+    )
+    target_ffy = None
+    for ffy in all_ffys:
+        complete = sum(
+            1
+            for s in state_ffy_quarters
+            if len(state_ffy_quarters[s].get(ffy, [])) == 4
+        )
+        if complete >= 40:
+            target_ffy = ffy
+            break
+
+    if target_ffy is None:
+        raise FetchError("Could not identify a complete FFY in CMS-64 data")
+
+    result: dict[str, dict] = {}
+    for state, ffy_map in state_ffy_quarters.items():
+        quarters = ffy_map.get(target_ffy, [])
+        if not quarters:
+            continue
+        total = sum(by_state_quarter[(state, q)]["total"] for q in quarters)
+        fed = sum(by_state_quarter[(state, q)]["federal"] for q in quarters)
+        result[state] = {
+            "total_millions": round(total / 1_000_000),
+            "fed_millions": round(fed / 1_000_000),
+            "nonfed_millions": round((total - fed) / 1_000_000),
+            "ffy": target_ffy,
+            "quarters_used": len(quarters),
+        }
+
+    return result
 
 
 def load_cached_cms64() -> list[dict] | None:
-    """Return the most recent cached CMS-64 pull, or None if none exists."""
+    """Return the most recent cached pull, or None."""
     if not RAW_DIR.exists():
         return None
     files = sorted(RAW_DIR.glob("cms64_*.json"))
     if not files:
         return None
-    payload = json.loads(files[-1].read_text())
-    return payload.get("results", payload.get("data", []))
+    raw = json.loads(files[-1].read_text())
+    # Handle both old format (dict with results key) and new format (list)
+    if isinstance(raw, list):
+        return raw
+    return raw.get("results", raw.get("data", []))
