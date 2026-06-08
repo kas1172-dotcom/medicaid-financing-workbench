@@ -1,0 +1,58 @@
+# =============================================================================
+# Policy parameters — 2025 federal budget reconciliation law (H.R.1)
+# =============================================================================
+# This is the control panel. Change a number here and every downstream analysis
+# recomputes. The point of the workbench: the analyst reasons about policy by
+# editing parameters, not by rewriting code.
+#
+# Every value carries a `source` so a reader can trace it. CBO scores and the
+# statutory schedule are from KFF's "Health Provisions in the 2025 Federal
+# Budget Reconciliation Law" tracker and "5 Key Facts About Medicaid and
+# Provider Taxes" (2025).
+# =============================================================================
+
+meta:
+  law_name: "One Big Beautiful Bill Act (H.R.1), 2025 reconciliation law"
+  baseline_fiscal_year: 2024
+  last_reviewed: "2026-06"
+
+provider_tax:
+  # Expansion-state ceiling phases down from 6.0% to 3.5% of net patient revenue.
+  current_cap_pct: 6.0
+  target_cap_pct: 3.5
+  phasedown_start_year: 2028
+  phasedown_end_year: 2032
+  phasedown_step_pct_per_year: 0.5
+  new_tax_freeze: true            # immediate freeze on new/increased taxes
+  freeze_effective: "2025-07"
+  source: "KFF, 5 Key Facts About Medicaid and Provider Taxes (2025)"
+
+work_requirements:
+  hours_per_month: 80
+  verification_months: 6          # states must verify at least every 6 months
+  lookback_months: 1              # statutory minimum lookback
+  # Calibration anchors for the coverage-loss model (see analysis/work_requirements.py)
+  arkansas_coverage_loss: 18000   # documented losses under the 2018 attempt
+  # KFF: most subject adults already work or qualify for an exemption; the modeled
+  # loss is driven by administrative churn, not actual non-work.
+  already_working_or_exempt_share: 0.92
+  administrative_churn_rate: 0.18 # share of compliant enrollees at risk of
+                                  # procedural disenrollment (calibrated to AR/GA)
+  source: "KFF, A Closer Look at the Work Requirement Provisions (2025)"
+
+cbo_scores:
+  total_medicaid_reduction_10yr_billion: 911
+  work_requirements_reduction_10yr_billion: 326
+  sdp_provision_reduction_10yr_billion: 149
+  coverage_loss_millions: 10
+  source: "CBO via KFF reconciliation law tracker (2025)"
+
+hcbs_risk_weights:
+  # Weights for the 0-10 HCBS vulnerability index (must sum to 1.0).
+  # Rationale: HCBS is an OPTIONAL Medicaid benefit, historically the first cut
+  # when states face fiscal pressure. The index combines exposure (how much a
+  # state relies on at-risk financing) with stakes (how much HCBS is on the line).
+  hcbs_spending_share: 0.30       # how much of the program is HCBS (stakes)
+  provider_tax_reliance: 0.30     # reliance on the financing now capped (exposure)
+  federal_cut_magnitude: 0.25     # projected dollar hit (exposure)
+  nonfederal_share_strain: 0.15   # how much of the bill the state already carries

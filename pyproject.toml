@@ -1,0 +1,16 @@
+[project]
+name = "medicaid-financing-workbench"
+version = "0.1.0"
+description = "An analyst workbench for Medicaid financing research"
+requires-python = ">=3.10"
+dependencies = ["pandas>=2.0","pyyaml>=6.0","matplotlib>=3.7","requests>=2.31","anthropic>=0.40"]
+
+[project.scripts]
+mfw = "mfw.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

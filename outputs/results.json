@@ -1,0 +1,2297 @@
+{
+  "provider_tax": {
+    "id": "provider_tax",
+    "title": "Provider tax cap exposure",
+    "schedule": {
+      "2028": 5.5,
+      "2029": 5.0,
+      "2030": 4.5,
+      "2031": 4.0,
+      "2032": 3.5
+    },
+    "rows": [
+      {
+        "state": "California",
+        "abbr": "CA",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 14181.8,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 3545.5,
+          "2030": 7090.9,
+          "2031": 10636.4,
+          "2032": 14181.8
+        }
+      },
+      {
+        "state": "New York",
+        "abbr": "NY",
+        "expansion": true,
+        "provider_tax_rate": 5.9,
+        "exposed": true,
+        "final_gap_millions": 8542.4,
+        "gap_share_of_nonfederal_pct": 40.7,
+        "gap_by_year": {
+          "2028": 1423.7,
+          "2029": 3203.4,
+          "2030": 4983.1,
+          "2031": 6762.7,
+          "2032": 8542.4
+        }
+      },
+      {
+        "state": "Pennsylvania",
+        "abbr": "PA",
+        "expansion": true,
+        "provider_tax_rate": 5.9,
+        "exposed": true,
+        "final_gap_millions": 3457.6,
+        "gap_share_of_nonfederal_pct": 40.7,
+        "gap_by_year": {
+          "2028": 576.3,
+          "2029": 1296.6,
+          "2030": 2016.9,
+          "2031": 2737.3,
+          "2032": 3457.6
+        }
+      },
+      {
+        "state": "Massachusetts",
+        "abbr": "MA",
+        "expansion": true,
+        "provider_tax_rate": 5.9,
+        "exposed": true,
+        "final_gap_millions": 2928.8,
+        "gap_share_of_nonfederal_pct": 40.7,
+        "gap_by_year": {
+          "2028": 488.1,
+          "2029": 1098.3,
+          "2030": 1708.5,
+          "2031": 2318.6,
+          "2032": 2928.8
+        }
+      },
+      {
+        "state": "Illinois",
+        "abbr": "IL",
+        "expansion": true,
+        "provider_tax_rate": 5.9,
+        "exposed": true,
+        "final_gap_millions": 2847.5,
+        "gap_share_of_nonfederal_pct": 40.7,
+        "gap_by_year": {
+          "2028": 474.6,
+          "2029": 1067.8,
+          "2030": 1661.0,
+          "2031": 2254.2,
+          "2032": 2847.5
+        }
+      },
+      {
+        "state": "Ohio",
+        "abbr": "OH",
+        "expansion": true,
+        "provider_tax_rate": 5.9,
+        "exposed": true,
+        "final_gap_millions": 2562.7,
+        "gap_share_of_nonfederal_pct": 40.7,
+        "gap_by_year": {
+          "2028": 427.1,
+          "2029": 961.0,
+          "2030": 1494.9,
+          "2031": 2028.8,
+          "2032": 2562.7
+        }
+      },
+      {
+        "state": "New Jersey",
+        "abbr": "NJ",
+        "expansion": true,
+        "provider_tax_rate": 5.8,
+        "exposed": true,
+        "final_gap_millions": 2101.7,
+        "gap_share_of_nonfederal_pct": 39.7,
+        "gap_by_year": {
+          "2028": 274.1,
+          "2029": 731.0,
+          "2030": 1187.9,
+          "2031": 1644.8,
+          "2032": 2101.7
+        }
+      },
+      {
+        "state": "Virginia",
+        "abbr": "VA",
+        "expansion": true,
+        "provider_tax_rate": 5.8,
+        "exposed": true,
+        "final_gap_millions": 2062.1,
+        "gap_share_of_nonfederal_pct": 39.7,
+        "gap_by_year": {
+          "2028": 269.0,
+          "2029": 717.2,
+          "2030": 1165.5,
+          "2031": 1613.8,
+          "2032": 2062.1
+        }
+      },
+      {
+        "state": "Michigan",
+        "abbr": "MI",
+        "expansion": true,
+        "provider_tax_rate": 6.0,
+        "exposed": true,
+        "final_gap_millions": 2000.0,
+        "gap_share_of_nonfederal_pct": 41.7,
+        "gap_by_year": {
+          "2028": 400.0,
+          "2029": 800.0,
+          "2030": 1200.0,
+          "2031": 1600.0,
+          "2032": 2000.0
+        }
+      },
+      {
+        "state": "Washington",
+        "abbr": "WA",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 1963.6,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 490.9,
+          "2030": 981.8,
+          "2031": 1472.7,
+          "2032": 1963.6
+        }
+      },
+      {
+        "state": "Minnesota",
+        "abbr": "MN",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 1672.7,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 418.2,
+          "2030": 836.4,
+          "2031": 1254.5,
+          "2032": 1672.7
+        }
+      },
+      {
+        "state": "North Carolina",
+        "abbr": "NC",
+        "expansion": true,
+        "provider_tax_rate": 5.2,
+        "exposed": true,
+        "final_gap_millions": 1569.2,
+        "gap_share_of_nonfederal_pct": 32.7,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 184.6,
+          "2030": 646.2,
+          "2031": 1107.7,
+          "2032": 1569.2
+        }
+      },
+      {
+        "state": "Maryland",
+        "abbr": "MD",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 1563.6,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 390.9,
+          "2030": 781.8,
+          "2031": 1172.7,
+          "2032": 1563.6
+        }
+      },
+      {
+        "state": "Connecticut",
+        "abbr": "CT",
+        "expansion": true,
+        "provider_tax_rate": 5.8,
+        "exposed": true,
+        "final_gap_millions": 1348.3,
+        "gap_share_of_nonfederal_pct": 39.7,
+        "gap_by_year": {
+          "2028": 175.9,
+          "2029": 469.0,
+          "2030": 762.1,
+          "2031": 1055.2,
+          "2032": 1348.3
+        }
+      },
+      {
+        "state": "Colorado",
+        "abbr": "CO",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 1272.7,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 318.2,
+          "2030": 636.4,
+          "2031": 954.5,
+          "2032": 1272.7
+        }
+      },
+      {
+        "state": "Missouri",
+        "abbr": "MO",
+        "expansion": true,
+        "provider_tax_rate": 5.9,
+        "exposed": true,
+        "final_gap_millions": 1261.0,
+        "gap_share_of_nonfederal_pct": 40.7,
+        "gap_by_year": {
+          "2028": 210.2,
+          "2029": 472.9,
+          "2030": 735.6,
+          "2031": 998.3,
+          "2032": 1261.0
+        }
+      },
+      {
+        "state": "Indiana",
+        "abbr": "IN",
+        "expansion": true,
+        "provider_tax_rate": 5.9,
+        "exposed": true,
+        "final_gap_millions": 1220.3,
+        "gap_share_of_nonfederal_pct": 40.7,
+        "gap_by_year": {
+          "2028": 203.4,
+          "2029": 457.6,
+          "2030": 711.9,
+          "2031": 966.1,
+          "2032": 1220.3
+        }
+      },
+      {
+        "state": "Oregon",
+        "abbr": "OR",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 1054.5,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 263.6,
+          "2030": 527.3,
+          "2031": 790.9,
+          "2032": 1054.5
+        }
+      },
+      {
+        "state": "Louisiana",
+        "abbr": "LA",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 945.5,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 236.4,
+          "2030": 472.7,
+          "2031": 709.1,
+          "2032": 945.5
+        }
+      },
+      {
+        "state": "Arizona",
+        "abbr": "AZ",
+        "expansion": true,
+        "provider_tax_rate": 4.5,
+        "exposed": true,
+        "final_gap_millions": 933.3,
+        "gap_share_of_nonfederal_pct": 22.2,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 466.7,
+          "2032": 933.3
+        }
+      },
+      {
+        "state": "Kentucky",
+        "abbr": "KY",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 872.7,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 218.2,
+          "2030": 436.4,
+          "2031": 654.5,
+          "2032": 872.7
+        }
+      },
+      {
+        "state": "Arkansas",
+        "abbr": "AR",
+        "expansion": true,
+        "provider_tax_rate": 5.9,
+        "exposed": true,
+        "final_gap_millions": 772.9,
+        "gap_share_of_nonfederal_pct": 40.7,
+        "gap_by_year": {
+          "2028": 128.8,
+          "2029": 289.8,
+          "2030": 450.8,
+          "2031": 611.9,
+          "2032": 772.9
+        }
+      },
+      {
+        "state": "Iowa",
+        "abbr": "IA",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 545.5,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 136.4,
+          "2030": 272.7,
+          "2031": 409.1,
+          "2032": 545.5
+        }
+      },
+      {
+        "state": "New Mexico",
+        "abbr": "NM",
+        "expansion": true,
+        "provider_tax_rate": 5.0,
+        "exposed": true,
+        "final_gap_millions": 480.0,
+        "gap_share_of_nonfederal_pct": 30.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 160.0,
+          "2031": 320.0,
+          "2032": 480.0
+        }
+      },
+      {
+        "state": "Hawaii",
+        "abbr": "HI",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 363.6,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 90.9,
+          "2030": 181.8,
+          "2031": 272.7,
+          "2032": 363.6
+        }
+      },
+      {
+        "state": "Rhode Island",
+        "abbr": "RI",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 363.6,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 90.9,
+          "2030": 181.8,
+          "2031": 272.7,
+          "2032": 363.6
+        }
+      },
+      {
+        "state": "West Virginia",
+        "abbr": "WV",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 363.6,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 90.9,
+          "2030": 181.8,
+          "2031": 272.7,
+          "2032": 363.6
+        }
+      },
+      {
+        "state": "Maine",
+        "abbr": "ME",
+        "expansion": true,
+        "provider_tax_rate": 5.0,
+        "exposed": true,
+        "final_gap_millions": 330.0,
+        "gap_share_of_nonfederal_pct": 30.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 110.0,
+          "2031": 220.0,
+          "2032": 330.0
+        }
+      },
+      {
+        "state": "New Hampshire",
+        "abbr": "NH",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 290.9,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 72.7,
+          "2030": 145.5,
+          "2031": 218.2,
+          "2032": 290.9
+        }
+      },
+      {
+        "state": "District of Columbia",
+        "abbr": "DC",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 290.9,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 72.7,
+          "2030": 145.5,
+          "2031": 218.2,
+          "2032": 290.9
+        }
+      },
+      {
+        "state": "Nevada",
+        "abbr": "NV",
+        "expansion": true,
+        "provider_tax_rate": 4.5,
+        "exposed": true,
+        "final_gap_millions": 288.9,
+        "gap_share_of_nonfederal_pct": 22.2,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 144.4,
+          "2032": 288.9
+        }
+      },
+      {
+        "state": "Nebraska",
+        "abbr": "NE",
+        "expansion": true,
+        "provider_tax_rate": 5.0,
+        "exposed": true,
+        "final_gap_millions": 285.0,
+        "gap_share_of_nonfederal_pct": 30.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 95.0,
+          "2031": 190.0,
+          "2032": 285.0
+        }
+      },
+      {
+        "state": "Utah",
+        "abbr": "UT",
+        "expansion": true,
+        "provider_tax_rate": 5.0,
+        "exposed": true,
+        "final_gap_millions": 285.0,
+        "gap_share_of_nonfederal_pct": 30.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 95.0,
+          "2031": 190.0,
+          "2032": 285.0
+        }
+      },
+      {
+        "state": "Idaho",
+        "abbr": "ID",
+        "expansion": true,
+        "provider_tax_rate": 5.0,
+        "exposed": true,
+        "final_gap_millions": 255.0,
+        "gap_share_of_nonfederal_pct": 30.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 85.0,
+          "2031": 170.0,
+          "2032": 255.0
+        }
+      },
+      {
+        "state": "Vermont",
+        "abbr": "VT",
+        "expansion": true,
+        "provider_tax_rate": 5.5,
+        "exposed": true,
+        "final_gap_millions": 254.5,
+        "gap_share_of_nonfederal_pct": 36.4,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 63.6,
+          "2030": 127.3,
+          "2031": 190.9,
+          "2032": 254.5
+        }
+      },
+      {
+        "state": "Oklahoma",
+        "abbr": "OK",
+        "expansion": true,
+        "provider_tax_rate": 4.0,
+        "exposed": true,
+        "final_gap_millions": 250.0,
+        "gap_share_of_nonfederal_pct": 12.5,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 250.0
+        }
+      },
+      {
+        "state": "Montana",
+        "abbr": "MT",
+        "expansion": true,
+        "provider_tax_rate": 5.0,
+        "exposed": true,
+        "final_gap_millions": 195.0,
+        "gap_share_of_nonfederal_pct": 30.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 65.0,
+          "2031": 130.0,
+          "2032": 195.0
+        }
+      },
+      {
+        "state": "Delaware",
+        "abbr": "DE",
+        "expansion": true,
+        "provider_tax_rate": 4.0,
+        "exposed": true,
+        "final_gap_millions": 100.0,
+        "gap_share_of_nonfederal_pct": 12.5,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 100.0
+        }
+      },
+      {
+        "state": "North Dakota",
+        "abbr": "ND",
+        "expansion": true,
+        "provider_tax_rate": 4.0,
+        "exposed": true,
+        "final_gap_millions": 50.0,
+        "gap_share_of_nonfederal_pct": 12.5,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 50.0
+        }
+      },
+      {
+        "state": "South Dakota",
+        "abbr": "SD",
+        "expansion": true,
+        "provider_tax_rate": 4.0,
+        "exposed": true,
+        "final_gap_millions": 47.5,
+        "gap_share_of_nonfederal_pct": 12.5,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 47.5
+        }
+      },
+      {
+        "state": "Alabama",
+        "abbr": "AL",
+        "expansion": false,
+        "provider_tax_rate": 5.8,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Alaska",
+        "abbr": "AK",
+        "expansion": true,
+        "provider_tax_rate": 0.0,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Florida",
+        "abbr": "FL",
+        "expansion": false,
+        "provider_tax_rate": 5.5,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Georgia",
+        "abbr": "GA",
+        "expansion": false,
+        "provider_tax_rate": 5.5,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Kansas",
+        "abbr": "KS",
+        "expansion": false,
+        "provider_tax_rate": 5.0,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Mississippi",
+        "abbr": "MS",
+        "expansion": false,
+        "provider_tax_rate": 5.9,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "South Carolina",
+        "abbr": "SC",
+        "expansion": false,
+        "provider_tax_rate": 5.0,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Tennessee",
+        "abbr": "TN",
+        "expansion": false,
+        "provider_tax_rate": 5.0,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Texas",
+        "abbr": "TX",
+        "expansion": false,
+        "provider_tax_rate": 5.5,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Wisconsin",
+        "abbr": "WI",
+        "expansion": false,
+        "provider_tax_rate": 5.0,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      },
+      {
+        "state": "Wyoming",
+        "abbr": "WY",
+        "expansion": false,
+        "provider_tax_rate": 0.0,
+        "exposed": false,
+        "final_gap_millions": 0.0,
+        "gap_share_of_nonfederal_pct": 0.0,
+        "gap_by_year": {
+          "2028": 0.0,
+          "2029": 0.0,
+          "2030": 0.0,
+          "2031": 0.0,
+          "2032": 0.0
+        }
+      }
+    ],
+    "n_exposed": 40,
+    "national_final_gap_billion": 62.17,
+    "top_state": "California",
+    "data_provenance": "seed"
+  },
+  "hcbs_risk": {
+    "id": "hcbs_risk",
+    "title": "HCBS vulnerability index",
+    "rows": [
+      {
+        "state": "Vermont",
+        "abbr": "VT",
+        "hcbs_index": 8.0,
+        "risk_tier": "High",
+        "hcbs_share": 24.5,
+        "hcbs_spend_millions": 540.0,
+        "projected_cut_millions": 2678.0,
+        "expansion": true
+      },
+      {
+        "state": "Connecticut",
+        "abbr": "CT",
+        "hcbs_index": 7.6,
+        "risk_tier": "High",
+        "hcbs_share": 24.7,
+        "hcbs_spend_millions": 2400.0,
+        "projected_cut_millions": 11247.0,
+        "expansion": true
+      },
+      {
+        "state": "Minnesota",
+        "abbr": "MN",
+        "hcbs_index": 7.1,
+        "risk_tier": "High",
+        "hcbs_share": 22.2,
+        "hcbs_spend_millions": 3200.0,
+        "projected_cut_millions": 17496.0,
+        "expansion": true
+      },
+      {
+        "state": "New Hampshire",
+        "abbr": "NH",
+        "hcbs_index": 7.1,
+        "risk_tier": "High",
+        "hcbs_share": 22.4,
+        "hcbs_spend_millions": 560.0,
+        "projected_cut_millions": 3035.0,
+        "expansion": true
+      },
+      {
+        "state": "Rhode Island",
+        "abbr": "RI",
+        "hcbs_index": 6.9,
+        "risk_tier": "High",
+        "hcbs_share": 22.5,
+        "hcbs_spend_millions": 720.0,
+        "projected_cut_millions": 3928.0,
+        "expansion": true
+      },
+      {
+        "state": "North Dakota",
+        "abbr": "ND",
+        "hcbs_index": 6.7,
+        "risk_tier": "High",
+        "hcbs_share": 24.6,
+        "hcbs_spend_millions": 320.0,
+        "projected_cut_millions": 1607.0,
+        "expansion": true
+      },
+      {
+        "state": "Massachusetts",
+        "abbr": "MA",
+        "hcbs_index": 6.6,
+        "risk_tier": "High",
+        "hcbs_share": 18.9,
+        "hcbs_spend_millions": 4100.0,
+        "projected_cut_millions": 25887.0,
+        "expansion": true
+      },
+      {
+        "state": "Maine",
+        "abbr": "ME",
+        "hcbs_index": 6.3,
+        "risk_tier": "Medium",
+        "hcbs_share": 22.4,
+        "hcbs_spend_millions": 850.0,
+        "projected_cut_millions": 4820.0,
+        "expansion": true
+      },
+      {
+        "state": "District of Columbia",
+        "abbr": "DC",
+        "hcbs_index": 6.3,
+        "risk_tier": "Medium",
+        "hcbs_share": 17.5,
+        "hcbs_spend_millions": 700.0,
+        "projected_cut_millions": 5713.0,
+        "expansion": true
+      },
+      {
+        "state": "New York",
+        "abbr": "NY",
+        "hcbs_index": 6.1,
+        "risk_tier": "Medium",
+        "hcbs_share": 18.5,
+        "hcbs_spend_millions": 12000.0,
+        "projected_cut_millions": 78553.0,
+        "expansion": true
+      },
+      {
+        "state": "New Jersey",
+        "abbr": "NJ",
+        "hcbs_index": 6.1,
+        "risk_tier": "Medium",
+        "hcbs_share": 18.6,
+        "hcbs_spend_millions": 3000.0,
+        "projected_cut_millions": 19281.0,
+        "expansion": true
+      },
+      {
+        "state": "Maryland",
+        "abbr": "MD",
+        "hcbs_index": 6.0,
+        "risk_tier": "Medium",
+        "hcbs_share": 20.0,
+        "hcbs_spend_millions": 2700.0,
+        "projected_cut_millions": 16425.0,
+        "expansion": true
+      },
+      {
+        "state": "Nebraska",
+        "abbr": "NE",
+        "hcbs_index": 5.9,
+        "risk_tier": "Medium",
+        "hcbs_share": 21.5,
+        "hcbs_spend_millions": 700.0,
+        "projected_cut_millions": 4106.0,
+        "expansion": true
+      },
+      {
+        "state": "Pennsylvania",
+        "abbr": "PA",
+        "hcbs_index": 5.8,
+        "risk_tier": "Medium",
+        "hcbs_share": 17.9,
+        "hcbs_spend_millions": 5200.0,
+        "projected_cut_millions": 36599.0,
+        "expansion": true
+      },
+      {
+        "state": "Washington",
+        "abbr": "WA",
+        "hcbs_index": 5.8,
+        "risk_tier": "Medium",
+        "hcbs_share": 19.0,
+        "hcbs_spend_millions": 3300.0,
+        "projected_cut_millions": 21424.0,
+        "expansion": true
+      },
+      {
+        "state": "South Dakota",
+        "abbr": "SD",
+        "hcbs_index": 5.6,
+        "risk_tier": "Medium",
+        "hcbs_share": 22.1,
+        "hcbs_spend_millions": 300.0,
+        "projected_cut_millions": 1750.0,
+        "expansion": true
+      },
+      {
+        "state": "Hawaii",
+        "abbr": "HI",
+        "hcbs_index": 5.5,
+        "risk_tier": "Medium",
+        "hcbs_share": 18.8,
+        "hcbs_spend_millions": 620.0,
+        "projected_cut_millions": 4106.0,
+        "expansion": true
+      },
+      {
+        "state": "Virginia",
+        "abbr": "VA",
+        "hcbs_index": 5.5,
+        "risk_tier": "Medium",
+        "hcbs_share": 16.8,
+        "hcbs_spend_millions": 2800.0,
+        "projected_cut_millions": 20531.0,
+        "expansion": true
+      },
+      {
+        "state": "Montana",
+        "abbr": "MT",
+        "hcbs_index": 5.4,
+        "risk_tier": "Medium",
+        "hcbs_share": 20.4,
+        "hcbs_spend_millions": 520.0,
+        "projected_cut_millions": 3392.0,
+        "expansion": true
+      },
+      {
+        "state": "Colorado",
+        "abbr": "CO",
+        "hcbs_index": 5.4,
+        "risk_tier": "Medium",
+        "hcbs_share": 18.9,
+        "hcbs_spend_millions": 2100.0,
+        "projected_cut_millions": 13568.0,
+        "expansion": true
+      },
+      {
+        "state": "Delaware",
+        "abbr": "DE",
+        "hcbs_index": 5.3,
+        "risk_tier": "Medium",
+        "hcbs_share": 20.0,
+        "hcbs_spend_millions": 500.0,
+        "projected_cut_millions": 3035.0,
+        "expansion": true
+      },
+      {
+        "state": "Iowa",
+        "abbr": "IA",
+        "hcbs_index": 5.2,
+        "risk_tier": "Medium",
+        "hcbs_share": 19.3,
+        "hcbs_spend_millions": 1100.0,
+        "projected_cut_millions": 7498.0,
+        "expansion": true
+      },
+      {
+        "state": "Idaho",
+        "abbr": "ID",
+        "hcbs_index": 4.9,
+        "risk_tier": "Medium",
+        "hcbs_share": 18.8,
+        "hcbs_spend_millions": 650.0,
+        "projected_cut_millions": 4642.0,
+        "expansion": true
+      },
+      {
+        "state": "Wyoming",
+        "abbr": "WY",
+        "hcbs_index": 4.9,
+        "risk_tier": "Medium",
+        "hcbs_share": 25.3,
+        "hcbs_spend_millions": 220.0,
+        "projected_cut_millions": 1071.0,
+        "expansion": false
+      },
+      {
+        "state": "Alaska",
+        "abbr": "AK",
+        "hcbs_index": 4.8,
+        "risk_tier": "Medium",
+        "hcbs_share": 27.0,
+        "hcbs_spend_millions": 620.0,
+        "projected_cut_millions": 2856.0,
+        "expansion": true
+      },
+      {
+        "state": "Missouri",
+        "abbr": "MO",
+        "hcbs_index": 4.7,
+        "risk_tier": "Medium",
+        "hcbs_share": 15.4,
+        "hcbs_spend_millions": 1900.0,
+        "projected_cut_millions": 16425.0,
+        "expansion": true
+      },
+      {
+        "state": "Illinois",
+        "abbr": "IL",
+        "hcbs_index": 4.6,
+        "risk_tier": "Medium",
+        "hcbs_share": 14.5,
+        "hcbs_spend_millions": 3400.0,
+        "projected_cut_millions": 29457.0,
+        "expansion": true
+      },
+      {
+        "state": "Oregon",
+        "abbr": "OR",
+        "hcbs_index": 4.6,
+        "risk_tier": "Medium",
+        "hcbs_share": 15.7,
+        "hcbs_spend_millions": 1900.0,
+        "projected_cut_millions": 16425.0,
+        "expansion": true
+      },
+      {
+        "state": "Ohio",
+        "abbr": "OH",
+        "hcbs_index": 4.5,
+        "risk_tier": "Medium",
+        "hcbs_share": 14.2,
+        "hcbs_spend_millions": 3600.0,
+        "projected_cut_millions": 33921.0,
+        "expansion": true
+      },
+      {
+        "state": "California",
+        "abbr": "CA",
+        "hcbs_index": 4.5,
+        "risk_tier": "Medium",
+        "hcbs_share": 13.1,
+        "hcbs_spend_millions": 16500.0,
+        "projected_cut_millions": 155321.0,
+        "expansion": true
+      },
+      {
+        "state": "Michigan",
+        "abbr": "MI",
+        "hcbs_index": 4.4,
+        "risk_tier": "Medium",
+        "hcbs_share": 15.0,
+        "hcbs_spend_millions": 3000.0,
+        "projected_cut_millions": 27136.0,
+        "expansion": true
+      },
+      {
+        "state": "West Virginia",
+        "abbr": "WV",
+        "hcbs_index": 4.3,
+        "risk_tier": "Medium",
+        "hcbs_share": 15.4,
+        "hcbs_spend_millions": 800.0,
+        "projected_cut_millions": 7498.0,
+        "expansion": true
+      },
+      {
+        "state": "Utah",
+        "abbr": "UT",
+        "hcbs_index": 4.2,
+        "risk_tier": "Medium",
+        "hcbs_share": 16.8,
+        "hcbs_spend_millions": 680.0,
+        "projected_cut_millions": 5534.0,
+        "expansion": true
+      },
+      {
+        "state": "Arkansas",
+        "abbr": "AR",
+        "hcbs_index": 4.1,
+        "risk_tier": "Medium",
+        "hcbs_share": 12.9,
+        "hcbs_spend_millions": 1100.0,
+        "projected_cut_millions": 11783.0,
+        "expansion": true
+      },
+      {
+        "state": "New Mexico",
+        "abbr": "NM",
+        "hcbs_index": 4.0,
+        "risk_tier": "Medium",
+        "hcbs_share": 14.3,
+        "hcbs_spend_millions": 1100.0,
+        "projected_cut_millions": 10890.0,
+        "expansion": true
+      },
+      {
+        "state": "North Carolina",
+        "abbr": "NC",
+        "hcbs_index": 3.7,
+        "risk_tier": "Low",
+        "hcbs_share": 14.0,
+        "hcbs_spend_millions": 2700.0,
+        "projected_cut_millions": 25887.0,
+        "expansion": true
+      },
+      {
+        "state": "Indiana",
+        "abbr": "IN",
+        "hcbs_index": 3.7,
+        "risk_tier": "Low",
+        "hcbs_share": 12.8,
+        "hcbs_spend_millions": 1600.0,
+        "projected_cut_millions": 16960.0,
+        "expansion": true
+      },
+      {
+        "state": "Kentucky",
+        "abbr": "KY",
+        "hcbs_index": 3.7,
+        "risk_tier": "Low",
+        "hcbs_share": 14.0,
+        "hcbs_spend_millions": 1700.0,
+        "projected_cut_millions": 17317.0,
+        "expansion": true
+      },
+      {
+        "state": "Arizona",
+        "abbr": "AZ",
+        "hcbs_index": 3.6,
+        "risk_tier": "Low",
+        "hcbs_share": 14.4,
+        "hcbs_spend_millions": 2600.0,
+        "projected_cut_millions": 24637.0,
+        "expansion": true
+      },
+      {
+        "state": "Louisiana",
+        "abbr": "LA",
+        "hcbs_index": 3.5,
+        "risk_tier": "Low",
+        "hcbs_share": 13.0,
+        "hcbs_spend_millions": 1500.0,
+        "projected_cut_millions": 15889.0,
+        "expansion": true
+      },
+      {
+        "state": "Nevada",
+        "abbr": "NV",
+        "hcbs_index": 3.4,
+        "risk_tier": "Low",
+        "hcbs_share": 14.4,
+        "hcbs_spend_millions": 720.0,
+        "projected_cut_millions": 6606.0,
+        "expansion": true
+      },
+      {
+        "state": "Kansas",
+        "abbr": "KS",
+        "hcbs_index": 3.3,
+        "risk_tier": "Low",
+        "hcbs_share": 20.5,
+        "hcbs_spend_millions": 780.0,
+        "projected_cut_millions": 4820.0,
+        "expansion": false
+      },
+      {
+        "state": "Wisconsin",
+        "abbr": "WI",
+        "hcbs_index": 3.1,
+        "risk_tier": "Low",
+        "hcbs_share": 20.6,
+        "hcbs_spend_millions": 2000.0,
+        "projected_cut_millions": 12497.0,
+        "expansion": false
+      },
+      {
+        "state": "Oklahoma",
+        "abbr": "OK",
+        "hcbs_index": 3.1,
+        "risk_tier": "Low",
+        "hcbs_share": 13.3,
+        "hcbs_spend_millions": 1100.0,
+        "projected_cut_millions": 11247.0,
+        "expansion": true
+      },
+      {
+        "state": "Alabama",
+        "abbr": "AL",
+        "hcbs_index": 2.3,
+        "risk_tier": "Low",
+        "hcbs_share": 17.8,
+        "hcbs_spend_millions": 1300.0,
+        "projected_cut_millions": 9284.0,
+        "expansion": false
+      },
+      {
+        "state": "Texas",
+        "abbr": "TX",
+        "hcbs_index": 1.9,
+        "risk_tier": "Low",
+        "hcbs_share": 14.2,
+        "hcbs_spend_millions": 5400.0,
+        "projected_cut_millions": 48203.0,
+        "expansion": false
+      },
+      {
+        "state": "Tennessee",
+        "abbr": "TN",
+        "hcbs_index": 1.8,
+        "risk_tier": "Low",
+        "hcbs_share": 14.8,
+        "hcbs_spend_millions": 1900.0,
+        "projected_cut_millions": 16960.0,
+        "expansion": false
+      },
+      {
+        "state": "South Carolina",
+        "abbr": "SC",
+        "hcbs_index": 1.6,
+        "risk_tier": "Low",
+        "hcbs_share": 16.0,
+        "hcbs_spend_millions": 1200.0,
+        "projected_cut_millions": 9998.0,
+        "expansion": false
+      },
+      {
+        "state": "Mississippi",
+        "abbr": "MS",
+        "hcbs_index": 1.5,
+        "risk_tier": "Low",
+        "hcbs_share": 15.8,
+        "hcbs_spend_millions": 980.0,
+        "projected_cut_millions": 8748.0,
+        "expansion": false
+      },
+      {
+        "state": "Georgia",
+        "abbr": "GA",
+        "hcbs_index": 1.4,
+        "risk_tier": "Low",
+        "hcbs_share": 14.7,
+        "hcbs_spend_millions": 2000.0,
+        "projected_cut_millions": 17496.0,
+        "expansion": false
+      },
+      {
+        "state": "Florida",
+        "abbr": "FL",
+        "hcbs_index": 1.2,
+        "risk_tier": "Low",
+        "hcbs_share": 14.4,
+        "hcbs_spend_millions": 3900.0,
+        "projected_cut_millions": 34813.0,
+        "expansion": false
+      }
+    ],
+    "tier_counts": {
+      "Medium": 28,
+      "Low": 16,
+      "High": 7
+    },
+    "top_state": "Vermont",
+    "weights": {
+      "hcbs_spending_share": 0.3,
+      "provider_tax_reliance": 0.3,
+      "federal_cut_magnitude": 0.25,
+      "nonfederal_share_strain": 0.15
+    },
+    "data_provenance": "seed"
+  },
+  "work_requirements": {
+    "id": "work_requirements",
+    "title": "Work requirements: modeled coverage loss",
+    "rows": [
+      {
+        "state": "California",
+        "abbr": "CA",
+        "subject_adults": 5000000,
+        "already_working_or_exempt": 4600000,
+        "modeled_coverage_loss": 828000,
+        "loss_pct_of_subject": 16.6,
+        "status": "enacted",
+        "effective": "2027-01",
+        "note": "Governor's budget voluntarily extends work requirements and 6-month redeterminations to certain state-funded immigrant enrollees. ~5M expansion enrollees potentially affected; ~63% of adults without dependent children already work 80+ hrs/month or attend school."
+      },
+      {
+        "state": "New York",
+        "abbr": "NY",
+        "subject_adults": 1700000,
+        "already_working_or_exempt": 1564000,
+        "modeled_coverage_loss": 281520,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Illinois",
+        "abbr": "IL",
+        "subject_adults": 1000000,
+        "already_working_or_exempt": 920000,
+        "modeled_coverage_loss": 165600,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Michigan",
+        "abbr": "MI",
+        "subject_adults": 900000,
+        "already_working_or_exempt": 828000,
+        "modeled_coverage_loss": 149040,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Pennsylvania",
+        "abbr": "PA",
+        "subject_adults": 830000,
+        "already_working_or_exempt": 763600,
+        "modeled_coverage_loss": 137448,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Ohio",
+        "abbr": "OH",
+        "subject_adults": 780000,
+        "already_working_or_exempt": 717600,
+        "modeled_coverage_loss": 129168,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Virginia",
+        "abbr": "VA",
+        "subject_adults": 680000,
+        "already_working_or_exempt": 625600,
+        "modeled_coverage_loss": 112608,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Washington",
+        "abbr": "WA",
+        "subject_adults": 650000,
+        "already_working_or_exempt": 598000,
+        "modeled_coverage_loss": 107640,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Arizona",
+        "abbr": "AZ",
+        "subject_adults": 640000,
+        "already_working_or_exempt": 588800,
+        "modeled_coverage_loss": 105984,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "North Carolina",
+        "abbr": "NC",
+        "subject_adults": 640000,
+        "already_working_or_exempt": 588800,
+        "modeled_coverage_loss": 105984,
+        "loss_pct_of_subject": 16.6,
+        "status": "enacted",
+        "effective": "2027-01",
+        "note": "Enacted standards stricter than the federal minimum; April 2026 legislation appropriated $319M to close the FY2026 shortfall."
+      },
+      {
+        "state": "Indiana",
+        "abbr": "IN",
+        "subject_adults": 600000,
+        "already_working_or_exempt": 552000,
+        "modeled_coverage_loss": 99360,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Louisiana",
+        "abbr": "LA",
+        "subject_adults": 580000,
+        "already_working_or_exempt": 533600,
+        "modeled_coverage_loss": 96048,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Colorado",
+        "abbr": "CO",
+        "subject_adults": 560000,
+        "already_working_or_exempt": 515200,
+        "modeled_coverage_loss": 92736,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "New Jersey",
+        "abbr": "NJ",
+        "subject_adults": 550000,
+        "already_working_or_exempt": 506000,
+        "modeled_coverage_loss": 91080,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Kentucky",
+        "abbr": "KY",
+        "subject_adults": 500000,
+        "already_working_or_exempt": 460000,
+        "modeled_coverage_loss": 82800,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Massachusetts",
+        "abbr": "MA",
+        "subject_adults": 450000,
+        "already_working_or_exempt": 414000,
+        "modeled_coverage_loss": 74520,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Oregon",
+        "abbr": "OR",
+        "subject_adults": 450000,
+        "already_working_or_exempt": 414000,
+        "modeled_coverage_loss": 74520,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Maryland",
+        "abbr": "MD",
+        "subject_adults": 430000,
+        "already_working_or_exempt": 395600,
+        "modeled_coverage_loss": 71208,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Minnesota",
+        "abbr": "MN",
+        "subject_adults": 350000,
+        "already_working_or_exempt": 322000,
+        "modeled_coverage_loss": 57960,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Arkansas",
+        "abbr": "AR",
+        "subject_adults": 340000,
+        "already_working_or_exempt": 312800,
+        "modeled_coverage_loss": 56304,
+        "loss_pct_of_subject": 16.6,
+        "status": "enacted",
+        "effective": "2026-07",
+        "note": "Re-implementing after the 2018 attempt that caused ~18,000 coverage losses before being halted by a federal court."
+      },
+      {
+        "state": "Missouri",
+        "abbr": "MO",
+        "subject_adults": 330000,
+        "already_working_or_exempt": 303600,
+        "modeled_coverage_loss": 54648,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Connecticut",
+        "abbr": "CT",
+        "subject_adults": 300000,
+        "already_working_or_exempt": 276000,
+        "modeled_coverage_loss": 49680,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Oklahoma",
+        "abbr": "OK",
+        "subject_adults": 300000,
+        "already_working_or_exempt": 276000,
+        "modeled_coverage_loss": 49680,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "New Mexico",
+        "abbr": "NM",
+        "subject_adults": 290000,
+        "already_working_or_exempt": 266800,
+        "modeled_coverage_loss": 48024,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Nevada",
+        "abbr": "NV",
+        "subject_adults": 280000,
+        "already_working_or_exempt": 257600,
+        "modeled_coverage_loss": 46368,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Iowa",
+        "abbr": "IA",
+        "subject_adults": 220000,
+        "already_working_or_exempt": 202400,
+        "modeled_coverage_loss": 36432,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "West Virginia",
+        "abbr": "WV",
+        "subject_adults": 180000,
+        "already_working_or_exempt": 165600,
+        "modeled_coverage_loss": 29808,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Utah",
+        "abbr": "UT",
+        "subject_adults": 170000,
+        "already_working_or_exempt": 156400,
+        "modeled_coverage_loss": 28152,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Idaho",
+        "abbr": "ID",
+        "subject_adults": 130000,
+        "already_working_or_exempt": 119600,
+        "modeled_coverage_loss": 21528,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Hawaii",
+        "abbr": "HI",
+        "subject_adults": 120000,
+        "already_working_or_exempt": 110400,
+        "modeled_coverage_loss": 19872,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Maine",
+        "abbr": "ME",
+        "subject_adults": 100000,
+        "already_working_or_exempt": 92000,
+        "modeled_coverage_loss": 16560,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Nebraska",
+        "abbr": "NE",
+        "subject_adults": 100000,
+        "already_working_or_exempt": 92000,
+        "modeled_coverage_loss": 16560,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Delaware",
+        "abbr": "DE",
+        "subject_adults": 95000,
+        "already_working_or_exempt": 87400,
+        "modeled_coverage_loss": 15732,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Montana",
+        "abbr": "MT",
+        "subject_adults": 95000,
+        "already_working_or_exempt": 87400,
+        "modeled_coverage_loss": 15732,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Rhode Island",
+        "abbr": "RI",
+        "subject_adults": 90000,
+        "already_working_or_exempt": 82800,
+        "modeled_coverage_loss": 14904,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "District of Columbia",
+        "abbr": "DC",
+        "subject_adults": 90000,
+        "already_working_or_exempt": 82800,
+        "modeled_coverage_loss": 14904,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Alaska",
+        "abbr": "AK",
+        "subject_adults": 62000,
+        "already_working_or_exempt": 57040,
+        "modeled_coverage_loss": 10267,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "New Hampshire",
+        "abbr": "NH",
+        "subject_adults": 62000,
+        "already_working_or_exempt": 57040,
+        "modeled_coverage_loss": 10267,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "Vermont",
+        "abbr": "VT",
+        "subject_adults": 45000,
+        "already_working_or_exempt": 41400,
+        "modeled_coverage_loss": 7452,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "North Dakota",
+        "abbr": "ND",
+        "subject_adults": 35000,
+        "already_working_or_exempt": 32200,
+        "modeled_coverage_loss": 5796,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      },
+      {
+        "state": "South Dakota",
+        "abbr": "SD",
+        "subject_adults": 30000,
+        "already_working_or_exempt": 27600,
+        "modeled_coverage_loss": 4968,
+        "loss_pct_of_subject": 16.6,
+        "status": "pending",
+        "effective": null,
+        "note": null
+      }
+    ],
+    "national_modeled_loss": 3436862,
+    "national_modeled_loss_million": 3.44,
+    "exempt_share": 0.92,
+    "churn_rate": 0.18,
+    "arkansas_anchor": 18000,
+    "top_state": "California",
+    "data_provenance": "seed"
+  },
+  "duals": {
+    "id": "duals",
+    "title": "Dual-eligible spending concentration",
+    "rows": [
+      {
+        "state": "Alabama",
+        "abbr": "AL",
+        "duals": 190000,
+        "dual_enroll_share_pct": 18.1,
+        "dual_spend_share_pct": 39.9,
+        "concentration_ratio": 2.2,
+        "est_dual_spend_millions": 2909.8
+      },
+      {
+        "state": "Mississippi",
+        "abbr": "MS",
+        "duals": 130000,
+        "dual_enroll_share_pct": 16.7,
+        "dual_spend_share_pct": 37.5,
+        "concentration_ratio": 2.25,
+        "est_dual_spend_millions": 2325.0
+      },
+      {
+        "state": "Kansas",
+        "abbr": "KS",
+        "duals": 70000,
+        "dual_enroll_share_pct": 16.3,
+        "dual_spend_share_pct": 36.8,
+        "concentration_ratio": 2.26,
+        "est_dual_spend_millions": 1400.0
+      },
+      {
+        "state": "Tennessee",
+        "abbr": "TN",
+        "duals": 220000,
+        "dual_enroll_share_pct": 14.7,
+        "dual_spend_share_pct": 34.0,
+        "concentration_ratio": 2.32,
+        "est_dual_spend_millions": 4354.6
+      },
+      {
+        "state": "Wisconsin",
+        "abbr": "WI",
+        "duals": 170000,
+        "dual_enroll_share_pct": 14.2,
+        "dual_spend_share_pct": 33.1,
+        "concentration_ratio": 2.34,
+        "est_dual_spend_millions": 3212.3
+      },
+      {
+        "state": "Pennsylvania",
+        "abbr": "PA",
+        "duals": 430000,
+        "dual_enroll_share_pct": 13.9,
+        "dual_spend_share_pct": 32.6,
+        "concentration_ratio": 2.35,
+        "est_dual_spend_millions": 9447.0
+      },
+      {
+        "state": "Maine",
+        "abbr": "ME",
+        "duals": 55000,
+        "dual_enroll_share_pct": 13.8,
+        "dual_spend_share_pct": 32.4,
+        "concentration_ratio": 2.35,
+        "est_dual_spend_millions": 1229.4
+      },
+      {
+        "state": "South Carolina",
+        "abbr": "SC",
+        "duals": 150000,
+        "dual_enroll_share_pct": 13.6,
+        "dual_spend_share_pct": 32.1,
+        "concentration_ratio": 2.36,
+        "est_dual_spend_millions": 2410.7
+      },
+      {
+        "state": "Georgia",
+        "abbr": "GA",
+        "duals": 290000,
+        "dual_enroll_share_pct": 13.2,
+        "dual_spend_share_pct": 31.3,
+        "concentration_ratio": 2.37,
+        "est_dual_spend_millions": 4256.1
+      },
+      {
+        "state": "Texas",
+        "abbr": "TX",
+        "duals": 560000,
+        "dual_enroll_share_pct": 13.0,
+        "dual_spend_share_pct": 31.0,
+        "concentration_ratio": 2.38,
+        "est_dual_spend_millions": 11778.6
+      },
+      {
+        "state": "Vermont",
+        "abbr": "VT",
+        "duals": 22000,
+        "dual_enroll_share_pct": 12.9,
+        "dual_spend_share_pct": 30.8,
+        "concentration_ratio": 2.38,
+        "est_dual_spend_millions": 678.5
+      },
+      {
+        "state": "New York",
+        "abbr": "NY",
+        "duals": 900000,
+        "dual_enroll_share_pct": 12.9,
+        "dual_spend_share_pct": 30.7,
+        "concentration_ratio": 2.39,
+        "est_dual_spend_millions": 19943.2
+      },
+      {
+        "state": "New Jersey",
+        "abbr": "NJ",
+        "duals": 220000,
+        "dual_enroll_share_pct": 12.2,
+        "dual_spend_share_pct": 29.5,
+        "concentration_ratio": 2.41,
+        "est_dual_spend_millions": 4743.7
+      },
+      {
+        "state": "New Hampshire",
+        "abbr": "NH",
+        "duals": 28000,
+        "dual_enroll_share_pct": 12.2,
+        "dual_spend_share_pct": 29.4,
+        "concentration_ratio": 2.41,
+        "est_dual_spend_millions": 734.3
+      },
+      {
+        "state": "Massachusetts",
+        "abbr": "MA",
+        "duals": 240000,
+        "dual_enroll_share_pct": 12.0,
+        "dual_spend_share_pct": 29.0,
+        "concentration_ratio": 2.42,
+        "est_dual_spend_millions": 6300.0
+      },
+      {
+        "state": "Rhode Island",
+        "abbr": "RI",
+        "duals": 38000,
+        "dual_enroll_share_pct": 11.9,
+        "dual_spend_share_pct": 28.8,
+        "concentration_ratio": 2.42,
+        "est_dual_spend_millions": 921.2
+      },
+      {
+        "state": "Arkansas",
+        "abbr": "AR",
+        "duals": 120000,
+        "dual_enroll_share_pct": 11.8,
+        "dual_spend_share_pct": 28.6,
+        "concentration_ratio": 2.43,
+        "est_dual_spend_millions": 2428.6
+      },
+      {
+        "state": "West Virginia",
+        "abbr": "WV",
+        "duals": 70000,
+        "dual_enroll_share_pct": 11.7,
+        "dual_spend_share_pct": 28.4,
+        "concentration_ratio": 2.43,
+        "est_dual_spend_millions": 1475.7
+      },
+      {
+        "state": "Connecticut",
+        "abbr": "CT",
+        "duals": 120000,
+        "dual_enroll_share_pct": 11.4,
+        "dual_spend_share_pct": 27.9,
+        "concentration_ratio": 2.44,
+        "est_dual_spend_millions": 2707.0
+      },
+      {
+        "state": "Florida",
+        "abbr": "FL",
+        "duals": 560000,
+        "dual_enroll_share_pct": 11.4,
+        "dual_spend_share_pct": 27.9,
+        "concentration_ratio": 2.44,
+        "est_dual_spend_millions": 7562.8
+      },
+      {
+        "state": "Missouri",
+        "abbr": "MO",
+        "duals": 170000,
+        "dual_enroll_share_pct": 11.3,
+        "dual_spend_share_pct": 27.7,
+        "concentration_ratio": 2.45,
+        "est_dual_spend_millions": 3409.2
+      },
+      {
+        "state": "Kentucky",
+        "abbr": "KY",
+        "duals": 180000,
+        "dual_enroll_share_pct": 11.2,
+        "dual_spend_share_pct": 27.6,
+        "concentration_ratio": 2.45,
+        "est_dual_spend_millions": 3333.7
+      },
+      {
+        "state": "Wyoming",
+        "abbr": "WY",
+        "duals": 9000,
+        "dual_enroll_share_pct": 11.2,
+        "dual_spend_share_pct": 27.6,
+        "concentration_ratio": 2.45,
+        "est_dual_spend_millions": 239.7
+      },
+      {
+        "state": "District of Columbia",
+        "abbr": "DC",
+        "duals": 30000,
+        "dual_enroll_share_pct": 11.1,
+        "dual_spend_share_pct": 27.3,
+        "concentration_ratio": 2.45,
+        "est_dual_spend_millions": 1090.9
+      },
+      {
+        "state": "Ohio",
+        "abbr": "OH",
+        "duals": 330000,
+        "dual_enroll_share_pct": 11.0,
+        "dual_spend_share_pct": 27.0,
+        "concentration_ratio": 2.46,
+        "est_dual_spend_millions": 6843.4
+      },
+      {
+        "state": "Oklahoma",
+        "abbr": "OK",
+        "duals": 120000,
+        "dual_enroll_share_pct": 10.9,
+        "dual_spend_share_pct": 26.9,
+        "concentration_ratio": 2.46,
+        "est_dual_spend_millions": 2229.9
+      },
+      {
+        "state": "Minnesota",
+        "abbr": "MN",
+        "duals": 140000,
+        "dual_enroll_share_pct": 10.8,
+        "dual_spend_share_pct": 26.6,
+        "concentration_ratio": 2.47,
+        "est_dual_spend_millions": 3827.8
+      },
+      {
+        "state": "Michigan",
+        "abbr": "MI",
+        "duals": 290000,
+        "dual_enroll_share_pct": 10.4,
+        "dual_spend_share_pct": 25.7,
+        "concentration_ratio": 2.49,
+        "est_dual_spend_millions": 5147.9
+      },
+      {
+        "state": "California",
+        "abbr": "CA",
+        "duals": 1500000,
+        "dual_enroll_share_pct": 10.1,
+        "dual_spend_share_pct": 25.3,
+        "concentration_ratio": 2.49,
+        "est_dual_spend_millions": 31853.9
+      },
+      {
+        "state": "Louisiana",
+        "abbr": "LA",
+        "duals": 170000,
+        "dual_enroll_share_pct": 10.0,
+        "dual_spend_share_pct": 25.0,
+        "concentration_ratio": 2.5,
+        "est_dual_spend_millions": 2875.0
+      },
+      {
+        "state": "Nebraska",
+        "abbr": "NE",
+        "duals": 38000,
+        "dual_enroll_share_pct": 10.0,
+        "dual_spend_share_pct": 25.0,
+        "concentration_ratio": 2.5,
+        "est_dual_spend_millions": 812.5
+      },
+      {
+        "state": "North Dakota",
+        "abbr": "ND",
+        "duals": 12000,
+        "dual_enroll_share_pct": 10.0,
+        "dual_spend_share_pct": 25.0,
+        "concentration_ratio": 2.5,
+        "est_dual_spend_millions": 325.0
+      },
+      {
+        "state": "Hawaii",
+        "abbr": "HI",
+        "duals": 42000,
+        "dual_enroll_share_pct": 9.8,
+        "dual_spend_share_pct": 24.5,
+        "concentration_ratio": 2.51,
+        "est_dual_spend_millions": 808.9
+      },
+      {
+        "state": "Illinois",
+        "abbr": "IL",
+        "duals": 330000,
+        "dual_enroll_share_pct": 9.7,
+        "dual_spend_share_pct": 24.4,
+        "concentration_ratio": 2.51,
+        "est_dual_spend_millions": 5730.3
+      },
+      {
+        "state": "North Carolina",
+        "abbr": "NC",
+        "duals": 290000,
+        "dual_enroll_share_pct": 9.7,
+        "dual_spend_share_pct": 24.3,
+        "concentration_ratio": 2.51,
+        "est_dual_spend_millions": 4690.2
+      },
+      {
+        "state": "Iowa",
+        "abbr": "IA",
+        "duals": 75000,
+        "dual_enroll_share_pct": 9.6,
+        "dual_spend_share_pct": 24.2,
+        "concentration_ratio": 2.52,
+        "est_dual_spend_millions": 1379.0
+      },
+      {
+        "state": "Virginia",
+        "abbr": "VA",
+        "duals": 180000,
+        "dual_enroll_share_pct": 9.5,
+        "dual_spend_share_pct": 23.9,
+        "concentration_ratio": 2.52,
+        "est_dual_spend_millions": 3990.3
+      },
+      {
+        "state": "Delaware",
+        "abbr": "DE",
+        "duals": 28000,
+        "dual_enroll_share_pct": 9.3,
+        "dual_spend_share_pct": 23.6,
+        "concentration_ratio": 2.53,
+        "est_dual_spend_millions": 589.9
+      },
+      {
+        "state": "South Dakota",
+        "abbr": "SD",
+        "duals": 14000,
+        "dual_enroll_share_pct": 9.3,
+        "dual_spend_share_pct": 23.6,
+        "concentration_ratio": 2.53,
+        "est_dual_spend_millions": 320.9
+      },
+      {
+        "state": "Idaho",
+        "abbr": "ID",
+        "duals": 40000,
+        "dual_enroll_share_pct": 9.3,
+        "dual_spend_share_pct": 23.5,
+        "concentration_ratio": 2.53,
+        "est_dual_spend_millions": 811.8
+      },
+      {
+        "state": "Washington",
+        "abbr": "WA",
+        "duals": 180000,
+        "dual_enroll_share_pct": 9.0,
+        "dual_spend_share_pct": 22.9,
+        "concentration_ratio": 2.54,
+        "est_dual_spend_millions": 3981.4
+      },
+      {
+        "state": "Indiana",
+        "abbr": "IN",
+        "duals": 170000,
+        "dual_enroll_share_pct": 8.9,
+        "dual_spend_share_pct": 22.8,
+        "concentration_ratio": 2.54,
+        "est_dual_spend_millions": 2846.0
+      },
+      {
+        "state": "Maryland",
+        "abbr": "MD",
+        "duals": 140000,
+        "dual_enroll_share_pct": 8.8,
+        "dual_spend_share_pct": 22.3,
+        "concentration_ratio": 2.55,
+        "est_dual_spend_millions": 3016.0
+      },
+      {
+        "state": "Oregon",
+        "abbr": "OR",
+        "duals": 120000,
+        "dual_enroll_share_pct": 8.6,
+        "dual_spend_share_pct": 22.0,
+        "concentration_ratio": 2.56,
+        "est_dual_spend_millions": 2656.1
+      },
+      {
+        "state": "Montana",
+        "abbr": "MT",
+        "duals": 25000,
+        "dual_enroll_share_pct": 8.3,
+        "dual_spend_share_pct": 21.4,
+        "concentration_ratio": 2.57,
+        "est_dual_spend_millions": 546.4
+      },
+      {
+        "state": "Utah",
+        "abbr": "UT",
+        "duals": 45000,
+        "dual_enroll_share_pct": 8.0,
+        "dual_spend_share_pct": 20.8,
+        "concentration_ratio": 2.58,
+        "est_dual_spend_millions": 841.2
+      },
+      {
+        "state": "New Mexico",
+        "abbr": "NM",
+        "duals": 65000,
+        "dual_enroll_share_pct": 7.7,
+        "dual_spend_share_pct": 20.1,
+        "concentration_ratio": 2.6,
+        "est_dual_spend_millions": 1547.9
+      },
+      {
+        "state": "Arizona",
+        "abbr": "AZ",
+        "duals": 170000,
+        "dual_enroll_share_pct": 7.4,
+        "dual_spend_share_pct": 19.3,
+        "concentration_ratio": 2.61,
+        "est_dual_spend_millions": 3477.3
+      },
+      {
+        "state": "Alaska",
+        "abbr": "AK",
+        "duals": 18000,
+        "dual_enroll_share_pct": 7.2,
+        "dual_spend_share_pct": 18.9,
+        "concentration_ratio": 2.62,
+        "est_dual_spend_millions": 434.3
+      },
+      {
+        "state": "Colorado",
+        "abbr": "CO",
+        "duals": 120000,
+        "dual_enroll_share_pct": 7.1,
+        "dual_spend_share_pct": 18.6,
+        "concentration_ratio": 2.63,
+        "est_dual_spend_millions": 2059.8
+      },
+      {
+        "state": "Nevada",
+        "abbr": "NV",
+        "duals": 55000,
+        "dual_enroll_share_pct": 6.7,
+        "dual_spend_share_pct": 17.7,
+        "concentration_ratio": 2.65,
+        "est_dual_spend_millions": 887.1
+      }
+    ],
+    "cost_multiple": 3.0,
+    "national_dual_spend_share_pct": 27.1,
+    "top_state": "Alabama",
+    "data_provenance": "seed"
+  }
+}

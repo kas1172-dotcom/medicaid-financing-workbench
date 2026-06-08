@@ -1,0 +1,46 @@
+{
+  "state_name": "North Carolina",
+  "abbr": "NC",
+  "data_provenance": "seed",
+  "expansion": true,
+  "fmap": 65.0,
+  "headline_figures": {
+    "total_medicaid_enrollment": 3000000,
+    "expansion_adults": 640000,
+    "dual_eligibles": 290000,
+    "total_medicaid_spend_millions": 19300,
+    "hcbs_spend_millions": 2700,
+    "hcbs_share_of_spending_pct": 14.0
+  },
+  "provider_tax": {
+    "rate_pct": 5.2,
+    "exposed_to_cap": true,
+    "final_gap_millions": 1569.2,
+    "gap_share_of_nonfederal_pct": 32.7
+  },
+  "hcbs_risk": {
+    "index": 3.7,
+    "risk_tier": "Low",
+    "projected_cut_millions": 25887.0
+  },
+  "work_requirements": {
+    "state": "North Carolina",
+    "abbr": "NC",
+    "subject_adults": 640000,
+    "already_working_or_exempt": 588800,
+    "modeled_coverage_loss": 105984,
+    "loss_pct_of_subject": 16.6,
+    "status": "enacted",
+    "effective": "2027-01",
+    "note": "Enacted standards stricter than the federal minimum; April 2026 legislation appropriated $319M to close the FY2026 shortfall."
+  },
+  "dual_eligible": {
+    "state": "North Carolina",
+    "abbr": "NC",
+    "duals": 290000,
+    "dual_enroll_share_pct": 9.7,
+    "dual_spend_share_pct": 24.3,
+    "concentration_ratio": 2.51,
+    "est_dual_spend_millions": 4690.2
+  }
+}

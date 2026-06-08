@@ -1,0 +1,106 @@
+{
+  "provider_tax": {
+    "tell_me": "Thirty-one expansion states operate provider taxes above the new 3.5% ceiling. When the phase-down completes in 2032, those states will need to replace or reduce Medicaid financing to account for the revenue that can no longer be raised above the cap.",
+    "show_me": {
+      "computation": "At-risk revenue = nonfederal share × (rate above cap ÷ current rate). Applied to each expansion state with a provider tax rate above 3.5%; summed nationally. The ceiling steps down 0.5 percentage points per year from 2028 through 2032.",
+      "figure_description": "Horizontal bar chart of final-year at-risk revenue by state, sorted by magnitude. The top states by gap are large expansion programs with the highest current tax rates. Bar length represents the financing that must be replaced or cut once the phase-down completes.",
+      "sources": [
+        "KFF, 5 Key Facts About Medicaid and Provider Taxes (2025)",
+        "CMS-64 nonfederal share (seed, illustrative scale)",
+        "2025 reconciliation law §44101 (provider tax cap provision)"
+      ]
+    },
+    "so_what": {
+      "implication": "States above the cap face a choice as the ceiling steps down: replace provider-tax revenue with other state funds, reduce provider rates, or reduce covered services. The 2028–2032 timeline provides runway but also creates multi-year budget uncertainty for state Medicaid directors.",
+      "stakeholder_balance": {
+        "supporters": "Proponents of the cap argue that provider taxes can be structured as a financing mechanism that draws down federal dollars without a genuine net state fiscal contribution, effectively overstating the federal match. Limiting them improves the integrity of the federal-state cost-sharing arrangement and reflects longstanding GAO and OIG concerns about tax-and-return arrangements.",
+        "critics": "Opponents argue that provider taxes are legitimate state revenue instruments that many states have relied on for decades to fund Medicaid expansions benefiting low-income populations. Reducing the ceiling constrains a major financing tool and may force states to cut coverage or shift costs onto providers and patients in ways that reduce access to care."
+      }
+    },
+    "claims_to_verify": [
+      "Confirm current number of expansion states with non-exempt provider taxes above 3.5% (KFF 2025–26 survey).",
+      "Confirm phase-down schedule: start year 2028, step 0.5pp/year, end year 2032 (reconciliation law §44101).",
+      "Nonfederal share figures are seed-scale illustrative values; replace with CMS-64 actuals before publication.",
+      "Confirm which provider-tax types are subject to the cap vs. exempt under the statutory definition."
+    ],
+    "loaded_language_flags": [],
+    "_source": "reviewed_draft"
+  },
+  "hcbs_risk": {
+    "tell_me": "States that combine high HCBS program stakes with heavy reliance on the now-capped provider-tax financing score highest on the HCBS vulnerability index. Several large expansion states cluster in the high-risk tier, reflecting both the size of their optional home-care programs and the financing now under pressure.",
+    "show_me": {
+      "computation": "0–10 composite index: HCBS share of total Medicaid spending (30%), provider-tax reliance (30%), projected per-enrollee federal cut (25%), nonfederal share strain (15%). Each component normalized 0–1 before weighting. Tier thresholds: High ≥6.5, Medium ≥4.0, Low <4.0.",
+      "figure_description": "Horizontal bar chart of HCBS index scores for the top 20 states, color-coded by risk tier. Dashed reference lines mark the High and Medium thresholds. States in the High tier combine large HCBS programs with high provider-tax exposure.",
+      "sources": [
+        "KFF (HCBS and provider-tax parameters, 2025)",
+        "CBO score via KFF reconciliation law tracker: $911B total / 10-year Medicaid reduction",
+        "CMS-64 (seed, illustrative scale)"
+      ]
+    },
+    "so_what": {
+      "implication": "HCBS is an optional Medicaid benefit with no federal floor, historically the first target when states face fiscal pressure. This index is a risk screen, not a forecast. High-tier states warrant early modeling of where HCBS would rank in a budget-shortfall scenario and monitoring of whether fiscal pressure translates into enrollment or service reductions.",
+      "stakeholder_balance": {
+        "supporters": "Advocates for the financing changes argue that containing provider taxes addresses structural imbalances in the federal-state match and that states have other budget levers — including managed care efficiency and care coordination — to sustain HCBS programs.",
+        "critics": "Disability rights advocates and aging organizations argue that HCBS cuts would fall disproportionately on the most medically complex and socially vulnerable Medicaid enrollees, whose access to community-based care is already constrained by workforce shortages and waitlists."
+      }
+    },
+    "claims_to_verify": [
+      "Confirm index weights are as documented in config/policy_parameters.yaml and flagged as analyst choices.",
+      "HCBS spend figures are seed-scale; verify against CMS-64 T-19 or CMS-64 base for publication.",
+      "CBO $911B total Medicaid reduction over 10 years: confirm currency of figure.",
+      "Tier thresholds (6.5 / 4.0) are analyst choices; document the basis."
+    ],
+    "loaded_language_flags": [],
+    "_source": "reviewed_draft"
+  },
+  "work_requirements": {
+    "tell_me": "The modeled coverage loss from work requirements is driven primarily by procedural and administrative factors — not by adults who fail to work. Using the Arkansas 2018 experience as the calibration anchor, the modeled national loss runs to several million adults across expansion states, the majority of whom are estimated to already work or qualify for an exemption.",
+    "show_me": {
+      "computation": "Subject adults = expansion enrollees in each state. KFF documents approximately 92% of adults subject to requirements already work or qualify for a statutory exemption. Of that eligible pool, 18% are modeled at risk of procedural disenrollment — calibrated to Arkansas's documented 2018 experience (~18,000 losses). All outputs label the loss 'procedural/administrative.'",
+      "figure_description": "Horizontal bar chart of modeled coverage loss by state, sorted by magnitude. Large expansion states dominate by population size. The chart subtitle notes that the loss mechanism is procedural churn, not non-work.",
+      "sources": [
+        "KFF, A Closer Look at the Work Requirement Provisions (2025)",
+        "CBO national coverage-loss estimate: ~10 million (via KFF reconciliation tracker)",
+        "Arkansas 2018 documented coverage losses (~18,000): KFF/CBPP"
+      ]
+    },
+    "so_what": {
+      "implication": "The principal analytical finding is methodological: the dominant mechanism for coverage loss is procedural churn among adults who are already compliant with the requirement, not refusal to work. This distinction matters directly for how states design verification systems, exemption processes, and outreach — and for how policymakers interpret enrollment declines after implementation.",
+      "stakeholder_balance": {
+        "supporters": "Proponents argue that community engagement requirements encourage labor force participation and self-sufficiency, that exemptions are broad enough to protect people who cannot work, and that connecting coverage to activity is a reasonable condition for a voluntary public benefit.",
+        "critics": "Researchers and patient advocates argue that the evidence — from Arkansas (2018) and Georgia's Pathways program — shows requirements reduce coverage without meaningfully increasing employment, because most affected adults already work or face barriers that administrative reporting requirements do not address."
+      }
+    },
+    "claims_to_verify": [
+      "Confirm KFF's ~92% already-working-or-exempt estimate applies to the expansion-adult population subject to the federal minimum requirement.",
+      "Confirm Arkansas 2018 coverage-loss figure (~18,000) as the calibration anchor; note it was measured before the program was halted.",
+      "CBO's ~10M national coverage-loss estimate reflects the statutory provision, not this state-level model; note comparability caveats.",
+      "18% churn rate is an analyst choice; document the derivation explicitly before publication."
+    ],
+    "loaded_language_flags": [],
+    "_source": "reviewed_draft"
+  },
+  "duals": {
+    "tell_me": "Dual eligibles — people enrolled in both Medicare and Medicaid — represent a small share of Medicaid enrollment in most states but an estimated 40 to 50 percent of Medicaid spending in many of them. States where this concentration is sharpest face outsized fiscal consequences from any Medicaid change that affects long-term services, HCBS, or supplemental benefits.",
+    "show_me": {
+      "computation": "Dual enrollment share = duals ÷ total Medicaid enrollment. Spending share estimated by applying a 3× per-capita cost multiple (a standard published approximation reflecting duals' LTSS, HCBS, and complex-care utilization). Concentration ratio = spending share ÷ enrollment share.",
+      "figure_description": "Scatter plot of dual enrollment share (x-axis) vs. estimated dual spending share (y-axis) by state. States above the 1:1 reference line have a spending share larger than their enrollment share, which is the norm given duals' higher per-capita costs. States in the upper-right quadrant carry the sharpest concentration.",
+      "sources": [
+        "CMS Medicaid managed care enrollment data (seed, illustrative scale)",
+        "KFF, Medicaid's Role for Dual Eligible Beneficiaries (2024)",
+        "3× cost multiple: MedPAC and KFF published approximations"
+      ]
+    },
+    "so_what": {
+      "implication": "Provisions that appear modest in enrollment terms can land heavily on state Medicaid budgets when they concentrate in the duals population. Dual-eligible enrollment trends and spending shares are a leading indicator of Medicaid fiscal stress — particularly relevant for states with large LTSS and HCBS programs.",
+      "stakeholder_balance": null
+    },
+    "claims_to_verify": [
+      "Confirm the 3× per-capita cost multiple against a current MedPAC or KFF source.",
+      "Dual enrollment figures are seed-scale; verify against CMS managed care enrollment report for publication.",
+      "Cost multiple is applied uniformly here; note that it varies by state LTSS structure and managed care penetration."
+    ],
+    "loaded_language_flags": [],
+    "_source": "reviewed_draft"
+  }
+}

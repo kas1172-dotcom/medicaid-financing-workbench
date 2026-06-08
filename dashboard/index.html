@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medicaid Financing Workbench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0B1829;
+  --teal: #0D8F82;
+  --cream: #F4F2ED;
+  --border: #d5d0c8;
+  --high: #c0392b;
+  --medium: #d35400;
+  --low: #27ae60;
+  --text: #1a1a1a;
+  --muted: #666;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); font-size: 14px; line-height: 1.55; }
+h1, h2, h3 { font-family: 'IBM Plex Serif', serif; }
+
+/* Header */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--navy); color: #fff;
+  padding: 0 32px;
+  display: flex; align-items: center; gap: 24px;
+  height: 52px; border-bottom: 2px solid var(--teal);
+}
+header h1 { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; white-space: nowrap; }
+.header-meta { font-size: 12px; color: #aab; margin-left: auto; white-space: nowrap; }
+.provenance-badge {
+  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 3px;
+  background: #f39c12; color: #000; white-space: nowrap;
+}
+.provenance-badge.live { background: var(--teal); color: #fff; }
+
+/* Provenance banner */
+.prov-banner {
+  background: #fffbe6; border-left: 4px solid #f39c12;
+  padding: 10px 32px; font-size: 12px; color: #7a5c00;
+  display: none;
+}
+.prov-banner.visible { display: block; }
+
+/* Layout */
+main { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; }
+
+/* Section headers */
+.section-head {
+  border-left: 4px solid var(--teal); padding-left: 12px;
+  margin: 36px 0 16px;
+}
+.section-head h2 { font-size: 20px; color: var(--navy); margin-bottom: 2px; }
+.section-head p { font-size: 12px; color: var(--muted); font-style: italic; }
+
+/* Narrative block */
+.narrative {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  margin-bottom: 20px; overflow: hidden;
+}
+.narrative-tabs { display: flex; border-bottom: 1px solid var(--border); }
+.ntab {
+  padding: 8px 18px; font-size: 12px; font-weight: 600; color: var(--muted);
+  cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  background: none; border-top: none; border-left: none; border-right: none;
+}
+.ntab.active { color: var(--teal); border-bottom-color: var(--teal); }
+.npanel { padding: 16px 20px; display: none; }
+.npanel.active { display: block; }
+.npanel p { margin-bottom: 10px; }
+.stakeholder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.stakeholder-box { background: var(--cream); border-radius: 3px; padding: 12px 14px; }
+.stakeholder-box strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px; }
+.verify-list { list-style: none; padding: 0; }
+.verify-list li { padding: 5px 0; padding-left: 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--border); }
+.verify-list li:last-child { border-bottom: none; }
+.verify-list li::before { content: "☐"; position: absolute; left: 0; color: var(--teal); }
+.sources { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+/* Table */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: var(--navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 0.4px; text-transform: uppercase; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #1a2d44; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+tr:nth-child(even) td { background: rgba(0,0,0,0.018); }
+tr:hover td { background: rgba(13,143,130,0.06); }
+.tier-badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+.tier-High { background: #fde8e8; color: var(--high); }
+.tier-Medium { background: #fef0e0; color: var(--medium); }
+.tier-Low { background: #e6f5ec; color: var(--low); }
+.above-cap { color: var(--high); font-weight: 600; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; }
+
+/* Chart */
+.chart-img { max-width: 100%; border: 1px solid var(--border); border-radius: 4px; display: block; margin-top: 12px; }
+.chart-missing { padding: 40px; text-align: center; color: var(--muted); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+
+/* Summary bar */
+.summary-bar { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.stat-chip { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 10px 16px; }
+.stat-chip .val { font-family: 'IBM Plex Serif', serif; font-size: 22px; color: var(--navy); display: block; }
+.stat-chip .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+
+/* Loading */
+#loading { text-align: center; padding: 80px; color: var(--muted); }
+#error-msg { display: none; background: #fde8e8; border: 1px solid #c0392b; border-radius: 4px; padding: 16px; margin: 24px 0; }
+
+@media (max-width: 680px) {
+  .stakeholder-grid { grid-template-columns: 1fr; }
+  header { padding: 0 16px; }
+  main { padding: 16px 12px 48px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Medicaid Financing Workbench</h1>
+  <span id="prov-badge" class="provenance-badge">SEED DATA</span>
+  <span class="header-meta" id="header-meta">Loading…</span>
+</header>
+
+<div id="prov-banner" class="prov-banner">
+  <strong>Data note:</strong> <span id="prov-note"></span>
+</div>
+
+<main>
+  <div id="loading">Loading dashboard data…</div>
+  <div id="error-msg"></div>
+  <div id="content" style="display:none">
+
+    <div class="summary-bar" id="summary-bar"></div>
+
+    <!-- 1. Provider Tax -->
+    <div class="section-head">
+      <h2>Provider Tax Cap Exposure</h2>
+      <p>Expansion states with provider taxes above the new 3.5% ceiling — at-risk revenue as the cap phases down 2028–2032.</p>
+    </div>
+    <div id="narrative-provider_tax" class="narrative"></div>
+    <div class="table-wrap"><table id="tbl-provider_tax"><thead></thead><tbody></tbody></table></div>
+
+    <!-- 2. HCBS Risk -->
+    <div class="section-head">
+      <h2>HCBS Vulnerability Index</h2>
+      <p>0–10 composite risk screen. A high score surfaces a state for closer monitoring; it is not a forecast of cuts.</p>
+    </div>
+    <div id="narrative-hcbs_risk" class="narrative"></div>
+    <div class="table-wrap"><table id="tbl-hcbs_risk"><thead></thead><tbody></tbody></table></div>
+
+    <!-- 3. Work Requirements -->
+    <div class="section-head">
+      <h2>Work Requirements — Modeled Coverage Loss</h2>
+      <p>Loss is procedural/administrative churn among already-compliant adults, calibrated to Arkansas 2018. Not loss from non-work.</p>
+    </div>
+    <div id="narrative-work_requirements" class="narrative"></div>
+    <div class="table-wrap"><table id="tbl-work_requirements"><thead></thead><tbody></tbody></table></div>
+
+    <!-- 4. Duals -->
+    <div class="section-head">
+      <h2>Dual-Eligible Spending Concentration</h2>
+      <p>Where a small enrollee share maps to a large spending share. 3× per-capita cost multiple applied (published approximation).</p>
+    </div>
+    <div id="narrative-duals" class="narrative"></div>
+    <div class="table-wrap"><table id="tbl-duals"><thead></thead><tbody></tbody></table></div>
+
+  </div><!-- #content -->
+</main>
+
+<script>
+// ── Tab switching ────────────────────────────────────────────────────────────
+function buildNarrative(containerId, narr) {
+  if (!narr) return;
+  const el = document.getElementById(containerId);
+  if (!el) return;
+
+  const tabs = [
+    { key: "tell", label: "Tell me" },
+    { key: "show", label: "Show me" },
+    { key: "sowhat", label: "So what" },
+    { key: "verify", label: "Claims to verify" },
+  ];
+
+  let tabsHtml = '<div class="narrative-tabs">';
+  tabs.forEach((t, i) => {
+    tabsHtml += `<button class="ntab${i === 0 ? ' active' : ''}" onclick="switchTab('${containerId}','${t.key}')">${t.label}</button>`;
+  });
+  tabsHtml += '</div>';
+
+  const tellHtml = `<div class="npanel active" id="${containerId}-tell"><p>${escHtml(narr.tell_me || '')}</p></div>`;
+
+  const sm = narr.show_me || {};
+  const showHtml = `<div class="npanel" id="${containerId}-show">
+    <p><strong>Computation:</strong> ${escHtml(sm.computation || '')}</p>
+    <p><strong>Figure:</strong> ${escHtml(sm.figure_description || '')}</p>
+    <p class="sources"><strong>Sources:</strong> ${(sm.sources || []).map(escHtml).join(' · ')}</p>
+  </div>`;
+
+  const sw = narr.so_what || {};
+  const sb = sw.stakeholder_balance;
+  let sowhatHtml = `<div class="npanel" id="${containerId}-sowhat">
+    <p>${escHtml(sw.implication || '')}</p>`;
+  if (sb && (sb.supporters || sb.critics)) {
+    sowhatHtml += `<div class="stakeholder-grid">
+      <div class="stakeholder-box"><strong>Supporters argue</strong>${escHtml(sb.supporters || '')}</div>
+      <div class="stakeholder-box"><strong>Critics argue</strong>${escHtml(sb.critics || '')}</div>
+    </div>
+    <p style="margin-top:10px;font-size:12px;color:var(--muted);font-style:italic">
+      This tool does not signal which argument is correct. Both are presented as stated by knowledgeable advocates. See NEUTRALITY.md.
+    </p>`;
+  }
+  sowhatHtml += '</div>';
+
+  const claims = narr.claims_to_verify || [];
+  const verifyHtml = `<div class="npanel" id="${containerId}-verify">
+    <ul class="verify-list">${claims.map(c => `<li>${escHtml(c)}</li>`).join('')}</ul>
+  </div>`;
+
+  el.innerHTML = tabsHtml + tellHtml + showHtml + sowhatHtml + verifyHtml;
+}
+
+function switchTab(containerId, key) {
+  const el = document.getElementById(containerId);
+  el.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
+  el.querySelectorAll('.npanel').forEach(p => p.classList.remove('active'));
+  const btn = [...el.querySelectorAll('.ntab')].find(b => b.onclick.toString().includes(`'${key}'`));
+  if (btn) btn.classList.add('active');
+  const panel = document.getElementById(`${containerId}-${key}`);
+  if (panel) panel.classList.add('active');
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Table builders ───────────────────────────────────────────────────────────
+function buildProviderTaxTable(rows) {
+  const thead = `<tr>
+    <th>State</th><th>Exp.</th><th>Tax Rate %</th>
+    <th>Exposed</th><th>Final Gap $M</th><th>% of Nonfed Share</th>
+  </tr>`;
+  const tbody = rows.map(r => `<tr>
+    <td>${escHtml(r.state)}</td>
+    <td>${r.expansion ? '✓' : '–'}</td>
+    <td class="${r.provider_tax_rate > 3.5 ? 'above-cap' : ''}">${r.provider_tax_rate.toFixed(1)}%</td>
+    <td>${r.exposed ? '<span class="tier-badge tier-High">Yes</span>' : '<span class="tier-badge tier-Low">No</span>'}</td>
+    <td>${r.exposed ? '$' + r.final_gap_millions.toLocaleString() + 'M' : '–'}</td>
+    <td>${r.exposed ? r.gap_share_of_nonfederal_pct.toFixed(1) + '%' : '–'}</td>
+  </tr>`).join('');
+  document.querySelector('#tbl-provider_tax thead').innerHTML = thead;
+  document.querySelector('#tbl-provider_tax tbody').innerHTML = tbody;
+}
+
+function buildHCBSTable(rows) {
+  const thead = `<tr>
+    <th>State</th><th>Index</th><th>Risk Tier</th>
+    <th>HCBS Share %</th><th>HCBS Spend $M</th><th>Proj. Cut $M</th>
+  </tr>`;
+  const tbody = rows.map(r => `<tr>
+    <td>${escHtml(r.state)}</td>
+    <td>${r.hcbs_index.toFixed(1)}</td>
+    <td><span class="tier-badge tier-${escHtml(r.risk_tier)}">${escHtml(r.risk_tier)}</span></td>
+    <td>${r.hcbs_share.toFixed(1)}%</td>
+    <td>$${r.hcbs_spend_millions.toLocaleString()}M</td>
+    <td>$${r.projected_cut_millions.toLocaleString()}M</td>
+  </tr>`).join('');
+  document.querySelector('#tbl-hcbs_risk thead').innerHTML = thead;
+  document.querySelector('#tbl-hcbs_risk tbody').innerHTML = tbody;
+}
+
+function buildWRTable(rows) {
+  const thead = `<tr>
+    <th>State</th><th>Subject Adults</th>
+    <th>Already Working/Exempt</th><th>Modeled Loss</th><th>Loss % of Subject</th><th>Status</th>
+  </tr>`;
+  const tbody = rows.map(r => `<tr>
+    <td>${escHtml(r.state)}</td>
+    <td>${r.subject_adults.toLocaleString()}</td>
+    <td>${r.already_working_or_exempt.toLocaleString()}</td>
+    <td>${r.modeled_coverage_loss.toLocaleString()}</td>
+    <td>${r.loss_pct_of_subject.toFixed(1)}%</td>
+    <td>${escHtml(r.status || '')}</td>
+  </tr>`).join('');
+  document.querySelector('#tbl-work_requirements thead').innerHTML = thead;
+  document.querySelector('#tbl-work_requirements tbody').innerHTML = tbody;
+}
+
+function buildDualsTable(rows) {
+  const thead = `<tr>
+    <th>State</th><th>Dual Eligibles</th>
+    <th>Enrollment Share %</th><th>Est. Spend Share %</th>
+    <th>Concentration Ratio</th><th>Est. Dual Spend $M</th>
+  </tr>`;
+  const tbody = rows.map(r => `<tr>
+    <td>${escHtml(r.state)}</td>
+    <td>${r.duals.toLocaleString()}</td>
+    <td>${r.dual_enroll_share_pct.toFixed(1)}%</td>
+    <td>${r.dual_spend_share_pct.toFixed(1)}%</td>
+    <td>${r.concentration_ratio.toFixed(2)}×</td>
+    <td>$${r.est_dual_spend_millions.toLocaleString()}M</td>
+  </tr>`).join('');
+  document.querySelector('#tbl-duals thead').innerHTML = thead;
+  document.querySelector('#tbl-duals tbody').innerHTML = tbody;
+}
+
+// ── Main load ────────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const resp = await fetch('dashboard_data.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+
+    // Provenance
+    const meta = data.meta || {};
+    const prov = meta.data_provenance || 'seed';
+    const badge = document.getElementById('prov-badge');
+    badge.textContent = prov === 'seed' ? 'SEED DATA' : prov.toUpperCase();
+    if (prov !== 'seed') badge.classList.add('live');
+    if (meta.provenance_note) {
+      document.getElementById('prov-note').textContent = meta.provenance_note;
+      document.getElementById('prov-banner').classList.add('visible');
+    }
+
+    // Summary bar
+    const s = data.summary || {};
+    document.getElementById('header-meta').textContent =
+      `${s.n_states} states · ${s.total_enrollment_million}M enrollees · $${s.total_medicaid_spend_billion}B spend`;
+    const chips = [
+      { val: s.n_states, lbl: 'States' },
+      { val: s.n_expansion, lbl: 'Expansion states' },
+      { val: `${s.total_enrollment_million}M`, lbl: 'Total enrollment' },
+      { val: `$${s.total_medicaid_spend_billion}B`, lbl: 'Total Medicaid spend' },
+    ];
+    document.getElementById('summary-bar').innerHTML = chips.map(c =>
+      `<div class="stat-chip"><span class="val">${c.val}</span><span class="lbl">${c.lbl}</span></div>`
+    ).join('');
+
+    // Narrative blocks
+    const narr = data.narrative || {};
+    buildNarrative('narrative-provider_tax', narr.provider_tax);
+    buildNarrative('narrative-hcbs_risk', narr.hcbs_risk);
+    buildNarrative('narrative-work_requirements', narr.work_requirements);
+    buildNarrative('narrative-duals', narr.duals);
+
+    // Tables
+    const analyses = data.analyses || {};
+    if (analyses.provider_tax) buildProviderTaxTable(analyses.provider_tax.rows || []);
+    if (analyses.hcbs_risk) buildHCBSTable(analyses.hcbs_risk.rows || []);
+    if (analyses.work_requirements) buildWRTable(analyses.work_requirements.rows || []);
+    if (analyses.duals) buildDualsTable(analyses.duals.rows || []);
+
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    const errEl = document.getElementById('error-msg');
+    errEl.style.display = 'block';
+    errEl.innerHTML = `<strong>Could not load dashboard_data.json.</strong><br>
+      Run <code>mfw dashboard</code> from the project root, then serve the project with
+      <code>python -m http.server 8000</code> and open
+      <a href="http://localhost:8000/dashboard/">http://localhost:8000/dashboard/</a>.<br>
+      <small>Error: ${escHtml(err.message)}</small>`;
+  }
+}
+
+loadDashboard();
+</script>
+</body>
+</html>
