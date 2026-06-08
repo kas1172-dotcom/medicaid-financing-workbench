@@ -927,16 +927,6 @@
         "expansion": true
       },
       {
-        "state": "New York",
-        "abbr": "NY",
-        "hcbs_index": 6.1,
-        "risk_tier": "Medium",
-        "hcbs_share": 18.5,
-        "hcbs_spend_millions": 12000.0,
-        "projected_cut_millions": 78553.0,
-        "expansion": true
-      },
-      {
         "state": "New Jersey",
         "abbr": "NJ",
         "hcbs_index": 6.1,
@@ -944,6 +934,16 @@
         "hcbs_share": 18.6,
         "hcbs_spend_millions": 3000.0,
         "projected_cut_millions": 19281.0,
+        "expansion": true
+      },
+      {
+        "state": "New York",
+        "abbr": "NY",
+        "hcbs_index": 6.1,
+        "risk_tier": "Medium",
+        "hcbs_share": 18.5,
+        "hcbs_spend_millions": 12000.0,
+        "projected_cut_millions": 78553.0,
         "expansion": true
       },
       {
@@ -997,16 +997,6 @@
         "expansion": true
       },
       {
-        "state": "Hawaii",
-        "abbr": "HI",
-        "hcbs_index": 5.5,
-        "risk_tier": "Medium",
-        "hcbs_share": 18.8,
-        "hcbs_spend_millions": 620.0,
-        "projected_cut_millions": 4106.0,
-        "expansion": true
-      },
-      {
         "state": "Virginia",
         "abbr": "VA",
         "hcbs_index": 5.5,
@@ -1017,13 +1007,13 @@
         "expansion": true
       },
       {
-        "state": "Montana",
-        "abbr": "MT",
-        "hcbs_index": 5.4,
+        "state": "Hawaii",
+        "abbr": "HI",
+        "hcbs_index": 5.5,
         "risk_tier": "Medium",
-        "hcbs_share": 20.4,
-        "hcbs_spend_millions": 520.0,
-        "projected_cut_millions": 3392.0,
+        "hcbs_share": 18.8,
+        "hcbs_spend_millions": 620.0,
+        "projected_cut_millions": 4106.0,
         "expansion": true
       },
       {
@@ -1034,6 +1024,16 @@
         "hcbs_share": 18.9,
         "hcbs_spend_millions": 2100.0,
         "projected_cut_millions": 13568.0,
+        "expansion": true
+      },
+      {
+        "state": "Montana",
+        "abbr": "MT",
+        "hcbs_index": 5.4,
+        "risk_tier": "Medium",
+        "hcbs_share": 20.4,
+        "hcbs_spend_millions": 520.0,
+        "projected_cut_millions": 3392.0,
         "expansion": true
       },
       {
@@ -1057,16 +1057,6 @@
         "expansion": true
       },
       {
-        "state": "Idaho",
-        "abbr": "ID",
-        "hcbs_index": 4.9,
-        "risk_tier": "Medium",
-        "hcbs_share": 18.8,
-        "hcbs_spend_millions": 650.0,
-        "projected_cut_millions": 4642.0,
-        "expansion": true
-      },
-      {
         "state": "Wyoming",
         "abbr": "WY",
         "hcbs_index": 4.9,
@@ -1075,6 +1065,16 @@
         "hcbs_spend_millions": 220.0,
         "projected_cut_millions": 1071.0,
         "expansion": false
+      },
+      {
+        "state": "Idaho",
+        "abbr": "ID",
+        "hcbs_index": 4.9,
+        "risk_tier": "Medium",
+        "hcbs_share": 18.8,
+        "hcbs_spend_millions": 650.0,
+        "projected_cut_millions": 4642.0,
+        "expansion": true
       },
       {
         "state": "Alaska",
@@ -1097,16 +1097,6 @@
         "expansion": true
       },
       {
-        "state": "Illinois",
-        "abbr": "IL",
-        "hcbs_index": 4.6,
-        "risk_tier": "Medium",
-        "hcbs_share": 14.5,
-        "hcbs_spend_millions": 3400.0,
-        "projected_cut_millions": 29457.0,
-        "expansion": true
-      },
-      {
         "state": "Oregon",
         "abbr": "OR",
         "hcbs_index": 4.6,
@@ -1117,13 +1107,13 @@
         "expansion": true
       },
       {
-        "state": "Ohio",
-        "abbr": "OH",
-        "hcbs_index": 4.5,
+        "state": "Illinois",
+        "abbr": "IL",
+        "hcbs_index": 4.6,
         "risk_tier": "Medium",
-        "hcbs_share": 14.2,
-        "hcbs_spend_millions": 3600.0,
-        "projected_cut_millions": 33921.0,
+        "hcbs_share": 14.5,
+        "hcbs_spend_millions": 3400.0,
+        "projected_cut_millions": 29457.0,
         "expansion": true
       },
       {
@@ -1134,6 +1124,16 @@
         "hcbs_share": 13.1,
         "hcbs_spend_millions": 16500.0,
         "projected_cut_millions": 155321.0,
+        "expansion": true
+      },
+      {
+        "state": "Ohio",
+        "abbr": "OH",
+        "hcbs_index": 4.5,
+        "risk_tier": "Medium",
+        "hcbs_share": 14.2,
+        "hcbs_spend_millions": 3600.0,
+        "projected_cut_millions": 33921.0,
         "expansion": true
       },
       {
