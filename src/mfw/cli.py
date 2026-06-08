@@ -217,9 +217,12 @@ def cmd_build(args, params):
     print("Building dashboard (non-interactive)...")
     prefer_live = getattr(args, "live", False)
     data = build_dashboard_data(params, prefer_live=prefer_live)
+    serialized = json.dumps(data, indent=2, default=str)
     out_path = Path("dashboard/dashboard_data.json")
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(data, indent=2, default=str))
+    out_path.write_text(serialized)
+    # Also write to root so GitHub Pages (index.html at root) can fetch it.
+    Path("dashboard_data.json").write_text(serialized)
     print(f"\ndashboard/dashboard_data.json written.")
     prov = data.get("meta", {}).get("data_provenance", "seed")
     print(f"data_provenance: {prov}")

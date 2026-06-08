@@ -1,0 +1,2077 @@
+{
+  "meta": {
+    "generated_by": "Medicaid Financing Workbench v0.2.0",
+    "data_provenance": "seed",
+    "provenance_note": "SEED DATA \u2014 illustrative values anchored to KFF-published magnitudes. Run `mfw refresh` then `mfw build` for authoritative CMS data. Do not cite these figures as official."
+  },
+  "summary": {
+    "n_states": 51,
+    "n_expansion": 41,
+    "total_medicaid_spend_billion": 714.2,
+    "total_enrollment_million": 87.9,
+    "data_provenance": "seed"
+  },
+  "analyses": {
+    "provider_tax": {
+      "id": "provider_tax",
+      "title": "Provider tax cap exposure",
+      "schedule": {
+        "2028": 5.5,
+        "2029": 5.0,
+        "2030": 4.5,
+        "2031": 4.0,
+        "2032": 3.5
+      },
+      "rows": [
+        {
+          "state": "California",
+          "abbr": "CA",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 1.8,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 10684.9,
+          "gap_share_of_nonfederal_pct": 27.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 2671.2,
+            "2030": 5342.5,
+            "2031": 8013.7,
+            "2032": 10684.9
+          },
+          "gap_by_class": {
+            "hospital": 10684.9
+          },
+          "note": null
+        },
+        {
+          "state": "New York",
+          "abbr": "NY",
+          "expansion": true,
+          "provider_tax_rate": 5.9,
+          "provider_taxes_by_class": {
+            "hospital": 5.9,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 6379.7,
+          "gap_share_of_nonfederal_pct": 30.4,
+          "gap_by_year": {
+            "2028": 1063.3,
+            "2029": 2392.4,
+            "2030": 3721.5,
+            "2031": 5050.6,
+            "2032": 6379.7
+          },
+          "gap_by_class": {
+            "hospital": 6379.7
+          },
+          "note": null
+        },
+        {
+          "state": "Pennsylvania",
+          "abbr": "PA",
+          "expansion": true,
+          "provider_tax_rate": 5.9,
+          "provider_taxes_by_class": {
+            "hospital": 5.9,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 2582.3,
+          "gap_share_of_nonfederal_pct": 30.4,
+          "gap_by_year": {
+            "2028": 430.4,
+            "2029": 968.4,
+            "2030": 1506.3,
+            "2031": 2044.3,
+            "2032": 2582.3
+          },
+          "gap_by_class": {
+            "hospital": 2582.3
+          },
+          "note": null
+        },
+        {
+          "state": "Massachusetts",
+          "abbr": "MA",
+          "expansion": true,
+          "provider_tax_rate": 5.9,
+          "provider_taxes_by_class": {
+            "hospital": 5.9,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 2187.3,
+          "gap_share_of_nonfederal_pct": 30.4,
+          "gap_by_year": {
+            "2028": 364.6,
+            "2029": 820.3,
+            "2030": 1275.9,
+            "2031": 1731.6,
+            "2032": 2187.3
+          },
+          "gap_by_class": {
+            "hospital": 2187.3
+          },
+          "note": null
+        },
+        {
+          "state": "Illinois",
+          "abbr": "IL",
+          "expansion": true,
+          "provider_tax_rate": 5.9,
+          "provider_taxes_by_class": {
+            "hospital": 5.9,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 2126.6,
+          "gap_share_of_nonfederal_pct": 30.4,
+          "gap_by_year": {
+            "2028": 354.4,
+            "2029": 797.5,
+            "2030": 1240.5,
+            "2031": 1683.5,
+            "2032": 2126.6
+          },
+          "gap_by_class": {
+            "hospital": 2126.6
+          },
+          "note": null
+        },
+        {
+          "state": "Ohio",
+          "abbr": "OH",
+          "expansion": true,
+          "provider_tax_rate": 5.9,
+          "provider_taxes_by_class": {
+            "hospital": 5.9,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1913.9,
+          "gap_share_of_nonfederal_pct": 30.4,
+          "gap_by_year": {
+            "2028": 319.0,
+            "2029": 717.7,
+            "2030": 1116.5,
+            "2031": 1515.2,
+            "2032": 1913.9
+          },
+          "gap_by_class": {
+            "hospital": 1913.9
+          },
+          "note": null
+        },
+        {
+          "state": "North Carolina",
+          "abbr": "NC",
+          "expansion": true,
+          "provider_tax_rate": 5.2,
+          "provider_taxes_by_class": {
+            "hospital": 5.2,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.2,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1569.2,
+          "gap_share_of_nonfederal_pct": 32.7,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 184.6,
+            "2030": 646.2,
+            "2031": 1107.7,
+            "2032": 1569.2
+          },
+          "gap_by_class": {
+            "hospital": 1569.2
+          },
+          "note": null
+        },
+        {
+          "state": "Maryland",
+          "abbr": "MD",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1563.6,
+          "gap_share_of_nonfederal_pct": 36.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 390.9,
+            "2030": 781.8,
+            "2031": 1172.7,
+            "2032": 1563.6
+          },
+          "gap_by_class": {
+            "hospital": 1563.6
+          },
+          "note": null
+        },
+        {
+          "state": "New Jersey",
+          "abbr": "NJ",
+          "expansion": true,
+          "provider_tax_rate": 5.8,
+          "provider_taxes_by_class": {
+            "hospital": 5.8,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.8,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1562.8,
+          "gap_share_of_nonfederal_pct": 29.5,
+          "gap_by_year": {
+            "2028": 203.8,
+            "2029": 543.6,
+            "2030": 883.3,
+            "2031": 1223.1,
+            "2032": 1562.8
+          },
+          "gap_by_class": {
+            "hospital": 1562.8
+          },
+          "note": null
+        },
+        {
+          "state": "Virginia",
+          "abbr": "VA",
+          "expansion": true,
+          "provider_tax_rate": 5.8,
+          "provider_taxes_by_class": {
+            "hospital": 5.8,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.8,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1533.3,
+          "gap_share_of_nonfederal_pct": 29.5,
+          "gap_by_year": {
+            "2028": 200.0,
+            "2029": 533.3,
+            "2030": 866.7,
+            "2031": 1200.0,
+            "2032": 1533.3
+          },
+          "gap_by_class": {
+            "hospital": 1533.3
+          },
+          "note": null
+        },
+        {
+          "state": "Michigan",
+          "abbr": "MI",
+          "expansion": true,
+          "provider_tax_rate": 6.0,
+          "provider_taxes_by_class": {
+            "hospital": 6.0,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 6.0,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1500.0,
+          "gap_share_of_nonfederal_pct": 31.2,
+          "gap_by_year": {
+            "2028": 300.0,
+            "2029": 600.0,
+            "2030": 900.0,
+            "2031": 1200.0,
+            "2032": 1500.0
+          },
+          "gap_by_class": {
+            "hospital": 1500.0
+          },
+          "note": null
+        },
+        {
+          "state": "Washington",
+          "abbr": "WA",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1440.0,
+          "gap_share_of_nonfederal_pct": 26.7,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 360.0,
+            "2030": 720.0,
+            "2031": 1080.0,
+            "2032": 1440.0
+          },
+          "gap_by_class": {
+            "hospital": 1440.0
+          },
+          "note": null
+        },
+        {
+          "state": "Connecticut",
+          "abbr": "CT",
+          "expansion": true,
+          "provider_tax_rate": 5.8,
+          "provider_taxes_by_class": {
+            "hospital": 5.8,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.8,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1348.3,
+          "gap_share_of_nonfederal_pct": 39.7,
+          "gap_by_year": {
+            "2028": 175.9,
+            "2029": 469.0,
+            "2030": 762.1,
+            "2031": 1055.2,
+            "2032": 1348.3
+          },
+          "gap_by_class": {
+            "hospital": 1348.3
+          },
+          "note": null
+        },
+        {
+          "state": "Colorado",
+          "abbr": "CO",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1272.7,
+          "gap_share_of_nonfederal_pct": 36.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 318.2,
+            "2030": 636.4,
+            "2031": 954.5,
+            "2032": 1272.7
+          },
+          "gap_by_class": {
+            "hospital": 1272.7
+          },
+          "note": null
+        },
+        {
+          "state": "Minnesota",
+          "abbr": "MN",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1226.7,
+          "gap_share_of_nonfederal_pct": 26.7,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 306.7,
+            "2030": 613.3,
+            "2031": 920.0,
+            "2032": 1226.7
+          },
+          "gap_by_class": {
+            "hospital": 1226.7
+          },
+          "note": null
+        },
+        {
+          "state": "Indiana",
+          "abbr": "IN",
+          "expansion": true,
+          "provider_tax_rate": 5.9,
+          "provider_taxes_by_class": {
+            "hospital": 5.9,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1220.3,
+          "gap_share_of_nonfederal_pct": 40.7,
+          "gap_by_year": {
+            "2028": 203.4,
+            "2029": 457.6,
+            "2030": 711.9,
+            "2031": 966.1,
+            "2032": 1220.3
+          },
+          "gap_by_class": {
+            "hospital": 1220.3
+          },
+          "note": null
+        },
+        {
+          "state": "Oregon",
+          "abbr": "OR",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 1054.5,
+          "gap_share_of_nonfederal_pct": 36.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 263.6,
+            "2030": 527.3,
+            "2031": 790.9,
+            "2032": 1054.5
+          },
+          "gap_by_class": {
+            "hospital": 1054.5
+          },
+          "note": null
+        },
+        {
+          "state": "Louisiana",
+          "abbr": "LA",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 945.5,
+          "gap_share_of_nonfederal_pct": 36.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 236.4,
+            "2030": 472.7,
+            "2031": 709.1,
+            "2032": 945.5
+          },
+          "gap_by_class": {
+            "hospital": 945.5
+          },
+          "note": null
+        },
+        {
+          "state": "Missouri",
+          "abbr": "MO",
+          "expansion": true,
+          "provider_tax_rate": 5.9,
+          "provider_taxes_by_class": {
+            "hospital": 5.9,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 941.8,
+          "gap_share_of_nonfederal_pct": 30.4,
+          "gap_by_year": {
+            "2028": 157.0,
+            "2029": 353.2,
+            "2030": 549.4,
+            "2031": 745.6,
+            "2032": 941.8
+          },
+          "gap_by_class": {
+            "hospital": 941.8
+          },
+          "note": null
+        },
+        {
+          "state": "Kentucky",
+          "abbr": "KY",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 872.7,
+          "gap_share_of_nonfederal_pct": 36.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 218.2,
+            "2030": 436.4,
+            "2031": 654.5,
+            "2032": 872.7
+          },
+          "gap_by_class": {
+            "hospital": 872.7
+          },
+          "note": null
+        },
+        {
+          "state": "Arkansas",
+          "abbr": "AR",
+          "expansion": true,
+          "provider_tax_rate": 5.9,
+          "provider_taxes_by_class": {
+            "hospital": 5.9,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 772.9,
+          "gap_share_of_nonfederal_pct": 40.7,
+          "gap_by_year": {
+            "2028": 128.8,
+            "2029": 289.8,
+            "2030": 450.8,
+            "2031": 611.9,
+            "2032": 772.9
+          },
+          "gap_by_class": {
+            "hospital": 772.9
+          },
+          "note": null
+        },
+        {
+          "state": "Arizona",
+          "abbr": "AZ",
+          "expansion": true,
+          "provider_tax_rate": 4.5,
+          "provider_taxes_by_class": {
+            "hospital": 3.5,
+            "mco": 4.5,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 3.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 525.0,
+          "gap_share_of_nonfederal_pct": 12.5,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 262.5,
+            "2032": 525.0
+          },
+          "gap_by_class": {
+            "mco": 525.0
+          },
+          "note": null
+        },
+        {
+          "state": "Iowa",
+          "abbr": "IA",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 2.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 400.0,
+          "gap_share_of_nonfederal_pct": 26.7,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 100.0,
+            "2030": 200.0,
+            "2031": 300.0,
+            "2032": 400.0
+          },
+          "gap_by_class": {
+            "hospital": 400.0
+          },
+          "note": null
+        },
+        {
+          "state": "Rhode Island",
+          "abbr": "RI",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 363.6,
+          "gap_share_of_nonfederal_pct": 36.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 90.9,
+            "2030": 181.8,
+            "2031": 272.7,
+            "2032": 363.6
+          },
+          "gap_by_class": {
+            "hospital": 363.6
+          },
+          "note": null
+        },
+        {
+          "state": "West Virginia",
+          "abbr": "WV",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 363.6,
+          "gap_share_of_nonfederal_pct": 36.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 90.9,
+            "2030": 181.8,
+            "2031": 272.7,
+            "2032": 363.6
+          },
+          "gap_by_class": {
+            "hospital": 363.6
+          },
+          "note": null
+        },
+        {
+          "state": "New Mexico",
+          "abbr": "NM",
+          "expansion": true,
+          "provider_tax_rate": 5.0,
+          "provider_taxes_by_class": {
+            "hospital": 3.0,
+            "mco": 5.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 4.0,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 300.0,
+          "gap_share_of_nonfederal_pct": 18.8,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 100.0,
+            "2031": 200.0,
+            "2032": 300.0
+          },
+          "gap_by_class": {
+            "mco": 300.0
+          },
+          "note": null
+        },
+        {
+          "state": "New Hampshire",
+          "abbr": "NH",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 290.9,
+          "gap_share_of_nonfederal_pct": 36.4,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 72.7,
+            "2030": 145.5,
+            "2031": 218.2,
+            "2032": 290.9
+          },
+          "gap_by_class": {
+            "hospital": 290.9
+          },
+          "note": null
+        },
+        {
+          "state": "Hawaii",
+          "abbr": "HI",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 1.5,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 285.7,
+          "gap_share_of_nonfederal_pct": 28.6,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 71.4,
+            "2030": 142.9,
+            "2031": 214.3,
+            "2032": 285.7
+          },
+          "gap_by_class": {
+            "hospital": 285.7
+          },
+          "note": null
+        },
+        {
+          "state": "District of Columbia",
+          "abbr": "DC",
+          "expansion": true,
+          "provider_tax_rate": 5.5,
+          "provider_taxes_by_class": {
+            "hospital": 5.5,
+            "mco": 1.5,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 228.6,
+          "gap_share_of_nonfederal_pct": 28.6,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 57.1,
+            "2030": 114.3,
+            "2031": 171.4,
+            "2032": 228.6
+          },
+          "gap_by_class": {
+            "hospital": 228.6
+          },
+          "note": null
+        },
+        {
+          "state": "Nevada",
+          "abbr": "NV",
+          "expansion": true,
+          "provider_tax_rate": 4.5,
+          "provider_taxes_by_class": {
+            "hospital": 3.5,
+            "mco": 4.5,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 3.5,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 162.5,
+          "gap_share_of_nonfederal_pct": 12.5,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 81.2,
+            "2032": 162.5
+          },
+          "gap_by_class": {
+            "mco": 162.5
+          },
+          "note": null
+        },
+        {
+          "state": "Delaware",
+          "abbr": "DE",
+          "expansion": true,
+          "provider_tax_rate": 4.0,
+          "provider_taxes_by_class": {
+            "hospital": 4.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 4.0,
+            "icf_iid": 0.0
+          },
+          "exposed": true,
+          "final_gap_millions": 100.0,
+          "gap_share_of_nonfederal_pct": 12.5,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 100.0
+          },
+          "gap_by_class": {
+            "hospital": 100.0
+          },
+          "note": null
+        },
+        {
+          "state": "Alabama",
+          "abbr": "AL",
+          "expansion": false,
+          "provider_tax_rate": 4.2,
+          "provider_taxes_by_class": {
+            "hospital": 4.2,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.8,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "Alaska",
+          "abbr": "AK",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 0.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "Florida",
+          "abbr": "FL",
+          "expansion": false,
+          "provider_tax_rate": 1.5,
+          "provider_taxes_by_class": {
+            "hospital": 1.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "Georgia",
+          "abbr": "GA",
+          "expansion": false,
+          "provider_tax_rate": 1.5,
+          "provider_taxes_by_class": {
+            "hospital": 1.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "Idaho",
+          "abbr": "ID",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 3.5
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "Kansas",
+          "abbr": "KS",
+          "expansion": false,
+          "provider_tax_rate": 1.8,
+          "provider_taxes_by_class": {
+            "hospital": 1.5,
+            "mco": 1.8,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "Maine",
+          "abbr": "ME",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "Mississippi",
+          "abbr": "MS",
+          "expansion": false,
+          "provider_tax_rate": 1.2,
+          "provider_taxes_by_class": {
+            "hospital": 1.2,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.9,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "Montana",
+          "abbr": "MT",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "Nebraska",
+          "abbr": "NE",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "North Dakota",
+          "abbr": "ND",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 4.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "Oklahoma",
+          "abbr": "OK",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 4.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "South Carolina",
+          "abbr": "SC",
+          "expansion": false,
+          "provider_tax_rate": 1.0,
+          "provider_taxes_by_class": {
+            "hospital": 1.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "South Dakota",
+          "abbr": "SD",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 4.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "Tennessee",
+          "abbr": "TN",
+          "expansion": false,
+          "provider_tax_rate": 1.5,
+          "provider_taxes_by_class": {
+            "hospital": 1.0,
+            "mco": 1.5,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "Texas",
+          "abbr": "TX",
+          "expansion": false,
+          "provider_tax_rate": 1.5,
+          "provider_taxes_by_class": {
+            "hospital": 1.5,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "Utah",
+          "abbr": "UT",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "Vermont",
+          "abbr": "VT",
+          "expansion": true,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.5,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": null
+        },
+        {
+          "state": "Wisconsin",
+          "abbr": "WI",
+          "expansion": false,
+          "provider_tax_rate": 1.0,
+          "provider_taxes_by_class": {
+            "hospital": 1.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 5.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        },
+        {
+          "state": "Wyoming",
+          "abbr": "WY",
+          "expansion": false,
+          "provider_tax_rate": 0.0,
+          "provider_taxes_by_class": {
+            "hospital": 0.0,
+            "mco": 0.0,
+            "ambulance": 0.0,
+            "other": 0.0,
+            "nursing_facility": 0.0,
+            "icf_iid": 0.0
+          },
+          "exposed": false,
+          "final_gap_millions": 0.0,
+          "gap_share_of_nonfederal_pct": 0.0,
+          "gap_by_year": {
+            "2028": 0.0,
+            "2029": 0.0,
+            "2030": 0.0,
+            "2031": 0.0,
+            "2032": 0.0
+          },
+          "gap_by_class": {},
+          "note": "Non-expansion state; not subject to reduced cap."
+        }
+      ],
+      "n_exposed": 31,
+      "national_final_gap_billion": 47.72,
+      "top_state": "California",
+      "exempt_classes": [
+        "nursing_facility",
+        "icf_iid"
+      ],
+      "subject_classes": [
+        "hospital",
+        "mco",
+        "ambulance",
+        "other"
+      ],
+      "data_provenance": "seed"
+    },
+    "work_requirements": {
+      "id": "work_requirements",
+      "title": "Work requirements: modeled coverage loss",
+      "rows": [
+        {
+          "state": "California",
+          "abbr": "CA",
+          "subject_adults": 5000000,
+          "already_working_or_exempt": 4600000,
+          "modeled_coverage_loss": 828000,
+          "loss_pct_of_subject": 16.6,
+          "status": "enacted",
+          "effective": "2027-01",
+          "note": "Governor's budget voluntarily extends work requirements and 6-month redeterminations to certain state-funded immigrant enrollees. ~5M expansion enrollees potentially affected; ~63% of adults without dependent children already work 80+ hrs/month or attend school."
+        },
+        {
+          "state": "New York",
+          "abbr": "NY",
+          "subject_adults": 1700000,
+          "already_working_or_exempt": 1564000,
+          "modeled_coverage_loss": 281520,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Illinois",
+          "abbr": "IL",
+          "subject_adults": 1000000,
+          "already_working_or_exempt": 920000,
+          "modeled_coverage_loss": 165600,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Michigan",
+          "abbr": "MI",
+          "subject_adults": 900000,
+          "already_working_or_exempt": 828000,
+          "modeled_coverage_loss": 149040,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Pennsylvania",
+          "abbr": "PA",
+          "subject_adults": 830000,
+          "already_working_or_exempt": 763600,
+          "modeled_coverage_loss": 137448,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Ohio",
+          "abbr": "OH",
+          "subject_adults": 780000,
+          "already_working_or_exempt": 717600,
+          "modeled_coverage_loss": 129168,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Virginia",
+          "abbr": "VA",
+          "subject_adults": 680000,
+          "already_working_or_exempt": 625600,
+          "modeled_coverage_loss": 112608,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Washington",
+          "abbr": "WA",
+          "subject_adults": 650000,
+          "already_working_or_exempt": 598000,
+          "modeled_coverage_loss": 107640,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Arizona",
+          "abbr": "AZ",
+          "subject_adults": 640000,
+          "already_working_or_exempt": 588800,
+          "modeled_coverage_loss": 105984,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "North Carolina",
+          "abbr": "NC",
+          "subject_adults": 640000,
+          "already_working_or_exempt": 588800,
+          "modeled_coverage_loss": 105984,
+          "loss_pct_of_subject": 16.6,
+          "status": "enacted",
+          "effective": "2027-01",
+          "note": "Enacted standards stricter than the federal minimum; April 2026 legislation appropriated $319M to close the FY2026 shortfall."
+        },
+        {
+          "state": "Indiana",
+          "abbr": "IN",
+          "subject_adults": 600000,
+          "already_working_or_exempt": 552000,
+          "modeled_coverage_loss": 99360,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Louisiana",
+          "abbr": "LA",
+          "subject_adults": 580000,
+          "already_working_or_exempt": 533600,
+          "modeled_coverage_loss": 96048,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Colorado",
+          "abbr": "CO",
+          "subject_adults": 560000,
+          "already_working_or_exempt": 515200,
+          "modeled_coverage_loss": 92736,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "New Jersey",
+          "abbr": "NJ",
+          "subject_adults": 550000,
+          "already_working_or_exempt": 506000,
+          "modeled_coverage_loss": 91080,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Kentucky",
+          "abbr": "KY",
+          "subject_adults": 500000,
+          "already_working_or_exempt": 460000,
+          "modeled_coverage_loss": 82800,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Massachusetts",
+          "abbr": "MA",
+          "subject_adults": 450000,
+          "already_working_or_exempt": 414000,
+          "modeled_coverage_loss": 74520,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Oregon",
+          "abbr": "OR",
+          "subject_adults": 450000,
+          "already_working_or_exempt": 414000,
+          "modeled_coverage_loss": 74520,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Maryland",
+          "abbr": "MD",
+          "subject_adults": 430000,
+          "already_working_or_exempt": 395600,
+          "modeled_coverage_loss": 71208,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Minnesota",
+          "abbr": "MN",
+          "subject_adults": 350000,
+          "already_working_or_exempt": 322000,
+          "modeled_coverage_loss": 57960,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Arkansas",
+          "abbr": "AR",
+          "subject_adults": 340000,
+          "already_working_or_exempt": 312800,
+          "modeled_coverage_loss": 56304,
+          "loss_pct_of_subject": 16.6,
+          "status": "enacted",
+          "effective": "2026-07",
+          "note": "Re-implementing after the 2018 attempt that caused ~18,000 coverage losses before being halted by a federal court."
+        },
+        {
+          "state": "Missouri",
+          "abbr": "MO",
+          "subject_adults": 330000,
+          "already_working_or_exempt": 303600,
+          "modeled_coverage_loss": 54648,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Connecticut",
+          "abbr": "CT",
+          "subject_adults": 300000,
+          "already_working_or_exempt": 276000,
+          "modeled_coverage_loss": 49680,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Oklahoma",
+          "abbr": "OK",
+          "subject_adults": 300000,
+          "already_working_or_exempt": 276000,
+          "modeled_coverage_loss": 49680,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "New Mexico",
+          "abbr": "NM",
+          "subject_adults": 290000,
+          "already_working_or_exempt": 266800,
+          "modeled_coverage_loss": 48024,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Nevada",
+          "abbr": "NV",
+          "subject_adults": 280000,
+          "already_working_or_exempt": 257600,
+          "modeled_coverage_loss": 46368,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Iowa",
+          "abbr": "IA",
+          "subject_adults": 220000,
+          "already_working_or_exempt": 202400,
+          "modeled_coverage_loss": 36432,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "West Virginia",
+          "abbr": "WV",
+          "subject_adults": 180000,
+          "already_working_or_exempt": 165600,
+          "modeled_coverage_loss": 29808,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Utah",
+          "abbr": "UT",
+          "subject_adults": 170000,
+          "already_working_or_exempt": 156400,
+          "modeled_coverage_loss": 28152,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Idaho",
+          "abbr": "ID",
+          "subject_adults": 130000,
+          "already_working_or_exempt": 119600,
+          "modeled_coverage_loss": 21528,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Hawaii",
+          "abbr": "HI",
+          "subject_adults": 120000,
+          "already_working_or_exempt": 110400,
+          "modeled_coverage_loss": 19872,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Maine",
+          "abbr": "ME",
+          "subject_adults": 100000,
+          "already_working_or_exempt": 92000,
+          "modeled_coverage_loss": 16560,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Nebraska",
+          "abbr": "NE",
+          "subject_adults": 100000,
+          "already_working_or_exempt": 92000,
+          "modeled_coverage_loss": 16560,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Delaware",
+          "abbr": "DE",
+          "subject_adults": 95000,
+          "already_working_or_exempt": 87400,
+          "modeled_coverage_loss": 15732,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Montana",
+          "abbr": "MT",
+          "subject_adults": 95000,
+          "already_working_or_exempt": 87400,
+          "modeled_coverage_loss": 15732,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Rhode Island",
+          "abbr": "RI",
+          "subject_adults": 90000,
+          "already_working_or_exempt": 82800,
+          "modeled_coverage_loss": 14904,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "District of Columbia",
+          "abbr": "DC",
+          "subject_adults": 90000,
+          "already_working_or_exempt": 82800,
+          "modeled_coverage_loss": 14904,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Alaska",
+          "abbr": "AK",
+          "subject_adults": 62000,
+          "already_working_or_exempt": 57040,
+          "modeled_coverage_loss": 10267,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "New Hampshire",
+          "abbr": "NH",
+          "subject_adults": 62000,
+          "already_working_or_exempt": 57040,
+          "modeled_coverage_loss": 10267,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "Vermont",
+          "abbr": "VT",
+          "subject_adults": 45000,
+          "already_working_or_exempt": 41400,
+          "modeled_coverage_loss": 7452,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "North Dakota",
+          "abbr": "ND",
+          "subject_adults": 35000,
+          "already_working_or_exempt": 32200,
+          "modeled_coverage_loss": 5796,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        },
+        {
+          "state": "South Dakota",
+          "abbr": "SD",
+          "subject_adults": 30000,
+          "already_working_or_exempt": 27600,
+          "modeled_coverage_loss": 4968,
+          "loss_pct_of_subject": 16.6,
+          "status": "pending",
+          "effective": null,
+          "note": null
+        }
+      ],
+      "national_modeled_loss": 3436862,
+      "national_modeled_loss_million": 3.44,
+      "exempt_share": 0.92,
+      "churn_rate": 0.18,
+      "arkansas_anchor": 18000,
+      "top_state": "California",
+      "data_provenance": "seed"
+    }
+  },
+  "narrative": {
+    "provider_tax": {
+      "tell_me": "Thirty-one expansion states operate provider taxes above the new 3.5% ceiling. When the phase-down completes in 2032, those states will need to replace or reduce Medicaid financing to account for the revenue that can no longer be raised above the cap.",
+      "show_me": {
+        "computation": "At-risk revenue = nonfederal share \u00d7 (rate above cap \u00f7 current rate). Applied to each expansion state with a provider tax rate above 3.5%; summed nationally. The ceiling steps down 0.5 percentage points per year from 2028 through 2032.",
+        "figure_description": "Horizontal bar chart of final-year at-risk revenue by state, sorted by magnitude. The top states by gap are large expansion programs with the highest current tax rates. Bar length represents the financing that must be replaced or cut once the phase-down completes.",
+        "sources": [
+          "KFF, 5 Key Facts About Medicaid and Provider Taxes (2025)",
+          "CMS-64 nonfederal share (seed, illustrative scale)",
+          "2025 reconciliation law \u00a744101 (provider tax cap provision)"
+        ]
+      },
+      "so_what": {
+        "implication": "States above the cap face a choice as the ceiling steps down: replace provider-tax revenue with other state funds, reduce provider rates, or reduce covered services. The 2028\u20132032 timeline provides runway but also creates multi-year budget uncertainty for state Medicaid directors.",
+        "stakeholder_balance": {
+          "supporters": "Proponents of the cap argue that provider taxes can be structured as a financing mechanism that draws down federal dollars without a genuine net state fiscal contribution, effectively overstating the federal match. Limiting them improves the integrity of the federal-state cost-sharing arrangement and reflects longstanding GAO and OIG concerns about tax-and-return arrangements.",
+          "critics": "Opponents argue that provider taxes are legitimate state revenue instruments that many states have relied on for decades to fund Medicaid expansions benefiting low-income populations. Reducing the ceiling constrains a major financing tool and may force states to cut coverage or shift costs onto providers and patients in ways that reduce access to care."
+        }
+      },
+      "claims_to_verify": [
+        "Confirm current number of expansion states with non-exempt provider taxes above 3.5% (KFF 2025\u201326 survey).",
+        "Confirm phase-down schedule: start year 2028, step 0.5pp/year, end year 2032 (reconciliation law \u00a744101).",
+        "Nonfederal share figures are seed-scale illustrative values; replace with CMS-64 actuals before publication.",
+        "Confirm which provider-tax types are subject to the cap vs. exempt under the statutory definition."
+      ],
+      "loaded_language_flags": [],
+      "_source": "reviewed_draft"
+    },
+    "work_requirements": {
+      "tell_me": "The modeled coverage loss from work requirements is driven primarily by procedural and administrative factors \u2014 not by adults who fail to work. Using the Arkansas 2018 experience as the calibration anchor, the modeled national loss runs to several million adults across expansion states, the majority of whom are estimated to already work or qualify for an exemption.",
+      "show_me": {
+        "computation": "Subject adults = expansion enrollees in each state. KFF documents approximately 92% of adults subject to requirements already work or qualify for a statutory exemption. Of that eligible pool, 18% are modeled at risk of procedural disenrollment \u2014 calibrated to Arkansas's documented 2018 experience (~18,000 losses). All outputs label the loss 'procedural/administrative.'",
+        "figure_description": "Horizontal bar chart of modeled coverage loss by state, sorted by magnitude. Large expansion states dominate by population size. The chart subtitle notes that the loss mechanism is procedural churn, not non-work.",
+        "sources": [
+          "KFF, A Closer Look at the Work Requirement Provisions (2025)",
+          "CBO national coverage-loss estimate: ~10 million (via KFF reconciliation tracker)",
+          "Arkansas 2018 documented coverage losses (~18,000): KFF/CBPP"
+        ]
+      },
+      "so_what": {
+        "implication": "The principal analytical finding is methodological: the dominant mechanism for coverage loss is procedural churn among adults who are already compliant with the requirement, not refusal to work. This distinction matters directly for how states design verification systems, exemption processes, and outreach \u2014 and for how policymakers interpret enrollment declines after implementation.",
+        "stakeholder_balance": {
+          "supporters": "Proponents argue that community engagement requirements encourage labor force participation and self-sufficiency, that exemptions are broad enough to protect people who cannot work, and that connecting coverage to activity is a reasonable condition for a voluntary public benefit.",
+          "critics": "Researchers and patient advocates argue that the evidence \u2014 from Arkansas (2018) and Georgia's Pathways program \u2014 shows requirements reduce coverage without meaningfully increasing employment, because most affected adults already work or face barriers that administrative reporting requirements do not address."
+        }
+      },
+      "claims_to_verify": [
+        "Confirm KFF's ~92% already-working-or-exempt estimate applies to the expansion-adult population subject to the federal minimum requirement.",
+        "Confirm Arkansas 2018 coverage-loss figure (~18,000) as the calibration anchor; note it was measured before the program was halted.",
+        "CBO's ~10M national coverage-loss estimate reflects the statutory provision, not this state-level model; note comparability caveats.",
+        "18% churn rate is an analyst choice; document the derivation explicitly before publication."
+      ],
+      "loaded_language_flags": [],
+      "_source": "reviewed_draft"
+    }
+  },
+  "charts": {
+    "provider_tax": "outputs/charts/provider_tax_gap.png",
+    "work_requirements": "outputs/charts/work_req_loss.png"
+  },
+  "scaffold": {
+    "hcbs": {
+      "id": "hcbs",
+      "label": "Home & Community-Based Services",
+      "status": "in_progress",
+      "analytical_question": "HCBS is an optional Medicaid benefit with no federal floor. As the reconciliation law squeezes state financing, which states' HCBS programs are most at risk, and what would cuts mean for people who rely on home care to remain in the community?",
+      "method": "A composite 0-10 vulnerability index combining: (1) HCBS share of total Medicaid spending (stakes); (2) reliance on the now-capped provider-tax financing (exposure); (3) projected per-enrollee federal cut; (4) nonfederal share strain. Each component normalized 0-1 before weighting. Tier thresholds: High \u22656.5, Medium \u22654.0, Low <4.0. This is a risk screen, not a forecast of cuts.",
+      "data_source": "CMS-64 T-19 HCBS expenditure data (CMS Medicaid Financial Management Data); CMS HCBS waiver enrollment (1915(c) and 1115); KFF HCBS spending and enrollment tables.",
+      "source_url": "https://www.medicaid.gov/medicaid/home-community-based-services/index.html",
+      "why_in_progress": "The index method is designed and ready. The state-level HCBS spending data from CMS-64 T-19 has not yet been ingested (it requires a manual download of the T-19 expenditure report). Once ingested, this tab will display a ranked table and chart identical in format to the Financing tab."
+    },
+    "managed_care": {
+      "id": "managed_care",
+      "label": "Managed Care",
+      "status": "in_progress",
+      "analytical_question": "More than two-thirds of Medicaid enrollees are in managed care plans. How do the reconciliation law's financing changes interact with managed care contracts, MCO taxes, and capitation rates \u2014 and what does that mean for plan participation and enrollee access?",
+      "method": "Analysis will combine: (1) MCO tax exposure \u2014 states with MCO provider taxes above 3.5% face the same hold-harmless cap as hospital taxes; (2) managed care penetration rate by state; (3) capitation rate adequacy \u2014 whether per-member per-month payments remain viable after the financing change. Source: CMS managed care enrollment report + state contract actuarial filings.",
+      "data_source": "CMS Medicaid Managed Care Enrollment Report (annual, CMS.gov); State Medicaid managed care contract rates (state-level, requires manual collection).",
+      "source_url": "https://www.medicaid.gov/medicaid/managed-care/enrollment/report/index.html",
+      "why_in_progress": "The managed care enrollment data requires a manual download of the CMS annual report. The capitation rate analysis requires state-level contract data that is collected by KFF but not yet available in a consolidated API."
+    },
+    "dual_eligibles": {
+      "id": "dual_eligibles",
+      "label": "Dual Eligibles",
+      "status": "in_progress",
+      "analytical_question": "Dual eligibles \u2014 people enrolled in both Medicare and Medicaid \u2014 are a small share of Medicaid enrollment but account for 40-50% of spending in many states. Where is that concentration sharpest, and what do Medicaid financing cuts mean for people at the Medicare-Medicaid seam?",
+      "method": "Dual enrollment share = duals \u00f7 total enrollment. Spending share estimated by applying a 3\u00d7 per-capita cost multiple (a documented published approximation reflecting duals' LTSS, HCBS, and complex-care utilization). Concentration ratio = spending share \u00f7 enrollment share. States above the 1:1 line in a scatter of enrollment vs. spending share carry disproportionate fiscal exposure when Medicaid is cut.",
+      "data_source": "CMS Medicaid managed care enrollment data (duals component); KFF, 'Medicaid's Role for Dual Eligible Beneficiaries' (2024); MedPAC and KFF for the 3\u00d7 cost multiple.",
+      "source_url": "https://www.kff.org/medicaid/issue-brief/medicaids-role-for-dual-eligible-beneficiaries/",
+      "why_in_progress": "The method and data sources are identified. The dual-eligible enrollment data by state requires ingestion from the CMS managed care enrollment report (same file as the Managed Care tab). Both tabs will be completed together once that file is ingested."
+    }
+  },
+  "data_sources": [
+    {
+      "id": "cms64",
+      "name": "CMS-64 Medicaid Financial Management Data",
+      "tier": "api",
+      "method": "REST API via data.medicaid.gov (no key required)",
+      "url": "https://data.medicaid.gov/dataset/medicaid-financial-management-data",
+      "expected_filename": null,
+      "refresh_frequency": "weekly",
+      "validate_against": null,
+      "description": "Authoritative record of what states actually spent on Medicaid and the federal match they drew down, by state and fiscal year (CMS-64 reports).",
+      "status": "missing",
+      "last_updated": null
+    },
+    {
+      "id": "census_acs",
+      "name": "Census ACS \u2014 Medicaid/Public Coverage Enrollment",
+      "tier": "api",
+      "method": "Census Bureau ACS API (S2704 table, no key required for light use)",
+      "url": "https://api.census.gov/data/2023/acs/acs1/subject",
+      "expected_filename": null,
+      "refresh_frequency": "annual",
+      "validate_against": null,
+      "description": "State-level Medicaid and public-coverage enrollment estimates from the American Community Survey 1-year subject table.",
+      "status": "missing",
+      "last_updated": null
+    },
+    {
+      "id": "kff_provider_taxes",
+      "name": "KFF State Health Facts \u2014 Provider Taxes by Class",
+      "tier": "manual_upload",
+      "method": "Download the CSV export from the KFF State Health Facts provider taxes indicator page. The table includes per-state provider tax rates by provider class (hospital, nursing facility, MCO, etc.).\n",
+      "url": "https://www.kff.org/medicaid/state-indicator/provider-taxes/",
+      "expected_filename": "kff_provider_taxes.csv",
+      "refresh_frequency": "quarterly",
+      "validate_against": "cms64",
+      "description": "Per-state provider tax rates broken out by provider class. The primary source for cap-exposure analysis, because it distinguishes exempt (nursing facility, ICF/IID) from subject (hospital, MCO, ambulance) classes \u2014 a distinction the analysis requires.",
+      "status": "missing",
+      "last_updated": null
+    },
+    {
+      "id": "kff_cbo_state_allocations",
+      "name": "KFF CBO State-Level Allocation Estimates",
+      "tier": "manual_upload",
+      "method": "Download the appendix table (CSV or Excel) from the KFF brief \"Allocating CBO's Estimates of Federal Medicaid Spending Reductions Across the States.\" This gives per-state CBO allocations for the $226B provider-tax provision.\n",
+      "url": "https://www.kff.org/medicaid/issue-brief/allocating-cbos-estimates-of-federal-medicaid-spending-reductions-across-the-states/",
+      "expected_filename": "kff_cbo_state_allocations.csv",
+      "refresh_frequency": "once",
+      "validate_against": null,
+      "description": "KFF's per-state allocation of CBO's $226B provider-tax estimate. Used exclusively for validation: if the workbench exposure ranking agrees with the KFF/CBO allocation ranking, that is a cross-check pass.",
+      "status": "missing",
+      "last_updated": null
+    },
+    {
+      "id": "cms_managed_care_enrollment",
+      "name": "CMS Medicaid Managed Care Enrollment Report",
+      "tier": "manual_upload",
+      "method": "Download the state-level enrollment Excel table from the CMS Medicaid managed care enrollment report (published annually by CMS).\n",
+      "url": "https://www.medicaid.gov/medicaid/managed-care/enrollment/report/index.html",
+      "expected_filename": "cms_managed_care_enrollment.xlsx",
+      "refresh_frequency": "annual",
+      "validate_against": null,
+      "description": "State-level Medicaid managed care enrollment by plan type. Needed for the Managed Care tab analysis (in progress).",
+      "status": "missing",
+      "last_updated": null
+    }
+  ],
+  "validation": {
+    "provider_tax_ranking": {
+      "check": "provider_tax_exposure_ranking",
+      "description": "Compares this workbench's state exposure ranking to KFF's published per-state CBO allocation of the $226B provider-tax estimate.",
+      "source": "KFF, 'Allocating CBO's Estimates of Federal Medicaid Spending Reductions Across the States' (2025\u20132026). URL: https://www.kff.org/medicaid/issue-brief/allocating-cbos-estimates-of-federal-medicaid-spending-reductions-across-the-states/",
+      "workbench_top_exposed": [
+        "CA",
+        "NY",
+        "PA",
+        "MA",
+        "IL",
+        "OH",
+        "NC",
+        "MD",
+        "NJ",
+        "VA"
+      ],
+      "kff_top_states": null,
+      "as_of": "2026-06-08",
+      "result": "data_unavailable",
+      "notes": "KFF CBO state allocation file not yet uploaded. Run `mfw refresh` and follow the prompt to download kff_cbo_state_allocations.csv into data/inbox/."
+    }
+  }
+}
