@@ -1416,8 +1416,8 @@
       "national_final_gap_billion": 47.72,
       "top_state": "California",
       "exempt_classes": [
-        "nursing_facility",
-        "icf_iid"
+        "icf_iid",
+        "nursing_facility"
       ],
       "subject_classes": [
         "hospital",
@@ -1894,58 +1894,16 @@
   },
   "narrative": {
     "provider_tax": {
-      "tell_me": "Thirty-one expansion states operate provider taxes above the new 3.5% ceiling. When the phase-down completes in 2032, those states will need to replace or reduce Medicaid financing to account for the revenue that can no longer be raised above the cap.",
-      "show_me": {
-        "computation": "At-risk revenue = nonfederal share \u00d7 (rate above cap \u00f7 current rate). Applied to each expansion state with a provider tax rate above 3.5%; summed nationally. The ceiling steps down 0.5 percentage points per year from 2028 through 2032.",
-        "figure_description": "Horizontal bar chart of final-year at-risk revenue by state, sorted by magnitude. The top states by gap are large expansion programs with the highest current tax rates. Bar length represents the financing that must be replaced or cut once the phase-down completes.",
-        "sources": [
-          "KFF, 5 Key Facts About Medicaid and Provider Taxes (2025)",
-          "CMS-64 nonfederal share (seed, illustrative scale)",
-          "2025 reconciliation law \u00a744101 (provider tax cap provision)"
-        ]
-      },
-      "so_what": {
-        "implication": "States above the cap face a choice as the ceiling steps down: replace provider-tax revenue with other state funds, reduce provider rates, or reduce covered services. The 2028\u20132032 timeline provides runway but also creates multi-year budget uncertainty for state Medicaid directors.",
-        "stakeholder_balance": {
-          "supporters": "Proponents of the cap argue that provider taxes can be structured as a financing mechanism that draws down federal dollars without a genuine net state fiscal contribution, effectively overstating the federal match. Limiting them improves the integrity of the federal-state cost-sharing arrangement and reflects longstanding GAO and OIG concerns about tax-and-return arrangements.",
-          "critics": "Opponents argue that provider taxes are legitimate state revenue instruments that many states have relied on for decades to fund Medicaid expansions benefiting low-income populations. Reducing the ceiling constrains a major financing tool and may force states to cut coverage or shift costs onto providers and patients in ways that reduce access to care."
-        }
-      },
-      "claims_to_verify": [
-        "Confirm current number of expansion states with non-exempt provider taxes above 3.5% (KFF 2025\u201326 survey).",
-        "Confirm phase-down schedule: start year 2028, step 0.5pp/year, end year 2032 (reconciliation law \u00a744101).",
-        "Nonfederal share figures are seed-scale illustrative values; replace with CMS-64 actuals before publication.",
-        "Confirm which provider-tax types are subject to the cap vs. exempt under the statutory definition."
-      ],
-      "loaded_language_flags": [],
-      "_source": "reviewed_draft"
+      "error": "LLM returned non-JSON",
+      "raw": "```json\n{\n  \"tell_me\": \"A proposed step-down schedule for the Medicaid provider tax cap would reduce the allowable tax rate from 5.5% in 2028 to 3.5% by 2032. Thirty-one states have provider tax arrangements that exceed one or more future cap thresholds, creating a cumulative nonfederal financing gap of $47.72 billion by 2032. Hospital taxes are the sole affected class driving the quantified gap in the top five exposed states; ICFs/IID and nursing facilities are exempt from the cap reductions under the current proposal.\",\n\n  \"show_me\": {\n    \"computation\": \"The schedule reduces the permissible provider tax rate by 0.5 percentage points per year over five years (5.5% \u2192 5.0% \u2192 4.5% \u2192 4.0% \u2192 3.5%). For each exposed state, the annual gap is the dollar amount by which existing provider tax revenue would exceed what could be collected under the applicable year's cap. Annual gaps are cumulative to a final-year figure; the national total of all states' 2032 final-gap values sums to $47.72 billion. Top-five state final gaps (in millions): California $10,684.9, New York $6,379.7, Pennsylvania $2,582.3, Massachusetts $2,187.3, Illinois $2,126.6. California's gap begins in 2029 (current rate equals the 2028 cap of 5.5%); New York, Pennsylvania, Massachusetts, and Illinois\u2014each at 5.9%\u2014begin accruing gaps in 2028.\",\n    \"figure_description\": \"A two-panel display is recommended. Panel 1: A stacked area or bar chart showing the national cumulative gap by year (2028\u20132032), with states or state groups as segments. Panel 2: A state-level bar chart of the 2032 final gap (millions) for the top five exposed states, with California highlighted as the largest single contributor ($10,684.9M, representing 22.4% of the $47.72B national total). An annotation should note that all quantified gap in these five states falls entirely within the hospital provider-tax class.\",\n    \"sources\": [\n      \"Computed results: provider_tax analysis (data_provenance: seed)\",\n      \"Top-5 state detail records (data_provenance: seed)\"\n    ]\n  },\n\n  \"so_what\": {\n    \"implication\": \"States with hospital provider tax rates currently above 3.5%\u201431 in total\u2014would face an aggregate nonfederal financing shortfall of $47.72 billion by 2032 if existing program structures and spending levels remain otherwise unchanged. The gap emerges because provider taxes partly offset the nonfederal share of Medicaid costs; as the permissible rate falls, states must either identify replacement revenue, reduce Medicaid expenditures, or draw on other funds. The two largest exposed states, California and New York, together account for $17.06 billion (approximately 35.8%) of the national gap. Because ICF/IID and nursing facility taxes are exempt, long-term care financing through those mechanisms would not be directly affected by the cap schedule.\",\n    \"stakeholder_balance\": {\n      \"supporters\": \"Proponents of the cap step-down argue that provider tax arrangements\u2014particularly those above 5%\u2014can function as a federal financing mechanism in which states cycle funds through providers and back to themselves, amplifying federal matching dollars beyond the intent of the program. Lowering the cap, in this view, produces a more accurate alignment between state fiscal effort and federal matching payments and reduces what some characterize as a structural imbalance in how Medicaid is jointly financed.\",\n      \"critics\": \"Opponents contend that provider taxes are a long-established, federally permitted tool that states rely on to finance coverage for low-income residents, and that the step-down schedule would impose a multi-billion-dollar structural shortfall on state budgets without a corresponding reduction in coverage obligations. They argue the burden falls disproportionately on high-enrollment, high-cost states and could pressure states to reduce provider payment rates or beneficiary access rather than find replacement general-fund revenue.\"\n    }\n  },\n\n  \"claims_to_verify\": [\n    \"Confirm that the cap schedule figures (5.5% in 2028 declining by 0.5 pp annually to 3.5% in 2032) match the legislative or regulatory text on which this analysis",
+      "analysis_id": "provider_tax",
+      "_source": "llm_parse_error"
     },
     "work_requirements": {
-      "tell_me": "The modeled coverage loss from work requirements is driven primarily by procedural and administrative factors \u2014 not by adults who fail to work. Using the Arkansas 2018 experience as the calibration anchor, the modeled national loss runs to several million adults across expansion states, the majority of whom are estimated to already work or qualify for an exemption.",
-      "show_me": {
-        "computation": "Subject adults = expansion enrollees in each state. KFF documents approximately 92% of adults subject to requirements already work or qualify for a statutory exemption. Of that eligible pool, 18% are modeled at risk of procedural disenrollment \u2014 calibrated to Arkansas's documented 2018 experience (~18,000 losses). All outputs label the loss 'procedural/administrative.'",
-        "figure_description": "Horizontal bar chart of modeled coverage loss by state, sorted by magnitude. Large expansion states dominate by population size. The chart subtitle notes that the loss mechanism is procedural churn, not non-work.",
-        "sources": [
-          "KFF, A Closer Look at the Work Requirement Provisions (2025)",
-          "CBO national coverage-loss estimate: ~10 million (via KFF reconciliation tracker)",
-          "Arkansas 2018 documented coverage losses (~18,000): KFF/CBPP"
-        ]
-      },
-      "so_what": {
-        "implication": "The principal analytical finding is methodological: the dominant mechanism for coverage loss is procedural churn among adults who are already compliant with the requirement, not refusal to work. This distinction matters directly for how states design verification systems, exemption processes, and outreach \u2014 and for how policymakers interpret enrollment declines after implementation.",
-        "stakeholder_balance": {
-          "supporters": "Proponents argue that community engagement requirements encourage labor force participation and self-sufficiency, that exemptions are broad enough to protect people who cannot work, and that connecting coverage to activity is a reasonable condition for a voluntary public benefit.",
-          "critics": "Researchers and patient advocates argue that the evidence \u2014 from Arkansas (2018) and Georgia's Pathways program \u2014 shows requirements reduce coverage without meaningfully increasing employment, because most affected adults already work or face barriers that administrative reporting requirements do not address."
-        }
-      },
-      "claims_to_verify": [
-        "Confirm KFF's ~92% already-working-or-exempt estimate applies to the expansion-adult population subject to the federal minimum requirement.",
-        "Confirm Arkansas 2018 coverage-loss figure (~18,000) as the calibration anchor; note it was measured before the program was halted.",
-        "CBO's ~10M national coverage-loss estimate reflects the statutory provision, not this state-level model; note comparability caveats.",
-        "18% churn rate is an analyst choice; document the derivation explicitly before publication."
-      ],
-      "loaded_language_flags": [],
-      "_source": "reviewed_draft"
+      "error": "LLM returned non-JSON",
+      "raw": "```json\n{\n  \"tell_me\": \"A model of Medicaid work requirement policies estimates a national coverage loss of approximately 3.44 million enrollees. The modeled losses are concentrated in large-enrollment states, with California accounting for the largest single-state figure at 828,000 enrollees. Across all states analyzed, 92% of subject adults are modeled as already working or exempt, meaning modeled losses are attributed primarily to administrative barriers\u2014such as documentation and reporting requirements\u2014rather than to enrollees who do not meet the activity standard.\",\n  \"show_me\": {\n    \"computation\": \"National modeled coverage loss: 3,436,862 (reported as 3.44 million). Exempt/already-working share: 92% of subject adults across states. Churn rate applied: 18% (the share of non-exempt, non-working adults modeled as losing coverage due to administrative burden or documentation failure, consistent with the Arkansas empirical anchor of ~18,000 disenrollments). State-level modeled coverage loss is calculated as: subject_adults \u00d7 (1 \u2212 exempt_share) \u00d7 churn_rate. Example for California: 5,000,000 \u00d7 0.08 \u00d7 0.18 = 72,000 \u2014 NOTE: this arithmetic yields 72,000, not the reported 828,000; the per-state loss_pct_of_subject is uniformly 16.6% across all five states, and 5,000,000 \u00d7 0.166 = 830,000 \u2248 828,000. The 16.6% figure appears to be the operative loss rate applied to subject_adults, not the product of (1\u22120.92)\u00d70.18 = 1.44%. Reviewers should confirm the exact formula used to derive state-level losses and how the 16.6% rate was constructed. Top-5 states by modeled loss: CA 828,000; NY 281,520; IL 165,600; MI 149,040; PA 137,448. Combined top-5 loss: 1,561,608.\",\n    \"figure_description\": \"A horizontal bar chart showing modeled coverage loss by state for the top 5 states (CA, NY, IL, MI, PA), with a separate reference line or annotation for the national total of 3.44 million. A second panel or annotation could display the 92% exempt/already-working share alongside the 8% subject-to-loss population, and note the Arkansas empirical anchor of 18,000 disenrollments used to calibrate the model.\",\n    \"sources\": [\n      \"Computed results provided by analyst (data_provenance: seed)\",\n      \"Arkansas work requirement implementation (empirical anchor: ~18,000 disenrollments)\",\n      \"California Governor's budget proposal (state note re: immigrant enrollees and 6-month redeterminations)\"\n    ]\n  },\n  \"so_what\": {\n    \"implication\": \"If enacted broadly, work requirement policies are modeled to result in coverage losses affecting approximately 3.44 million Medicaid enrollees nationally. Because 92% of subject adults are already working or categorically exempt, the modeled losses fall predominantly among individuals who meet or would meet the activity standard but are projected to lose coverage due to documentation or reporting obstacles. California, with the largest Medicaid expansion enrollment, accounts for roughly 24% of the national modeled loss total. Four of the top five states (NY, IL, MI, PA) have not yet enacted such requirements, meaning the bulk of projected losses outside California would occur only if pending legislation advances.\",\n    \"stakeholder_balance\": {\n      \"supporters\": \"Proponents of work requirements argue that conditioning Medicaid enrollment on documented work, job training, or community service aligns the program with its original purpose of serving populations with limited ability to support themselves, encourages labor force participation among able-bodied adults, and may reduce long-term program costs. They may also contend that individuals who do not complete documentation requirements and lose coverage were not complying with program rules, and that administrative processes can be designed to minimize burden for those who genuinely qualify.\",\n      \"critics\": \"Opponents argue that the modeled losses fall largely on individuals who already meet the activity standard but cannot navigate documentation and reporting systems\u2014an outcome illustrated by the Arkansas experience used as this model's empirical anchor, where coverage losses occurred predominantly among working enrollees. They contend that work requirements add administrative complexity without meaningfully increasing employment, and that coverage losses produce downstream health and financial consequences for affected individuals and safety-",
+      "analysis_id": "work_requirements",
+      "_source": "llm_parse_error"
     }
   },
   "charts": {
