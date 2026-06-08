@@ -6,9 +6,8 @@
 # editing parameters, not by rewriting code.
 #
 # Every value carries a `source` so a reader can trace it. CBO scores and the
-# statutory schedule are from KFF's "Health Provisions in the 2025 Federal
-# Budget Reconciliation Law" tracker and "5 Key Facts About Medicaid and
-# Provider Taxes" (2025).
+# statutory schedule are from KFF's "5 Key Facts About Medicaid and Provider
+# Taxes" (Dec 2025, updated Feb 2026) and the KFF reconciliation law tracker.
 # =============================================================================
 
 meta:
@@ -17,15 +16,42 @@ meta:
   last_reviewed: "2026-06"
 
 provider_tax:
-  # Expansion-state ceiling phases down from 6.0% to 3.5% of net patient revenue.
+  # ── Statutory schedule ────────────────────────────────────────────────────
+  # The hold-harmless limit for EXISTING non-exempt taxes in expansion states
+  # phases down from 6.0% to 3.5% of net patient revenue.
   current_cap_pct: 6.0
   target_cap_pct: 3.5
-  phasedown_start_year: 2028
-  phasedown_end_year: 2032
+  phasedown_start_year: 2028       # FFY2028 is the first year the ceiling steps down
+  phasedown_end_year: 2032         # reaches 3.5% in FFY2032 (0.5pp/yr × 5 steps)
   phasedown_step_pct_per_year: 0.5
-  new_tax_freeze: true            # immediate freeze on new/increased taxes
-  freeze_effective: "2025-07"
-  source: "KFF, 5 Key Facts About Medicaid and Provider Taxes (2025)"
+  new_tax_holdharmonless_limit_pct: 0  # new/increased taxes face a 0% hold-harmless immediately
+  freeze_effective: "2025-07"          # new/increased taxes frozen as of July 2025
+
+  # ── Exempt vs. subject provider classes ──────────────────────────────────
+  # Nursing facility and ICF/IID taxes are STATUTORILY EXEMPT from the
+  # phase-down. Only the classes listed under subject_classes face the new cap.
+  exempt_classes:
+    - nursing_facility
+    - icf_iid
+  subject_classes:
+    - hospital
+    - mco
+    - ambulance
+    - other
+
+  # ── Key empirical anchors (KFF, Dec 2025 / Feb 2026) ──────────────────────
+  n_expansion_states_noneexempt_above_cap: 31   # expansion states with any non-exempt tax > 3.5%
+  n_expansion_states_hospital_above_cap: 28     # of those 31, states with hospital tax > 3.5%
+  provider_tax_median_nonfed_share_pct: 18      # provider taxes fund a median 18% of non-fed share
+
+  source: "KFF, 5 Key Facts About Medicaid and Provider Taxes (Dec 2025 / updated Feb 2026)"
+
+federal_state_split:
+  # FFY2024 aggregate federal/state cost-sharing across all Medicaid.
+  federal_pct: 65
+  state_pct: 35
+  note: "Aggregate weighted average; individual states vary widely with FMAP."
+  source: "CMS, FMAP data FFY2024"
 
 work_requirements:
   hours_per_month: 80
@@ -41,11 +67,19 @@ work_requirements:
   source: "KFF, A Closer Look at the Work Requirement Provisions (2025)"
 
 cbo_scores:
+  # ── Total Medicaid reduction ───────────────────────────────────────────────
   total_medicaid_reduction_10yr_billion: 911
   work_requirements_reduction_10yr_billion: 326
-  sdp_provision_reduction_10yr_billion: 149
+  sdp_provision_reduction_10yr_billion: 149       # other provisions (SDP/cost-sharing)
   coverage_loss_millions: 10
-  source: "CBO via KFF reconciliation law tracker (2025)"
+
+  # ── Provider-tax provisions: $226B total, broken out by sub-provision ─────
+  provider_tax_total_10yr_billion: 226
+  provider_tax_new_increased_10yr_billion: 89      # effective prohibition on new/increased taxes
+  provider_tax_reduced_holdharmonless_10yr_billion: 102   # reduced hold-harmless limit (expansion states)
+  provider_tax_uniformity_waiver_10yr_billion: 35  # uniformity-waiver revisions
+
+  source: "CBO via KFF reconciliation law tracker (2025); provider-tax decomposition from KFF 5 Key Facts"
 
 hcbs_risk_weights:
   # Weights for the 0-10 HCBS vulnerability index (must sum to 1.0).

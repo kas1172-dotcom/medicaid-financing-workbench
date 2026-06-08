@@ -4,6 +4,9 @@ Panel builder — assembles one analysis-ready state-level frame.
 Tries live sources first; on any failure, falls back to seed and tags every
 record with data_provenance so downstream outputs can disclose it. This is the
 single join point: every analysis reads from the panel, never from raw sources.
+
+The panel includes per-class provider tax rates (provider_taxes_by_class) so the
+provider-tax analysis can correctly apply cap logic only to non-exempt classes.
 """
 
 from __future__ import annotations
@@ -33,7 +36,6 @@ def build_panel(prefer_live: bool = False) -> pd.DataFrame:
 
     records = seed.load_seed_records()
     df = pd.DataFrame(records)
-    # Provenance reflects the best source actually obtained this run.
     df["data_provenance"] = provenance if prefer_live else "seed"
 
     # Attach documented work-requirement status; expansion states default to pending.

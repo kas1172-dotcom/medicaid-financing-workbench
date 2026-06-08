@@ -1,0 +1,108 @@
+# =============================================================================
+# Data-source manifest for the Medicaid Financing Workbench
+# =============================================================================
+# One entry per source. The `mfw refresh` command reads this file to decide
+# what to fetch automatically (tier: api), what to look for in data/inbox/
+# (tier: manual_upload or tier: pdf), and how to prompt when a file is missing.
+#
+# Field definitions:
+#   id                — machine key, used as filename prefix in data/current/
+#   name              — human-readable label shown in the UI
+#   tier              — api | manual_upload | pdf
+#   method            — plain-language description of how the data is obtained
+#   url               — where a human goes to get it (used in prompts + UI)
+#   expected_filename — exact filename to save in data/inbox/ (null for api)
+#   refresh_frequency — weekly | monthly | quarterly | annual | once
+#   validate_against  — id of a second source used to cross-check (null if none)
+#   uses              — list of analysis fields this source populates
+#   description       — one-sentence plain-language description
+# =============================================================================
+
+sources:
+  - id: cms64
+    name: "CMS-64 Medicaid Financial Management Data"
+    tier: api
+    method: "REST API via data.medicaid.gov (no key required)"
+    url: "https://data.medicaid.gov/dataset/medicaid-financial-management-data"
+    expected_filename: null
+    refresh_frequency: weekly
+    validate_against: null
+    uses:
+      - total_medicaid_fed_spend
+      - nonfederal_share
+      - total_medicaid_spend
+    description: >
+      Authoritative record of what states actually spent on Medicaid and the
+      federal match they drew down, by state and fiscal year (CMS-64 reports).
+
+  - id: census_acs
+    name: "Census ACS — Medicaid/Public Coverage Enrollment"
+    tier: api
+    method: "Census Bureau ACS API (S2704 table, no key required for light use)"
+    url: "https://api.census.gov/data/2023/acs/acs1/subject"
+    expected_filename: null
+    refresh_frequency: annual
+    validate_against: null
+    uses:
+      - enrollment
+      - expansion_adults
+    description: >
+      State-level Medicaid and public-coverage enrollment estimates from the
+      American Community Survey 1-year subject table.
+
+  - id: kff_provider_taxes
+    name: "KFF State Health Facts — Provider Taxes by Class"
+    tier: manual_upload
+    method: >
+      Download the CSV export from the KFF State Health Facts provider taxes
+      indicator page. The table includes per-state provider tax rates by
+      provider class (hospital, nursing facility, MCO, etc.).
+    url: "https://www.kff.org/medicaid/state-indicator/provider-taxes/"
+    expected_filename: "kff_provider_taxes.csv"
+    refresh_frequency: quarterly
+    validate_against: cms64
+    uses:
+      - provider_taxes_by_class
+      - provider_tax_rate
+      - exposure_ranking
+    description: >
+      Per-state provider tax rates broken out by provider class. The primary
+      source for cap-exposure analysis, because it distinguishes exempt
+      (nursing facility, ICF/IID) from subject (hospital, MCO, ambulance)
+      classes — a distinction the analysis requires.
+
+  - id: kff_cbo_state_allocations
+    name: "KFF CBO State-Level Allocation Estimates"
+    tier: manual_upload
+    method: >
+      Download the appendix table (CSV or Excel) from the KFF brief
+      "Allocating CBO's Estimates of Federal Medicaid Spending Reductions
+      Across the States." This gives per-state CBO allocations for the
+      $226B provider-tax provision.
+    url: "https://www.kff.org/medicaid/issue-brief/allocating-cbos-estimates-of-federal-medicaid-spending-reductions-across-the-states/"
+    expected_filename: "kff_cbo_state_allocations.csv"
+    refresh_frequency: once
+    validate_against: null
+    uses:
+      - validation_provider_tax_ranking
+    description: >
+      KFF's per-state allocation of CBO's $226B provider-tax estimate. Used
+      exclusively for validation: if the workbench exposure ranking agrees
+      with the KFF/CBO allocation ranking, that is a cross-check pass.
+
+  - id: cms_managed_care_enrollment
+    name: "CMS Medicaid Managed Care Enrollment Report"
+    tier: manual_upload
+    method: >
+      Download the state-level enrollment Excel table from the CMS Medicaid
+      managed care enrollment report (published annually by CMS).
+    url: "https://www.medicaid.gov/medicaid/managed-care/enrollment/report/index.html"
+    expected_filename: "cms_managed_care_enrollment.xlsx"
+    refresh_frequency: annual
+    validate_against: null
+    uses:
+      - managed_care_penetration
+      - mco_enrollment
+    description: >
+      State-level Medicaid managed care enrollment by plan type. Needed for
+      the Managed Care tab analysis (in progress).

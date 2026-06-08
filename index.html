@@ -1,4 +1,866 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=dashboard/">
-<link rel="canonical" href="dashboard/">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medicaid Financing Workbench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0B1829;
+  --teal: #0D8F82;
+  --cream: #F4F2ED;
+  --border: #d5d0c8;
+  --high: #c0392b;
+  --medium: #d35400;
+  --low: #27ae60;
+  --text: #1a1a1a;
+  --muted: #666;
+  --in-progress: #7f5f2a;
+  --in-progress-bg: #fdf6e3;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); font-size: 14px; line-height: 1.55; }
+h1, h2, h3 { font-family: 'IBM Plex Serif', serif; }
+
+/* ── Header ─────────────────────────────────────────────────────── */
+header {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--navy); color: #fff;
+  padding: 0 32px;
+  display: flex; align-items: center; gap: 24px;
+  height: 52px; border-bottom: 2px solid var(--teal);
+}
+header h1 { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; white-space: nowrap; }
+.header-meta { font-size: 12px; color: #aab; margin-left: auto; white-space: nowrap; }
+.provenance-badge {
+  font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 3px;
+  background: #f39c12; color: #000; white-space: nowrap;
+}
+.provenance-badge.live { background: var(--teal); color: #fff; }
+
+/* ── Top-level tab bar ───────────────────────────────────────────── */
+.tab-bar {
+  position: sticky; top: 52px; z-index: 100;
+  background: #fff; border-bottom: 2px solid var(--border);
+  display: flex; gap: 0; overflow-x: auto;
+  padding: 0 24px;
+}
+.tab-btn {
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.3px; color: var(--muted);
+  padding: 14px 18px; border: none; background: none;
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 3px solid transparent; margin-bottom: -2px;
+  transition: color 0.15s;
+}
+.tab-btn:hover { color: var(--teal); }
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--teal); }
+.tab-badge {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  padding: 1px 5px; border-radius: 10px; margin-left: 5px;
+  background: #e8e0d0; color: var(--in-progress);
+}
+
+/* ── Provenance banner ───────────────────────────────────────────── */
+.prov-banner {
+  background: #fffbe6; border-left: 4px solid #f39c12;
+  padding: 10px 32px; font-size: 12px; color: #7a5c00;
+  display: none;
+}
+.prov-banner.visible { display: block; }
+
+/* ── Layout ──────────────────────────────────────────────────────── */
+main { max-width: 1100px; margin: 0 auto; padding: 28px 24px 60px; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Section headers ─────────────────────────────────────────────── */
+.section-head {
+  border-left: 4px solid var(--teal); padding-left: 12px;
+  margin: 36px 0 16px;
+}
+.section-head h2 { font-size: 20px; color: var(--navy); margin-bottom: 2px; }
+.section-head p { font-size: 12px; color: var(--muted); font-style: italic; }
+
+/* ── Narrative block (tell/show/so-what) ─────────────────────────── */
+.narrative {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  margin-bottom: 20px; overflow: hidden;
+}
+.narrative-tabs { display: flex; border-bottom: 1px solid var(--border); }
+.ntab {
+  padding: 8px 18px; font-size: 12px; font-weight: 600; color: var(--muted);
+  cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  background: none; border-top: none; border-left: none; border-right: none;
+}
+.ntab.active { color: var(--teal); border-bottom-color: var(--teal); }
+.npanel { padding: 16px 20px; display: none; }
+.npanel.active { display: block; }
+.npanel p { margin-bottom: 10px; }
+.stakeholder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.stakeholder-box { background: var(--cream); border-radius: 3px; padding: 12px 14px; }
+.stakeholder-box strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px; }
+.verify-list { list-style: none; padding: 0; }
+.verify-list li { padding: 5px 0; padding-left: 18px; position: relative; font-size: 13px; border-bottom: 1px solid var(--border); }
+.verify-list li:last-child { border-bottom: none; }
+.verify-list li::before { content: "☐"; position: absolute; left: 0; color: var(--teal); }
+.sources { font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+/* ── Table ───────────────────────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: var(--navy); color: #fff; padding: 8px 10px; text-align: left; font-weight: 600; font-size: 11px; letter-spacing: 0.4px; text-transform: uppercase; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #1a2d44; }
+td { padding: 7px 10px; border-bottom: 1px solid var(--border); }
+tr:nth-child(even) td { background: rgba(0,0,0,0.018); }
+tr:hover td { background: rgba(13,143,130,0.06); }
+.tier-badge { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+.tier-High { background: #fde8e8; color: var(--high); }
+.tier-Medium { background: #fef0e0; color: var(--medium); }
+.tier-Low { background: #e6f5ec; color: var(--low); }
+.above-cap { color: var(--high); font-weight: 600; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; }
+
+/* ── Chart ───────────────────────────────────────────────────────── */
+.chart-img { max-width: 100%; border: 1px solid var(--border); border-radius: 4px; display: block; margin-top: 12px; }
+.chart-missing { padding: 40px; text-align: center; color: var(--muted); font-style: italic; background: #fff; border: 1px solid var(--border); border-radius: 4px; }
+
+/* ── Summary bar ─────────────────────────────────────────────────── */
+.summary-bar { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.stat-chip { background: #fff; border: 1px solid var(--border); border-radius: 4px; padding: 10px 16px; }
+.stat-chip .val { font-family: 'IBM Plex Serif', serif; font-size: 22px; color: var(--navy); display: block; }
+.stat-chip .lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+
+/* ── In-progress scaffold ────────────────────────────────────────── */
+.in-progress-banner {
+  background: var(--in-progress-bg); border: 1px solid #d4a855;
+  border-radius: 4px; padding: 16px 20px; margin: 0 0 24px;
+}
+.in-progress-banner h3 { font-size: 15px; color: var(--in-progress); margin-bottom: 6px; }
+.in-progress-banner p { font-size: 13px; color: var(--in-progress); margin: 0; }
+.method-box {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 16px 20px; margin-bottom: 16px;
+}
+.method-box h3 { font-size: 14px; color: var(--navy); margin-bottom: 8px; font-family: 'IBM Plex Serif', serif; }
+.method-box p { font-size: 13px; color: var(--text); margin-bottom: 8px; }
+.method-box .source-link { font-size: 12px; color: var(--teal); }
+.method-box .source-link a { color: var(--teal); }
+
+/* ── Data & Methods ──────────────────────────────────────────────── */
+.source-grid { display: grid; gap: 12px; }
+.source-card {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  padding: 16px 18px;
+}
+.source-card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.source-card-header h3 { font-size: 14px; color: var(--navy); font-family: 'IBM Plex Serif', serif; flex: 1; }
+.tier-pill {
+  font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+  white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.tier-api { background: #dff5f0; color: #0a6b61; }
+.tier-manual_upload { background: #e8e0fb; color: #5a3e99; }
+.tier-pdf { background: #fff0e0; color: #8a4a00; }
+.status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+.status-current { background: var(--low); }
+.status-stale { background: #f39c12; }
+.status-missing { background: var(--high); }
+.status-unavailable { background: var(--muted); }
+.source-meta { font-size: 12px; color: var(--muted); }
+.source-meta a { color: var(--teal); }
+.validation-result {
+  margin-top: 8px; padding: 6px 10px; border-radius: 3px; font-size: 12px;
+}
+.val-pass { background: #e6f5ec; color: #1e7a3e; }
+.val-flag { background: #fef0e0; color: #8a4a00; }
+.val-data_unavailable { background: #f4f2ed; color: var(--muted); }
+.val-error { background: #fde8e8; color: var(--high); }
+
+/* ── How It Works ────────────────────────────────────────────────── */
+.how-it-works { max-width: 760px; }
+.how-it-works h2 { font-size: 22px; color: var(--navy); margin: 28px 0 10px; }
+.how-it-works h3 { font-size: 16px; color: var(--navy); margin: 20px 0 8px; }
+.how-it-works p { font-size: 14px; color: var(--text); margin-bottom: 12px; line-height: 1.7; }
+.how-it-works ul { margin: 8px 0 12px 20px; }
+.how-it-works li { font-size: 14px; color: var(--text); margin-bottom: 6px; line-height: 1.6; }
+.how-it-works .callout {
+  background: #fff; border-left: 4px solid var(--teal);
+  padding: 12px 16px; margin: 16px 0; border-radius: 0 4px 4px 0;
+}
+.how-it-works .callout p { margin: 0; font-style: italic; color: var(--navy); }
+.how-it-works a { color: var(--teal); }
+
+/* ── Work requirements downstream ───────────────────────────────── */
+.downstream-section {
+  margin-top: 40px; border-top: 1px solid var(--border); padding-top: 24px;
+}
+.downstream-label {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  background: #f0e8ff; color: #5a3e99;
+  padding: 2px 8px; border-radius: 3px; margin-bottom: 10px;
+}
+
+/* ── Loading / error ─────────────────────────────────────────────── */
+#loading { text-align: center; padding: 80px; color: var(--muted); }
+#error-msg { display: none; background: #fde8e8; border: 1px solid #c0392b; border-radius: 4px; padding: 16px; margin: 24px 0; }
+
+@media (max-width: 680px) {
+  .stakeholder-grid { grid-template-columns: 1fr; }
+  header { padding: 0 16px; }
+  main { padding: 16px 12px 48px; }
+  .tab-bar { padding: 0 12px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Medicaid Financing Workbench</h1>
+  <span id="prov-badge" class="provenance-badge">SEED DATA</span>
+  <span class="header-meta" id="header-meta">Loading…</span>
+</header>
+
+<nav class="tab-bar" id="tab-bar" role="tablist" aria-label="Analysis tabs">
+  <button class="tab-btn active" data-tab="financing" role="tab">Financing</button>
+  <button class="tab-btn" data-tab="hcbs" role="tab">HCBS <span class="tab-badge">In progress</span></button>
+  <button class="tab-btn" data-tab="managed_care" role="tab">Managed Care <span class="tab-badge">In progress</span></button>
+  <button class="tab-btn" data-tab="dual_eligibles" role="tab">Dual Eligibles <span class="tab-badge">In progress</span></button>
+  <button class="tab-btn" data-tab="data_methods" role="tab">Data &amp; Methods</button>
+  <button class="tab-btn" data-tab="how_it_works" role="tab">How It Works</button>
+</nav>
+
+<div id="prov-banner" class="prov-banner">
+  <strong>Data note:</strong> <span id="prov-note"></span>
+</div>
+
+<main>
+  <div id="loading">Loading dashboard data…</div>
+  <div id="error-msg"></div>
+  <div id="content" style="display:none">
+
+    <div class="summary-bar" id="summary-bar"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAB 1: FINANCING
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="tab-panel active" id="tab-financing" role="tabpanel">
+
+      <div class="section-head">
+        <h2>Provider Tax Cap Exposure</h2>
+        <p>Expansion states with non-exempt provider taxes above the new 3.5% ceiling — at-risk revenue as the cap phases down FFY2028–2032. Nursing facility and ICF/IID taxes are exempt from the phase-down; only hospital, MCO, ambulance, and "other" classes are subject.</p>
+      </div>
+
+      <div id="narrative-provider_tax" class="narrative"></div>
+      <div class="table-wrap"><table id="tbl-provider_tax"><thead></thead><tbody></tbody></table></div>
+
+      <!-- Work requirements: downstream consequence of financing pressure -->
+      <div class="downstream-section">
+        <div class="downstream-label">Downstream consequence of financing pressure</div>
+        <div class="section-head" style="margin-top:0">
+          <h2>Work Requirements — Modeled Coverage Loss</h2>
+          <p>CBO estimates ~10 million coverage losses nationally. Most subject adults already work or qualify for exemptions; modeled loss is driven by administrative churn, not refusal to work (calibrated to Arkansas 2018).</p>
+        </div>
+        <div id="narrative-work_requirements" class="narrative"></div>
+        <div class="table-wrap"><table id="tbl-work_requirements"><thead></thead><tbody></tbody></table></div>
+      </div>
+
+    </div><!-- #tab-financing -->
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAB 2: HCBS (SCAFFOLD)
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-hcbs" role="tabpanel">
+      <div id="scaffold-hcbs"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAB 3: MANAGED CARE (SCAFFOLD)
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-managed_care" role="tabpanel">
+      <div id="scaffold-managed_care"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAB 4: DUAL ELIGIBLES (SCAFFOLD)
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-dual_eligibles" role="tabpanel">
+      <div id="scaffold-dual_eligibles"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAB 5: DATA & METHODS
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-data_methods" role="tabpanel">
+      <div class="section-head">
+        <h2>Data &amp; Methods</h2>
+        <p>Every source used in this workbench, its tier, last-updated date, and validation status. This tab reflects <strong>system inputs and data freshness</strong> — not analytical conclusions. Use it to verify when each source was last refreshed and whether the validation checks passed.</p>
+      </div>
+      <div id="data-sources-grid" class="source-grid"></div>
+
+      <div class="section-head" style="margin-top:36px">
+        <h2>Validation Results</h2>
+        <p>Each analysis is cross-checked against a second public source. Agreement is reported here; disagreements are flagged for review before publication.</p>
+      </div>
+      <div id="validation-results"></div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAB 6: HOW IT WORKS
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-how_it_works" role="tabpanel">
+      <div class="how-it-works" id="how-it-works-content">
+        <!-- Rendered from static content below -->
+      </div>
+    </div>
+
+  </div><!-- #content -->
+</main>
+
+<script>
+// ════════════════════════════════════════════════════════════════════
+// Utilities
+// ════════════════════════════════════════════════════════════════════
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Top-level tab switching
+// ════════════════════════════════════════════════════════════════════
+document.getElementById('tab-bar').addEventListener('click', function(e) {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  const tabId = btn.dataset.tab;
+
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+  btn.classList.add('active');
+  document.getElementById('tab-' + tabId).classList.add('active');
+});
+
+// ════════════════════════════════════════════════════════════════════
+// Narrative tell/show/so-what builder
+// ════════════════════════════════════════════════════════════════════
+function buildNarrative(containerId, narr) {
+  if (!narr) return;
+  const el = document.getElementById(containerId);
+  if (!el) return;
+
+  const tabs = [
+    { key: "tell", label: "Tell me" },
+    { key: "show", label: "Show me" },
+    { key: "sowhat", label: "So what" },
+    { key: "verify", label: "Claims to verify" },
+  ];
+
+  let tabsHtml = '<div class="narrative-tabs">';
+  tabs.forEach((t, i) => {
+    tabsHtml += `<button class="ntab${i === 0 ? ' active' : ''}" data-ntab="${t.key}" data-container="${containerId}">${escHtml(t.label)}</button>`;
+  });
+  tabsHtml += '</div>';
+
+  const tellHtml = `<div class="npanel active" id="${containerId}-tell"><p>${escHtml(narr.tell_me || '')}</p></div>`;
+
+  const sm = narr.show_me || {};
+  const showHtml = `<div class="npanel" id="${containerId}-show">
+    <p><strong>Computation:</strong> ${escHtml(sm.computation || '')}</p>
+    <p><strong>Figure:</strong> ${escHtml(sm.figure_description || '')}</p>
+    <p class="sources"><strong>Sources:</strong> ${(sm.sources || []).map(escHtml).join(' · ')}</p>
+  </div>`;
+
+  const sw = narr.so_what || {};
+  const sb = sw.stakeholder_balance;
+  let sowhatHtml = `<div class="npanel" id="${containerId}-sowhat">
+    <p>${escHtml(sw.implication || '')}</p>`;
+  if (sb && (sb.supporters || sb.critics)) {
+    sowhatHtml += `<div class="stakeholder-grid">
+      <div class="stakeholder-box"><strong>Supporters argue</strong>${escHtml(sb.supporters || '')}</div>
+      <div class="stakeholder-box"><strong>Critics argue</strong>${escHtml(sb.critics || '')}</div>
+    </div>
+    <p style="margin-top:10px;font-size:12px;color:var(--muted);font-style:italic">
+      This tool does not signal which argument is correct. Both are presented as stated by knowledgeable advocates. See NEUTRALITY.md.
+    </p>`;
+  }
+  sowhatHtml += '</div>';
+
+  const claims = narr.claims_to_verify || [];
+  const verifyHtml = `<div class="npanel" id="${containerId}-verify">
+    <ul class="verify-list">${claims.map(c => `<li>${escHtml(c)}</li>`).join('')}</ul>
+  </div>`;
+
+  el.innerHTML = tabsHtml + tellHtml + showHtml + sowhatHtml + verifyHtml;
+}
+
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('.ntab');
+  if (!btn) return;
+  const key = btn.dataset.ntab;
+  const cid = btn.dataset.container;
+  const el = document.getElementById(cid);
+  if (!el) return;
+  el.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
+  el.querySelectorAll('.npanel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const panel = document.getElementById(`${cid}-${key}`);
+  if (panel) panel.classList.add('active');
+});
+
+// ════════════════════════════════════════════════════════════════════
+// Table builders
+// ════════════════════════════════════════════════════════════════════
+function buildProviderTaxTable(rows) {
+  const thead = `<tr>
+    <th>State</th><th>Exp.</th><th>Max Subject Rate</th>
+    <th>Exposed</th><th>Final Gap $M</th><th>% of Nonfed Share</th><th>Classes at Risk</th>
+  </tr>`;
+  const tbody = rows.map(r => {
+    const classBreakdown = r.gap_by_class
+      ? Object.entries(r.gap_by_class).map(([c, v]) => `${c}: $${v}M`).join(', ')
+      : '';
+    return `<tr>
+      <td>${escHtml(r.state)}</td>
+      <td>${r.expansion ? '✓' : '–'}</td>
+      <td class="${r.provider_tax_rate > 3.5 ? 'above-cap' : ''}">${r.provider_tax_rate.toFixed(1)}%</td>
+      <td>${r.exposed ? '<span class="tier-badge tier-High">Yes</span>' : '<span class="tier-badge tier-Low">No</span>'}</td>
+      <td>${r.exposed ? '$' + r.final_gap_millions.toLocaleString() + 'M' : '–'}</td>
+      <td>${r.exposed ? r.gap_share_of_nonfederal_pct.toFixed(1) + '%' : '–'}</td>
+      <td style="font-size:11px;color:var(--muted)">${escHtml(classBreakdown)}</td>
+    </tr>`;
+  }).join('');
+  document.querySelector('#tbl-provider_tax thead').innerHTML = thead;
+  document.querySelector('#tbl-provider_tax tbody').innerHTML = tbody;
+}
+
+function buildWRTable(rows) {
+  const thead = `<tr>
+    <th>State</th><th>Subject Adults</th>
+    <th>Already Working/Exempt</th><th>Modeled Loss</th><th>Loss % of Subject</th><th>Status</th>
+  </tr>`;
+  const tbody = rows.map(r => `<tr>
+    <td>${escHtml(r.state)}</td>
+    <td>${r.subject_adults.toLocaleString()}</td>
+    <td>${r.already_working_or_exempt.toLocaleString()}</td>
+    <td>${r.modeled_coverage_loss.toLocaleString()}</td>
+    <td>${r.loss_pct_of_subject.toFixed(1)}%</td>
+    <td>${escHtml(r.status || '')}</td>
+  </tr>`).join('');
+  document.querySelector('#tbl-work_requirements thead').innerHTML = thead;
+  document.querySelector('#tbl-work_requirements tbody').innerHTML = tbody;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Scaffold tab renderer
+// ════════════════════════════════════════════════════════════════════
+function buildScaffoldTab(containerId, info) {
+  const el = document.getElementById(containerId);
+  if (!el || !info) return;
+
+  el.innerHTML = `
+    <div class="section-head">
+      <h2>${escHtml(info.label)}</h2>
+    </div>
+
+    <div class="in-progress-banner">
+      <h3>In progress — no state-level findings published yet</h3>
+      <p>The analytical method for this tab is designed and documented below.
+         State-level results will appear here once the required data source is ingested.
+         Until then, <strong>no results are displayed</strong> — showing fabricated or
+         seed-derived figures here would misrepresent the state of the analysis.</p>
+    </div>
+
+    <div class="method-box">
+      <h3>Analytical question</h3>
+      <p>${escHtml(info.analytical_question)}</p>
+    </div>
+
+    <div class="method-box">
+      <h3>Method</h3>
+      <p>${escHtml(info.method)}</p>
+    </div>
+
+    <div class="method-box">
+      <h3>Primary data source</h3>
+      <p>${escHtml(info.data_source)}</p>
+      <p class="source-link"><a href="${escHtml(info.source_url)}" target="_blank" rel="noopener">${escHtml(info.source_url)}</a></p>
+    </div>
+
+    <div class="method-box">
+      <h3>What is needed to complete this tab</h3>
+      <p>${escHtml(info.why_in_progress)}</p>
+    </div>
+  `;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Data & Methods tab
+// ════════════════════════════════════════════════════════════════════
+function buildDataMethodsTab(sources, validation) {
+  const grid = document.getElementById('data-sources-grid');
+  if (!grid) return;
+
+  if (!sources || !sources.length) {
+    grid.innerHTML = '<p style="color:var(--muted)">No data sources manifest available.</p>';
+    return;
+  }
+
+  grid.innerHTML = sources.map(s => {
+    const tierClass = 'tier-' + (s.tier || 'api');
+    const statusIcon = {current:'●', stale:'◐', missing:'○', unavailable:'–'}[s.status] || '?';
+    const statusColor = {current:'var(--low)', stale:'#f39c12', missing:'var(--high)', unavailable:'var(--muted)'}[s.status] || 'var(--muted)';
+    const asOf = s.last_updated ? `As of ${s.last_updated}` : 'Never fetched';
+    const valBadge = s.validate_against
+      ? `<span style="font-size:11px;color:var(--muted)">Validates against: ${escHtml(s.validate_against)}</span>`
+      : '';
+
+    return `<div class="source-card">
+      <div class="source-card-header">
+        <h3>${escHtml(s.name)}</h3>
+        <span class="tier-pill ${escHtml(tierClass)}">${escHtml(s.tier)}</span>
+      </div>
+      <div class="source-meta">
+        <span style="color:${statusColor}">${statusIcon}</span>
+        ${escHtml(asOf)} · ${escHtml(s.refresh_frequency || '')}
+        ${s.row_count != null ? ` · ${s.row_count.toLocaleString()} rows` : ''}
+        ${s.validation_status && s.validation_status !== 'pending'
+          ? ` · Validation: <strong>${escHtml(s.validation_status)}</strong>` : ''}
+      </div>
+      <p style="margin-top:8px;font-size:13px">${escHtml(s.description || '')}</p>
+      ${s.url ? `<p class="source-meta" style="margin-top:4px"><a href="${escHtml(s.url)}" target="_blank" rel="noopener">${escHtml(s.url)}</a></p>` : ''}
+      ${s.expected_filename ? `<p class="source-meta" style="margin-top:4px">Manual file: <code>data/inbox/${escHtml(s.expected_filename)}</code></p>` : ''}
+      ${valBadge}
+    </div>`;
+  }).join('');
+
+  // Validation results
+  const valEl = document.getElementById('validation-results');
+  if (!valEl || !validation) return;
+
+  const valHtml = Object.entries(validation).map(([key, v]) => {
+    const cls = 'val-' + (v.result || 'data_unavailable');
+    const icons = {pass: '✓', flag: '⚠', data_unavailable: '–', error: '✗'};
+    const icon = icons[v.result] || '?';
+    return `<div class="validation-result ${escHtml(cls)}" style="margin-bottom:10px;padding:12px 16px;border-radius:4px">
+      <strong>${icon} ${escHtml(v.check || key)}</strong><br>
+      <span style="font-size:12px">${escHtml(v.description || '')}</span><br>
+      <span style="font-size:12px;margin-top:4px;display:block">${escHtml(v.notes || '')}</span>
+      ${v.source ? `<span style="font-size:11px;color:var(--muted);display:block;margin-top:4px">Source: ${escHtml(v.source)}</span>` : ''}
+      ${v.workbench_top_exposed && v.workbench_top_exposed.length
+        ? `<span style="font-size:11px;color:var(--muted);display:block;margin-top:4px">Workbench top exposed: ${v.workbench_top_exposed.slice(0,5).join(', ')}</span>` : ''}
+      ${v.kff_top_states && v.kff_top_states.length
+        ? `<span style="font-size:11px;color:var(--muted);display:block">KFF top states: ${v.kff_top_states.slice(0,5).join(', ')}</span>` : ''}
+    </div>`;
+  }).join('');
+
+  valEl.innerHTML = valHtml || '<p style="color:var(--muted)">No validation results available.</p>';
+}
+
+// ════════════════════════════════════════════════════════════════════
+// How It Works page (static prose)
+// ════════════════════════════════════════════════════════════════════
+function buildHowItWorks() {
+  const el = document.getElementById('how-it-works-content');
+  if (!el) return;
+
+  el.innerHTML = `
+<h2>What is this tool?</h2>
+<p>The Medicaid Financing Workbench is a public-interest research tool that tracks
+how the 2025 federal budget law — commonly called the "One Big Beautiful Bill" —
+affects state Medicaid programs. It is designed for policy analysts, journalists,
+and state officials who need clear, documented answers without wading through
+hundreds of pages of legislation and agency reports.</p>
+
+<p>The tool answers one central question: <strong>which states face the most
+significant Medicaid financing pressure from this law, and why?</strong>
+It organizes that question across four areas: provider taxes, home- and
+community-based services, managed care, and dual-eligible spending.</p>
+
+<div class="callout"><p>This is an analyst's tool, not an advocacy document.
+Numbers are never adjusted to support a conclusion. Where experts disagree about
+a policy's effects, the tool presents both sides' strongest arguments and lets
+readers draw their own conclusions.</p></div>
+
+<h2>What problem does it solve?</h2>
+<p>Medicaid data is scattered across dozens of federal and state sources — CMS
+financial reports, Census population estimates, KFF analyses, legislative budget
+scores, and state waiver filings. Each source uses different definitions, different
+timeframes, and different geographic breakdowns. Connecting them requires
+significant effort even for experienced researchers.</p>
+
+<p>This workbench standardizes and documents that process. It pulls from the
+same authoritative sources a policy analyst would consult, applies a consistent
+methodology across all 50 states plus D.C., and records exactly where every
+number came from and when it was retrieved. The result is an analysis that can
+be verified, replicated, and updated as new data becomes available.</p>
+
+<h2>The policy background</h2>
+<p>Medicaid is jointly funded by the federal government and the states. On average,
+the federal government pays about 65 cents of every Medicaid dollar; states pay
+the rest. The exact federal share varies by state income levels, with poorer states
+receiving more federal help.</p>
+
+<p>To raise their share of the cost, most states levy <strong>provider taxes</strong>:
+small fees charged to hospitals, nursing homes, managed care plans, and other
+providers. States use the revenue from these taxes to draw down additional federal
+matching funds. The 2025 law placed new restrictions on this practice:</p>
+<ul>
+  <li><strong>No new taxes:</strong> States can no longer create new provider taxes
+      or raise existing ones, effective July 2025.</li>
+  <li><strong>Phased reduction:</strong> For expansion states, the ceiling on existing
+      taxes steps down from 6% to 3.5% of net patient revenue between 2028 and 2032.
+      States with taxes above 3.5% must cut the tax, find other revenue, or cut
+      services.</li>
+  <li><strong>Two exemptions:</strong> Nursing facility and ICF/IID (care for people
+      with intellectual disabilities) provider taxes are entirely exempt from the
+      phase-down. Only hospital, managed care organization, ambulance, and "other"
+      provider taxes are subject to the new ceiling.</li>
+</ul>
+<p>The Congressional Budget Office estimated these provider-tax provisions will
+reduce federal Medicaid spending by <strong>$226 billion over ten years</strong>.
+Total Medicaid reductions from the full law are estimated at
+<strong>$911 billion over ten years</strong>.</p>
+
+<h2>How data moves through the system</h2>
+<p>This is a <strong>batch-driven, reproducible research system</strong> — not a
+real-time dashboard. Outputs are generated on a scheduled or manually triggered
+basis, not continuously. Here is how data flows from source to screen:</p>
+
+<h3>Step 1 — Collection</h3>
+<p>Data is collected from three types of sources:</p>
+<ul>
+  <li><strong>Automated pulls:</strong> Some government sources publish data through
+      structured feeds or databases. These are retrieved automatically on a
+      weekly or annual schedule. No human action is needed once the schedule is
+      configured.</li>
+  <li><strong>Manual downloads:</strong> Some important sources — particularly
+      provider-tax tables from KFF and managed care enrollment reports from CMS —
+      are only published as downloadable files, not via a feed. A researcher
+      downloads these periodically and adds them to the system. The site always
+      shows when each file was last refreshed.</li>
+  <li><strong>PDF extraction:</strong> Some data is only published in PDF format.
+      The workbench can read tables from these PDFs once the file is provided.
+      Results are flagged as potentially imperfect, since PDF layouts vary.</li>
+</ul>
+
+<h3>Step 2 — Cleaning and standardization</h3>
+<p>All collected data is processed using Python scripts that standardize state
+names, align fiscal-year definitions, filter to the relevant population, and
+flag any values that fall outside expected ranges. The cleaned output is a
+structured dataset organized by state, year, and program type.</p>
+
+<h3>Step 3 — Analysis</h3>
+<p>Two analytical tools are used, each for a different purpose:</p>
+<ul>
+  <li><strong>Python</strong> handles the core computations: calculating each state's
+      provider-tax exposure, estimating coverage losses, assembling the per-state
+      financing picture, and generating the interactive charts shown in the
+      Financing tab. Python also manages the data pipeline from collection
+      through to final output.</li>
+  <li><strong>R</strong> is used for statistical analysis and publication-quality
+      charts. R scripts validate key aggregates against independent sources,
+      produce figures suitable for policy briefs, and run trend analyses across
+      fiscal years. R is run separately by a researcher and produces outputs
+      — charts, tables — that are then incorporated into the workbench.
+      R is not running in the background when you view this site.</li>
+</ul>
+
+<h3>Step 4 — Output</h3>
+<p>The analysis produces a single data file that this site reads when you load it.
+Charts, tables, and narrative text are all generated from that file. When the
+file is regenerated after a data refresh, everything on the site updates
+automatically. If the file cannot be generated — because a required source is
+missing — the site falls back to clearly labeled illustrative values rather
+than failing silently or inventing numbers.</p>
+
+<h2>What is automated vs. what is manual</h2>
+<h3>Automated</h3>
+<ul>
+  <li>Weekly retrieval of CMS financial data and Census population estimates</li>
+  <li>Data cleaning, standardization, and validation scripts</li>
+  <li>Chart generation and site publishing (via GitHub Actions)</li>
+</ul>
+<h3>Manual</h3>
+<ul>
+  <li>Downloading and uploading KFF provider-tax tables (quarterly)</li>
+  <li>Downloading CMS managed care enrollment reports (annually)</li>
+  <li>Triggering a site rebuild after new data is added</li>
+  <li>Running R-based statistical analyses and incorporating outputs</li>
+</ul>
+
+<h2>What is real vs. in progress</h2>
+<h3>Implemented and real</h3>
+<ul>
+  <li>The Financing tab: provider-tax cap exposure analysis across all 50 states
+      and D.C., using per-class tax rate data so that exempt classes (nursing
+      facilities, ICF/IID) are correctly excluded from the exposure calculation.</li>
+  <li>Work-requirements coverage-loss model, shown as a downstream consequence
+      of the financing changes in the same tab.</li>
+  <li>The full data collection and validation framework.</li>
+  <li>The Data &amp; Methods tab, which shows every source, its freshness, and
+      its validation status.</li>
+</ul>
+<h3>In progress — no findings published yet</h3>
+<ul>
+  <li>HCBS (home- and community-based services) tab: method is documented;
+      state-level results will appear once the required data is ingested.</li>
+  <li>Managed Care tab: same status.</li>
+  <li>Dual Eligibles tab: same status.</li>
+</ul>
+<div class="callout"><p>Sections marked "In progress" contain no fabricated
+findings. The analytical approach is described, but no state-level numbers
+are shown until real data is available. Showing placeholder figures would
+misrepresent the state of the analysis.</p></div>
+
+<h2>Known limitations</h2>
+<ul>
+  <li><strong>Data lag:</strong> CMS financial reports are typically published
+      12–18 months after the end of a fiscal year. The most recent data may
+      not reflect recent policy changes.</li>
+  <li><strong>State reporting variation:</strong> States submit Medicaid data
+      using different definitions and categorizations. The workbench applies a
+      consistent framework, but some state-level figures involve judgment calls
+      about how to match categories.</li>
+  <li><strong>PDF quality:</strong> Tables extracted from PDFs may contain
+      errors if the original PDF layout is complex. All PDF-sourced data is
+      flagged for manual review.</li>
+  <li><strong>Manual refresh cadence:</strong> Sources that require manual
+      downloading are only as current as the last time a researcher updated
+      them. The Data &amp; Methods tab shows the "as of" date for each source.</li>
+  <li><strong>Snapshots in time:</strong> All outputs represent what the data
+      showed when the site was last rebuilt. They do not update automatically
+      when new information becomes available.</li>
+</ul>
+
+<h2>Design principles</h2>
+<div class="callout"><p><strong>No data is invented.</strong> The computed figures
+in this tool trace directly back to source documents. The narrative text is
+generated from those figures, never the other way around. When a source is
+unavailable, the tool says so rather than estimating.</p></div>
+
+<div class="callout"><p><strong>All outputs trace back to sources.</strong>
+Every number links to the data file it came from, the source that data file
+came from, and the date it was retrieved. The Data &amp; Methods tab is a
+complete record of what was used and when.</p></div>
+
+<div class="callout"><p><strong>Conflicting interpretations are preserved.</strong>
+Where experts genuinely disagree — for example, about whether provider taxes
+represent illegitimate cost-shifting or legitimate state revenue — the tool
+presents the strongest version of each argument. It does not signal which is
+correct. The goal is to help readers understand the debate, not to resolve it
+for them.</p></div>
+
+<div class="callout"><p><strong>Transparency over automation.</strong>
+The system is designed to be understood and verified by a human reviewer, not
+just to produce outputs quickly. Every analysis panel includes a checklist of
+specific claims a reviewer should confirm before citing the numbers publicly.</p></div>
+
+<h2>Future enhancements — not currently implemented</h2>
+<p>The following capabilities are planned for future versions of this workbench.
+<strong>None of them are active features in the current system.</strong></p>
+<ul>
+  <li><strong>AI research assistant:</strong> An optional question-answering tool
+      that would let users ask questions in plain language and receive answers
+      grounded in specific source documents. LLMs would be used only for
+      summarization — no numbers would be generated by AI.</li>
+  <li><strong>Scheduled automated ingestion:</strong> Full automation of all
+      data collection steps, including sources that currently require manual
+      downloads, via nightly or weekly scheduled jobs.</li>
+  <li><strong>Interactive real-time dashboarding:</strong> A version of this
+      site that updates continuously as new data becomes available, rather
+      than on a manually triggered rebuild cycle.</li>
+  <li><strong>Expanded state-level modeling:</strong> Predictive scenarios
+      showing how different policy choices would affect state financing over
+      a 10-year window, calibrated to each state's specific program mix.</li>
+  <li><strong>Collaborative annotation:</strong> A system allowing researchers
+      at different organizations to flag, correct, and annotate specific data
+      points, with a public record of those annotations.</li>
+</ul>
+
+<p style="margin-top:32px;font-size:12px;color:var(--muted)">
+Medicaid Financing Workbench — open source, reproducible policy analysis.<br>
+Data sources: CMS Financial Management Reports (CMS-64), KFF State Health Facts,
+U.S. Census Bureau American Community Survey.<br>
+Policy parameters sourced from KFF "5 Key Facts About Medicaid and Provider Taxes"
+(Dec 2025, updated Feb 2026) and the KFF reconciliation law tracker.
+</p>
+  `;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Main load
+// ════════════════════════════════════════════════════════════════════
+async function loadDashboard() {
+  try {
+    const resp = await fetch('dashboard_data.json');
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+
+    // Provenance
+    const meta = data.meta || {};
+    const prov = meta.data_provenance || 'seed';
+    const badge = document.getElementById('prov-badge');
+    badge.textContent = prov === 'seed' ? 'SEED DATA' : 'CURRENT DATA';
+    if (prov !== 'seed') badge.classList.add('live');
+    if (meta.provenance_note) {
+      document.getElementById('prov-note').textContent = meta.provenance_note;
+      document.getElementById('prov-banner').classList.add('visible');
+    }
+
+    // Summary bar
+    const s = data.summary || {};
+    document.getElementById('header-meta').textContent =
+      `${s.n_states} states · ${s.total_enrollment_million}M enrollees · $${s.total_medicaid_spend_billion}B spend`;
+    const chips = [
+      { val: s.n_states, lbl: 'States' },
+      { val: s.n_expansion, lbl: 'Expansion states' },
+      { val: `${s.total_enrollment_million}M`, lbl: 'Total enrollment' },
+      { val: `$${s.total_medicaid_spend_billion}B`, lbl: 'Total Medicaid spend' },
+    ];
+    document.getElementById('summary-bar').innerHTML = chips.map(c =>
+      `<div class="stat-chip"><span class="val">${c.val}</span><span class="lbl">${c.lbl}</span></div>`
+    ).join('');
+
+    // Financing tab
+    const narr = data.narrative || {};
+    buildNarrative('narrative-provider_tax', narr.provider_tax);
+    buildNarrative('narrative-work_requirements', narr.work_requirements);
+
+    const analyses = data.analyses || {};
+    if (analyses.provider_tax) buildProviderTaxTable(analyses.provider_tax.rows || []);
+    if (analyses.work_requirements) buildWRTable(analyses.work_requirements.rows || []);
+
+    // Scaffold tabs
+    const scaffold = data.scaffold || {};
+    buildScaffoldTab('scaffold-hcbs', scaffold.hcbs);
+    buildScaffoldTab('scaffold-managed_care', scaffold.managed_care);
+    buildScaffoldTab('scaffold-dual_eligibles', scaffold.dual_eligibles);
+
+    // Data & Methods
+    buildDataMethodsTab(data.data_sources || [], data.validation || {});
+
+    // How It Works
+    buildHowItWorks();
+
+  } catch (err) {
+    document.getElementById('loading').style.display = 'none';
+    const errEl = document.getElementById('error-msg');
+    errEl.style.display = 'block';
+    errEl.innerHTML = `<strong>Could not load dashboard_data.json.</strong><br>
+      Run <code>mfw build</code> from the project root, then serve the project with
+      <code>python -m http.server 8000</code> and open
+      <a href="http://localhost:8000/dashboard/">http://localhost:8000/dashboard/</a>.<br>
+      <small>Error: ${escHtml(err.message)}</small>`;
+  }
+}
+
+loadDashboard();
+</script>
+</body>
+</html>

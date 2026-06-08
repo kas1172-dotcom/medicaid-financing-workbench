@@ -1,5 +1,13 @@
 name: Refresh dashboard data
 
+# This workflow runs mfw build — the non-interactive build command.
+# It never prompts for files. For any stale manual source, it proceeds
+# with the last-good data in data/current/ and surfaces the "as of"
+# date on the site rather than failing.
+#
+# To ingest new manual uploads, run `mfw refresh` locally, commit the
+# updated data/current/ files, and push before triggering this action.
+
 on:
   workflow_dispatch:         # manual trigger from GitHub Actions tab
 
@@ -7,7 +15,7 @@ permissions:
   contents: write
 
 jobs:
-  refresh:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,13 +30,8 @@ jobs:
       - name: Install dependencies
         run: pip install -e .
 
-      - name: Run analyses
-        run: mfw analyze
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-
-      - name: Build dashboard data (with LLM drafts)
-        run: mfw dashboard
+      - name: Build dashboard (non-interactive)
+        run: mfw build
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
 
@@ -36,6 +39,6 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add dashboard/dashboard_data.json outputs/results.json outputs/charts/
+          git add dashboard/dashboard_data.json outputs/charts/
           git diff --cached --quiet || git commit -m "chore: refresh dashboard data [$(date -u +%Y-%m-%d)]"
           git push

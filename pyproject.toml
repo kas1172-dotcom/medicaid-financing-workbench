@@ -1,9 +1,18 @@
 [project]
 name = "medicaid-financing-workbench"
-version = "0.1.0"
+version = "0.2.0"
 description = "An analyst workbench for Medicaid financing research"
 requires-python = ">=3.10"
-dependencies = ["pandas>=2.0","pyyaml>=6.0","matplotlib>=3.7","requests>=2.31","anthropic>=0.40"]
+dependencies = [
+  "pandas>=2.0",
+  "pyyaml>=6.0",
+  "matplotlib>=3.7",
+  "requests>=2.31",
+  "anthropic>=0.40",
+  "pdfplumber>=0.10",   # Tier-3 PDF extraction for provider-tax detail PDFs
+  "scipy>=1.11",        # Spearman rank correlation for validation layer
+  "openpyxl>=3.1",      # Read .xlsx files from CMS managed care enrollment report
+]
 
 [project.scripts]
 mfw = "mfw.cli:main"

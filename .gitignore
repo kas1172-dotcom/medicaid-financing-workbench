@@ -6,4 +6,9 @@ venv/
 .ipynb_checkpoints/
 data/raw/*
 !data/raw/.gitkeep
+# data/inbox/ — manually downloaded source files (not committed; user provides these locally)
+data/inbox/*
+!data/inbox/.gitkeep
+# data/current/ — last-good cleaned sources + provenance sidecars (committed so GitHub Actions can use them)
+# data/current/ is intentionally NOT ignored so the last-good data is version-controlled
 .DS_Store
