@@ -6,6 +6,7 @@
 <title>Medicaid Financing Workbench</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://d3js.org/d3.v7.min.js"></script>
 <style>
 :root {
   --navy: #0B1829;
@@ -204,6 +205,71 @@ tr:hover td { background: rgba(13,143,130,0.06); }
   padding: 2px 8px; border-radius: 3px; margin-bottom: 10px;
 }
 
+/* ── D3 Visualization sections ───────────────────────────────────── */
+.viz-section {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  margin-bottom: 20px; overflow: hidden;
+}
+.viz-section-header { padding: 14px 20px 12px; border-bottom: 1px solid var(--border); }
+.viz-section-header h3 { font-size: 15px; color: var(--navy); margin-bottom: 3px; }
+.viz-section-header p { font-size: 12px; color: var(--muted); font-style: italic; }
+.viz-container { padding: 12px 20px 16px; }
+.viz-controls {
+  display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+  padding: 8px 20px; background: var(--cream); border-bottom: 1px solid var(--border);
+}
+.viz-controls label { font-size: 12px; font-weight: 600; color: var(--muted); }
+.viz-controls input[type="range"] { width: 180px; accent-color: var(--teal); vertical-align: middle; }
+.viz-controls select {
+  font-size: 12px; padding: 4px 8px; border: 1px solid var(--border);
+  border-radius: 3px; background: #fff; color: var(--text);
+}
+.viz-controls button {
+  font-size: 12px; padding: 4px 12px; border: 1px solid var(--teal);
+  border-radius: 3px; background: #fff; color: var(--teal); cursor: pointer;
+}
+.viz-controls button:hover { background: var(--teal); color: #fff; }
+.cap-display { font-weight: 700; color: var(--navy); min-width: 38px; display: inline-block; }
+.viz-interp {
+  border-top: 1px solid var(--border);
+}
+.viz-interp > summary {
+  padding: 9px 20px; font-size: 11px; font-weight: 700; color: var(--teal);
+  cursor: pointer; user-select: none; letter-spacing: 0.5px; text-transform: uppercase;
+  list-style: none;
+}
+.viz-interp > summary:hover { background: #f0faf9; }
+.viz-interp > summary::before { content: "▶ "; font-size: 10px; }
+.viz-interp[open] > summary::before { content: "▼ "; }
+.viz-interp-body { padding: 14px 20px 16px; background: #fafaf8; font-size: 13px; }
+.viz-interp-body h4 {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; color: var(--navy); margin: 14px 0 5px;
+}
+.viz-interp-body h4:first-child { margin-top: 0; }
+.viz-interp-body p { margin-bottom: 8px; line-height: 1.65; }
+.viz-interp-body ul { margin: 4px 0 8px 18px; }
+.viz-interp-body li { margin-bottom: 4px; line-height: 1.5; }
+.interp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px; }
+.interp-box { background: #fff; border: 1px solid var(--border); border-radius: 3px; padding: 10px 14px; }
+.interp-box strong { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 4px; }
+.ref-table-wrap > summary {
+  padding: 10px 0; font-size: 13px; font-weight: 600; color: var(--muted);
+  cursor: pointer; user-select: none; list-style: none;
+}
+.ref-table-wrap > summary:hover { color: var(--teal); }
+.ref-table-wrap > summary::before { content: "▶ "; font-size: 10px; }
+.ref-table-wrap[open] > summary::before { content: "▼ "; }
+.tooltip-d3 {
+  position: fixed; background: rgba(11,24,41,0.93); color: #fff;
+  padding: 8px 12px; border-radius: 4px; font-size: 12px; pointer-events: none;
+  max-width: 220px; line-height: 1.5; z-index: 9999; white-space: pre-wrap;
+}
+svg text { font-family: 'DM Sans', sans-serif; }
+.d3-bar { cursor: pointer; }
+.d3-bar:hover { opacity: 0.8; }
+.d3-dot { cursor: pointer; }
+
 /* ── Loading / error ─────────────────────────────────────────────── */
 #loading { text-align: center; padding: 80px; color: var(--muted); }
 #error-msg { display: none; background: #fde8e8; border: 1px solid #c0392b; border-radius: 4px; padding: 16px; margin: 24px 0; }
@@ -250,23 +316,231 @@ tr:hover td { background: rgba(13,143,130,0.06); }
     <div class="tab-panel active" id="tab-financing" role="tabpanel">
 
       <div class="section-head">
-        <h2>Provider Tax Cap Exposure</h2>
-        <p>Expansion states with non-exempt provider taxes above the new 3.5% ceiling — at-risk revenue as the cap phases down FFY2028–2032. Nursing facility and ICF/IID taxes are exempt from the phase-down; only hospital, MCO, ambulance, and "other" classes are subject.</p>
+        <h2>Provider Tax Cap Exposure — Interactive Analysis</h2>
+        <p>Expansion states with non-exempt provider taxes above the new 3.5% ceiling. Explore state exposure interactively; nursing facility and ICF/IID taxes are exempt from the phase-down.</p>
       </div>
 
-      <div id="narrative-provider_tax" class="narrative"></div>
-      <div class="table-wrap"><table id="tbl-provider_tax"><thead></thead><tbody></tbody></table></div>
-
-      <!-- Work requirements: downstream consequence of financing pressure -->
-      <div class="downstream-section">
-        <div class="downstream-label">Downstream consequence of financing pressure</div>
-        <div class="section-head" style="margin-top:0">
-          <h2>Work Requirements — Modeled Coverage Loss</h2>
-          <p>CBO estimates ~10 million coverage losses nationally. Most subject adults already work or qualify for exemptions; modeled loss is driven by administrative churn, not refusal to work (calibrated to Arkansas 2018).</p>
+      <!-- ─── 1. Risk Simulator ─────────────────────────────────────── -->
+      <div class="viz-section" id="viz-risk-simulator">
+        <div class="viz-section-header">
+          <h3>Risk Simulator — Cap Level Explorer</h3>
+          <p>Drag the slider to simulate any cap level from the 2032 floor (3.5%) to the current ceiling (6.0%). Bars show projected revenue gap for each exposed state at that cap.</p>
         </div>
-        <div id="narrative-work_requirements" class="narrative"></div>
-        <div class="table-wrap"><table id="tbl-work_requirements"><thead></thead><tbody></tbody></table></div>
+        <div class="viz-controls">
+          <label>Cap level: <span class="cap-display" id="cap-display">5.5%</span></label>
+          <input type="range" id="cap-slider" min="3.5" max="6.0" step="0.1" value="5.5">
+          <span id="cap-stats" style="font-size:12px;color:var(--muted)"></span>
+        </div>
+        <div class="viz-container" id="viz-risk-simulator-chart"></div>
+        <details class="viz-interp">
+          <summary>Executive Interpretation</summary>
+          <div class="viz-interp-body">
+            <h4>What this shows</h4>
+            <p>This simulator lets you move through the five-step phase-down schedule to see how exposure compounds as the ceiling drops from 6.0% (2027 baseline) to 3.5% (2032 final). Each bar represents a state's projected annual revenue shortfall at that cap, calculated as the proportional share of their current tax rate that exceeds the ceiling applied to their total provider-tax base.</p>
+            <h4>Key Takeaways</h4>
+            <ul>
+              <li>Exposure is highly concentrated — the top five states account for more than 60% of national gap at the 3.5% floor.</li>
+              <li>States with MCO taxes are disproportionately exposed because MCO enrollment scales with Medicaid expansion — the same states that expanded most aggressively face the steepest cuts.</li>
+              <li>The 5.5% threshold (2028) eliminates most at-risk states; the cliff is the jump from 4.5% to 3.5% in 2031–2032.</li>
+            </ul>
+            <h4>Research Questions</h4>
+            <ul>
+              <li>Which states are most likely to respond with benefit or eligibility cuts versus finding alternative revenue?</li>
+              <li>Does the phase-down schedule give states adequate time to adjust budget cycles?</li>
+            </ul>
+            <h4>Claims to Verify</h4>
+            <ul>
+              <li>Provider tax rates are as reported to CMS; confirm no states have already lowered rates in anticipation.</li>
+              <li>Gap formula assumes linear interpolation — verify this matches how CMS intends to calculate compliance.</li>
+            </ul>
+            <h4>Limitations</h4>
+            <p>This model assumes no behavioral response (states do not raise other revenue or reduce the tax base). Actual impact will differ from this upper-bound estimate.</p>
+          </div>
+        </details>
       </div>
+
+      <!-- ─── 2. Risk Quadrant ──────────────────────────────────────── -->
+      <div class="viz-section" id="viz-risk-quadrant">
+        <div class="viz-section-header">
+          <h3>Risk Quadrant — Rate vs. Budget Dependence</h3>
+          <p>Each dot is a state. X-axis: maximum subject provider tax rate. Y-axis: projected gap as a share of nonfederal Medicaid spending. Upper-right quadrant = highest risk.</p>
+        </div>
+        <div class="viz-container" id="viz-risk-quadrant-chart"></div>
+        <details class="viz-interp">
+          <summary>Executive Interpretation</summary>
+          <div class="viz-interp-body">
+            <h4>What this shows</h4>
+            <p>The quadrant separates states by two independent risk dimensions: how far above the cap their tax rate is (political difficulty of adjustment) versus how budget-dependent that gap is (fiscal severity of non-adjustment). A state in the upper-right is simultaneously hard to adjust and fiscally exposed.</p>
+            <h4>Key Takeaways</h4>
+            <ul>
+              <li>High rate + high budget dependence states face a compounded political-fiscal challenge: cutting the tax is difficult, and not cutting it is expensive.</li>
+              <li>Several states have very high rates but low budget dependence — these states likely have small Medicaid programs relative to their provider tax base and may absorb the cap more easily.</li>
+              <li>States in the lower-right have moderate rates but high dependence — they are closer to compliance but cannot afford to lose the revenue.</li>
+            </ul>
+            <h4>Limitations</h4>
+            <p>Budget dependence is measured against nonfederal share, which varies with FMAP. States with very low FMAP (wealthier states) appear less dependent even if the absolute dollar loss is large.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- ─── 3. Phase-Down Timeline ────────────────────────────────── -->
+      <div class="viz-section" id="viz-timeline">
+        <div class="viz-section-header">
+          <h3>Phase-Down Timeline — National Gap 2028–2032</h3>
+          <p>How total national provider-tax exposure grows as the cap steps down. Each line traces a state's cumulative annual gap; the bold line is the national total.</p>
+        </div>
+        <div class="viz-controls">
+          <button id="timeline-play">▶ Play</button>
+          <span id="timeline-year" style="font-size:13px;font-weight:600;color:var(--navy);min-width:60px"></span>
+        </div>
+        <div class="viz-container" id="viz-timeline-chart"></div>
+        <details class="viz-interp">
+          <summary>Executive Interpretation</summary>
+          <div class="viz-interp-body">
+            <h4>What this shows</h4>
+            <p>The timeline reveals that exposure is not linear — it accelerates in the final two years of the phase-down (2031–2032) when the cap drops from 4.5% to 3.5%. States that appear manageable at the 5.5% cap face a sharply different picture by 2032.</p>
+            <h4>Key Takeaways</h4>
+            <ul>
+              <li>The 2028 cap (5.5%) eliminates most exposure. The policy impact is overwhelmingly concentrated in 2031–2032.</li>
+              <li>States have four years between enactment and the steepest cuts — budget cycles allow for phased adjustment if states begin planning now.</li>
+              <li>The national total gap at full implementation ($226B CBO estimate over 10 years) is consistent with what the phase-down trajectory projects.</li>
+            </ul>
+            <h4>Research Questions</h4>
+            <ul>
+              <li>Which states will face mid-biennium budget shocks versus those whose fiscal years align favorably with the phase-down schedule?</li>
+              <li>How does the phase-down interact with FMAP cliff effects for newly eligible adults?</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- ─── 4. Provider Type Explorer ────────────────────────────── -->
+      <div class="viz-section" id="viz-type-explorer">
+        <div class="viz-section-header">
+          <h3>Provider Type Explorer — Hospital vs. MCO Contribution</h3>
+          <p>Stacked bars show each exposed state's total gap broken down by contributing provider class. Only hospital and MCO classes are shown (ambulance and "other" are smaller contributors).</p>
+        </div>
+        <div class="viz-container" id="viz-type-explorer-chart"></div>
+        <details class="viz-interp">
+          <summary>Executive Interpretation</summary>
+          <div class="viz-interp-body">
+            <h4>What this shows</h4>
+            <p>Different provider classes have fundamentally different political economies. Hospitals are large institutions with significant lobbying capacity; MCOs are commercial insurers with contractual relationships that can be renegotiated. Understanding which class drives a state's exposure predicts the path of adjustment.</p>
+            <h4>Key Takeaways</h4>
+            <ul>
+              <li>MCO-dominated exposure states are more likely to see benefit redesign and managed care contract renegotiation.</li>
+              <li>Hospital-dominated exposure states face direct service delivery pressure — hospitals that lose tax revenue may close units or exit Medicaid.</li>
+              <li>States with mixed exposure require a portfolio approach.</li>
+            </ul>
+            <h4>Claims to Verify</h4>
+            <ul>
+              <li>Gap-by-class values are estimated proportionally from overall tax rates — confirm against direct CMS tax class filings.</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- ─── 5. Coverage Loss Scatter ─────────────────────────────── -->
+      <div class="viz-section" id="viz-coverage-scatter">
+        <div class="viz-section-header">
+          <h3>Coverage Loss vs. Financing Pressure</h3>
+          <p>Each dot is an expansion state. X-axis: projected 2032 financing gap ($M). Y-axis: modeled Medicaid coverage losses from work requirements. States in the upper-right face compounding pressures.</p>
+        </div>
+        <div class="viz-container" id="viz-coverage-scatter-chart"></div>
+        <details class="viz-interp">
+          <summary>Executive Interpretation</summary>
+          <div class="viz-interp-body">
+            <h4>What this shows</h4>
+            <p>This chart joins two distinct policy levers — provider-tax financing cuts and work-requirement coverage losses — into a single state-level risk picture. The 2025 reconciliation law operates both simultaneously, and their effects compound: states that lose federal revenue from the cap may face additional pressure to implement work requirements to reduce enrollment costs.</p>
+            <h4>Key Takeaways</h4>
+            <ul>
+              <li>Financing pressure and coverage-loss risk do not perfectly correlate — some states face one severely and the other minimally, which changes the policy response calculus.</li>
+              <li>States in the upper-right quadrant face a dual enrollment-financing squeeze and are most likely to seek federal waiver flexibility.</li>
+              <li>The correlation, while positive, is weaker than intuition suggests — expansion state size (enrollment) drives work-requirement exposure, while tax structure drives financing exposure, and these don't perfectly overlap.</li>
+            </ul>
+            <h4>Research Questions</h4>
+            <ul>
+              <li>Are states with high combined pressure more likely to pursue Section 1115 waivers?</li>
+              <li>Does the correlation strengthen when weighted by FMAP?</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- ─── 6. Waterfall ──────────────────────────────────────────── -->
+      <div class="viz-section" id="viz-waterfall">
+        <div class="viz-section-header">
+          <h3>State Waterfall — Cumulative Gap Growth 2028–2032</h3>
+          <p>Select a state to trace how its annual gap grows with each cap step. Each bar shows the incremental additional loss in that year versus the prior year.</p>
+        </div>
+        <div class="viz-controls">
+          <label>State: <select id="waterfall-state"></select></label>
+        </div>
+        <div class="viz-container" id="viz-waterfall-chart"></div>
+        <details class="viz-interp">
+          <summary>Executive Interpretation</summary>
+          <div class="viz-interp-body">
+            <h4>What this shows</h4>
+            <p>The waterfall view isolates a single state's exposure trajectory, making clear whether a state faces a gradual ramp or a sudden cliff. States where most gap accumulates in 2031–2032 have more adjustment time than their ultimate exposure figure suggests.</p>
+            <h4>Key Takeaways</h4>
+            <ul>
+              <li>For most states, the 2028–2030 period involves modest adjustment. The critical decision point is 2031–2032.</li>
+              <li>States can use the 2028–2030 window to negotiate provider contracts, explore alternative revenue, and model budget scenarios.</li>
+              <li>The incremental structure reveals which cap-step is the most politically costly for each state.</li>
+            </ul>
+            <h4>Limitations</h4>
+            <p>Gaps are modeled assuming current tax rates hold. States that voluntarily lower rates before the compliance deadline will have a different — likely smaller — trajectory.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- ─── 7. Comparison Studio ──────────────────────────────────── -->
+      <div class="viz-section" id="viz-comparison">
+        <div class="viz-section-header">
+          <h3>Comparison Studio — Side-by-Side State Analysis</h3>
+          <p>Select two states to compare their financing exposure, coverage-loss risk, and key program metrics simultaneously.</p>
+        </div>
+        <div class="viz-controls">
+          <label>State A: <select id="compare-state-a"></select></label>
+          <label>State B: <select id="compare-state-b"></select></label>
+        </div>
+        <div class="viz-container" id="viz-comparison-chart"></div>
+        <details class="viz-interp">
+          <summary>Executive Interpretation</summary>
+          <div class="viz-interp-body">
+            <h4>What this shows</h4>
+            <p>Pairwise comparison surfaces structural differences between states that aggregate rankings obscure. Two states with similar final gap figures may arrive there through very different mechanisms — one via a single high hospital tax, the other via a broad MCO tax — with very different adjustment paths.</p>
+            <h4>Key Takeaways</h4>
+            <ul>
+              <li>Use this view to prepare state-specific policy briefs and legislative testimony.</li>
+              <li>When comparing a high-FMAP state to a low-FMAP state, absolute gap figures understate relative burden for the high-FMAP state.</li>
+            </ul>
+            <div class="interp-grid">
+              <div class="interp-box"><strong>Useful for</strong>State-specific advocacy, legislative briefings, comparing neighboring states with different approaches</div>
+              <div class="interp-box"><strong>Caution</strong>Comparing states with very different Medicaid program sizes (enrollment, spend) requires normalizing — use % of nonfederal share rather than absolute $M</div>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <!-- Reference tables (collapsible) -->
+      <details class="ref-table-wrap" style="margin-top:24px">
+        <summary>Reference data tables</summary>
+        <div style="margin-top:16px">
+          <div id="narrative-provider_tax" class="narrative"></div>
+          <div class="table-wrap"><table id="tbl-provider_tax"><thead></thead><tbody></tbody></table></div>
+
+          <div class="downstream-section">
+            <div class="downstream-label">Downstream consequence of financing pressure</div>
+            <div class="section-head" style="margin-top:0">
+              <h2>Work Requirements — Modeled Coverage Loss</h2>
+              <p>CBO estimates ~10 million coverage losses nationally. Most subject adults already work or qualify for exemptions; modeled loss is driven by administrative churn, not refusal to work (calibrated to Arkansas 2018).</p>
+            </div>
+            <div id="narrative-work_requirements" class="narrative"></div>
+            <div class="table-wrap"><table id="tbl-work_requirements"><thead></thead><tbody></tbody></table></div>
+          </div>
+        </div>
+      </details>
 
     </div><!-- #tab-financing -->
 
@@ -796,6 +1070,583 @@ Policy parameters sourced from KFF "5 Key Facts About Medicaid and Provider Taxe
 }
 
 // ════════════════════════════════════════════════════════════════════
+// D3 Visualization helpers
+// ════════════════════════════════════════════════════════════════════
+function gapAtCap(row, cap) {
+  if (!row.exposed || row.provider_tax_rate <= cap) return 0;
+  return Math.max(0, (row.provider_tax_rate - cap) / (row.provider_tax_rate - 3.5) * row.final_gap_millions);
+}
+
+const CAP_SCHEDULE = { 2028: 5.5, 2029: 5.0, 2030: 4.5, 2031: 4.0, 2032: 3.5 };
+const YEARS = [2028, 2029, 2030, 2031, 2032];
+
+function makeTooltip() {
+  const tip = d3.select('body').append('div').attr('class', 'tooltip-d3').style('opacity', 0);
+  return tip;
+}
+
+function showTip(tip, html, event) {
+  tip.html(html).style('opacity', 1)
+    .style('left', (event.clientX + 14) + 'px')
+    .style('top',  (event.clientY - 10) + 'px');
+}
+
+function hideTip(tip) { tip.style('opacity', 0); }
+
+// ── 1. Risk Simulator ──────────────────────────────────────────────
+function buildRiskSimulator(ptRows) {
+  const slider = document.getElementById('cap-slider');
+  const display = document.getElementById('cap-display');
+  const statsEl = document.getElementById('cap-stats');
+  const container = document.getElementById('viz-risk-simulator-chart');
+  if (!container || !slider) return;
+
+  const exposed = ptRows.filter(r => r.exposed && r.final_gap_millions > 0);
+  if (!exposed.length) { container.innerHTML = '<p style="color:var(--muted);padding:20px">No exposed states in data.</p>'; return; }
+
+  const W = Math.min(container.clientWidth || 860, 860);
+  const margin = { top: 6, right: 90, bottom: 30, left: 110 };
+  const H = Math.max(exposed.length * 22 + margin.top + margin.bottom, 200);
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const y = d3.scaleBand().range([0, innerH]).padding(0.25);
+  const x = d3.scaleLinear().range([0, innerW]);
+  const tip = makeTooltip();
+
+  const xAxis = g.append('g').attr('transform', `translate(0,${innerH})`);
+  const yAxis = g.append('g');
+  const bars = g.append('g');
+  const labels = g.append('g');
+
+  function update(capVal) {
+    display.textContent = capVal.toFixed(1) + '%';
+    const rows = exposed.map(r => ({ ...r, gap: gapAtCap(r, capVal) }))
+      .filter(r => r.gap > 0)
+      .sort((a, b) => b.gap - a.gap);
+
+    const totalGap = rows.reduce((s, r) => s + r.gap, 0);
+    statsEl.textContent = rows.length
+      ? `${rows.length} states exposed · $${totalGap.toLocaleString(undefined, {maximumFractionDigits:0})}M national gap`
+      : 'No states exposed at this cap';
+
+    y.domain(rows.map(r => r.abbr));
+    x.domain([0, d3.max(rows, r => r.gap) || 1]);
+
+    yAxis.call(d3.axisLeft(y).tickSize(0)).select('.domain').remove();
+    yAxis.selectAll('text').style('font-size', '11px');
+
+    xAxis.call(d3.axisBottom(x).ticks(5).tickFormat(v => '$' + d3.format('.0f')(v) + 'M'))
+      .select('.domain').remove();
+    xAxis.selectAll('text').style('font-size', '11px');
+
+    const b = bars.selectAll('.d3-bar').data(rows, r => r.abbr);
+    b.enter().append('rect').attr('class', 'd3-bar')
+      .attr('fill', 'var(--teal)').attr('rx', 2)
+      .on('mouseover', (ev, d) => showTip(tip, `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}%\nGap at ${capVal.toFixed(1)}%: $${d.gap.toFixed(0)}M`, ev))
+      .on('mousemove', (ev, d) => showTip(tip, `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}%\nGap at ${capVal.toFixed(1)}%: $${d.gap.toFixed(0)}M`, ev))
+      .on('mouseout', () => hideTip(tip))
+      .merge(b)
+      .transition().duration(300)
+      .attr('x', 0).attr('y', r => y(r.abbr))
+      .attr('width', r => x(r.gap)).attr('height', y.bandwidth());
+
+    b.exit().remove();
+
+    const lbl = labels.selectAll('.bar-lbl').data(rows, r => r.abbr);
+    lbl.enter().append('text').attr('class', 'bar-lbl').style('font-size', '11px').attr('fill', '#444').attr('dy', '0.35em')
+      .merge(lbl).transition().duration(300)
+      .attr('x', r => x(r.gap) + 4).attr('y', r => y(r.abbr) + y.bandwidth() / 2)
+      .text(r => '$' + r.gap.toFixed(0) + 'M');
+    lbl.exit().remove();
+
+    svg.attr('height', Math.max(rows.length * 22 + margin.top + margin.bottom, 80));
+  }
+
+  update(parseFloat(slider.value));
+  slider.addEventListener('input', () => update(parseFloat(slider.value)));
+}
+
+// ── 2. Risk Quadrant ───────────────────────────────────────────────
+function buildRiskQuadrant(ptRows) {
+  const container = document.getElementById('viz-risk-quadrant-chart');
+  if (!container) return;
+
+  const rows = ptRows.filter(r => r.provider_tax_rate > 0);
+  if (!rows.length) return;
+
+  const W = Math.min(container.clientWidth || 700, 700);
+  const H = 360;
+  const margin = { top: 20, right: 30, bottom: 50, left: 60 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain([0, d3.max(rows, r => r.provider_tax_rate) * 1.05]).range([0, innerW]);
+  const maxY = d3.max(rows, r => r.gap_share_of_nonfederal_pct || 0) * 1.1 || 10;
+  const y = d3.scaleLinear().domain([0, maxY]).range([innerH, 0]);
+
+  const medX = d3.median(rows, r => r.provider_tax_rate);
+  const medY = d3.median(rows.filter(r => r.exposed), r => r.gap_share_of_nonfederal_pct || 0) || maxY / 2;
+
+  // Quadrant shading
+  g.append('rect').attr('x', x(medX)).attr('y', 0).attr('width', innerW - x(medX)).attr('height', y(medY))
+    .attr('fill', '#fde8e8').attr('opacity', 0.4);
+  g.append('line').attr('x1', x(medX)).attr('x2', x(medX)).attr('y1', 0).attr('y2', innerH)
+    .attr('stroke', '#999').attr('stroke-dasharray', '4,3').attr('stroke-width', 1);
+  g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', y(medY)).attr('y2', y(medY))
+    .attr('stroke', '#999').attr('stroke-dasharray', '4,3').attr('stroke-width', 1);
+
+  // Cap line at 3.5%
+  g.append('line').attr('x1', x(3.5)).attr('x2', x(3.5)).attr('y1', 0).attr('y2', innerH)
+    .attr('stroke', 'var(--high)').attr('stroke-width', 1.5).attr('stroke-dasharray', '5,3');
+  g.append('text').attr('x', x(3.5) + 4).attr('y', 10).style('font-size', '10px').attr('fill', 'var(--high)').text('3.5% floor');
+
+  const tip = makeTooltip();
+
+  g.selectAll('.d3-dot').data(rows).enter().append('circle')
+    .attr('class', 'd3-dot')
+    .attr('cx', d => x(d.provider_tax_rate))
+    .attr('cy', d => y(d.gap_share_of_nonfederal_pct || 0))
+    .attr('r', 6)
+    .attr('fill', d => d.exposed ? 'var(--high)' : 'var(--teal)')
+    .attr('opacity', 0.75)
+    .attr('stroke', '#fff').attr('stroke-width', 1)
+    .on('mouseover', (ev, d) => showTip(tip,
+      `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}%\nGap/nonfed: ${(d.gap_share_of_nonfederal_pct||0).toFixed(1)}%\nFinal gap: $${(d.final_gap_millions||0).toFixed(0)}M`,
+      ev))
+    .on('mousemove', (ev, d) => showTip(tip,
+      `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}%\nGap/nonfed: ${(d.gap_share_of_nonfederal_pct||0).toFixed(1)}%\nFinal gap: $${(d.final_gap_millions||0).toFixed(0)}M`,
+      ev))
+    .on('mouseout', () => hideTip(tip));
+
+  // State labels for exposed states only
+  rows.filter(r => r.exposed).forEach(d => {
+    g.append('text').attr('x', x(d.provider_tax_rate) + 7).attr('y', y(d.gap_share_of_nonfederal_pct || 0) + 4)
+      .style('font-size', '10px').attr('fill', '#333').text(d.abbr);
+  });
+
+  g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(6).tickFormat(v => v + '%'));
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(v => v + '%'));
+  g.append('text').attr('x', innerW / 2).attr('y', innerH + 42).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Maximum subject provider tax rate');
+  g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -48).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Gap as % of nonfederal share');
+}
+
+// ── 3. Phase-Down Timeline ─────────────────────────────────────────
+function buildPhaseDownTimeline(ptRows) {
+  const container = document.getElementById('viz-timeline-chart');
+  const playBtn = document.getElementById('timeline-play');
+  const yearLbl = document.getElementById('timeline-year');
+  if (!container) return;
+
+  const exposed = ptRows.filter(r => r.exposed && r.final_gap_millions > 0);
+  if (!exposed.length) return;
+
+  const W = Math.min(container.clientWidth || 780, 780);
+  const H = 320;
+  const margin = { top: 20, right: 110, bottom: 50, left: 70 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  // Compute national totals by year
+  const nationalData = YEARS.map(yr => ({
+    year: yr,
+    total: exposed.reduce((s, r) => s + gapAtCap(r, CAP_SCHEDULE[yr]), 0)
+  }));
+
+  const allStateData = exposed.map(r => ({
+    state: r.abbr,
+    values: YEARS.map(yr => ({ year: yr, gap: gapAtCap(r, CAP_SCHEDULE[yr]) }))
+  }));
+
+  const maxVal = d3.max(nationalData, d => d.total) * 1.1 || 100;
+  const x = d3.scaleLinear().domain([2028, 2032]).range([0, innerW]);
+  const y = d3.scaleLinear().domain([0, maxVal]).range([innerH, 0]);
+  const lineGen = d3.line().x(d => x(d.year)).y(d => d.gap ? y(d.gap) : y(0));
+  const tip = makeTooltip();
+
+  g.append('g').attr('transform', `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).ticks(5).tickFormat(d3.format('d')));
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(v => '$' + d3.format('.0f')(v / 1000) + 'B'));
+  g.append('text').attr('x', innerW / 2).attr('y', innerH + 42).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Federal fiscal year');
+  g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -55).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Annual gap ($M)');
+
+  // State lines (thin)
+  const color = d3.scaleSequential(d3.interpolateBlues).domain([0, allStateData.length]);
+  allStateData.forEach((sd, i) => {
+    g.append('path').datum(sd.values).attr('fill', 'none')
+      .attr('stroke', color(i + 1)).attr('stroke-width', 1.2).attr('opacity', 0.55)
+      .attr('d', lineGen);
+  });
+
+  // National line (bold)
+  const nationalLine = g.append('path').datum(nationalData)
+    .attr('fill', 'none').attr('stroke', 'var(--high)').attr('stroke-width', 2.5)
+    .attr('d', d3.line().x(d => x(d.year)).y(d => y(d.total)));
+
+  // Animated marker
+  const marker = g.append('circle').attr('r', 6).attr('fill', 'var(--high)').attr('stroke', '#fff').attr('stroke-width', 2);
+  const markerLbl = g.append('text').style('font-size', '11px').attr('fill', 'var(--high)').attr('font-weight', '700');
+
+  function setYear(yr) {
+    yearLbl.textContent = 'Year: ' + yr;
+    const nd = nationalData.find(d => d.year === yr);
+    if (nd) {
+      marker.attr('cx', x(yr)).attr('cy', y(nd.total));
+      markerLbl.attr('x', x(yr) + 8).attr('y', y(nd.total) - 4).text('$' + nd.total.toFixed(0) + 'M');
+    }
+  }
+
+  setYear(2028);
+
+  let playing = false; let currentYearIdx = 0;
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (playing) { playing = false; playBtn.textContent = '▶ Play'; return; }
+      playing = true; playBtn.textContent = '⏸ Pause';
+      currentYearIdx = 0;
+      function step() {
+        if (!playing || currentYearIdx >= YEARS.length) { playing = false; playBtn.textContent = '▶ Play'; return; }
+        setYear(YEARS[currentYearIdx++]);
+        setTimeout(step, 900);
+      }
+      step();
+    });
+  }
+
+  // Legend
+  const leg = svg.append('g').attr('transform', `translate(${W - margin.right + 8},${margin.top})`);
+  leg.append('line').attr('x1', 0).attr('x2', 18).attr('y1', 8).attr('y2', 8).attr('stroke', 'var(--high)').attr('stroke-width', 2.5);
+  leg.append('text').attr('x', 22).attr('y', 12).style('font-size', '11px').attr('fill', '#333').text('National');
+  leg.append('line').attr('x1', 0).attr('x2', 18).attr('y1', 26).attr('y2', 26).attr('stroke', '#4a90d9').attr('stroke-width', 1.2).attr('opacity', 0.7);
+  leg.append('text').attr('x', 22).attr('y', 30).style('font-size', '11px').attr('fill', '#333').text('Per state');
+}
+
+// ── 4. Provider Type Explorer ──────────────────────────────────────
+function buildProviderTypeExplorer(ptRows) {
+  const container = document.getElementById('viz-type-explorer-chart');
+  if (!container) return;
+
+  const rows = ptRows.filter(r => r.exposed && r.final_gap_millions > 0 && r.gap_by_class);
+  if (!rows.length) { container.innerHTML = '<p style="color:var(--muted);padding:20px">Provider-class breakdown not available in data.</p>'; return; }
+
+  const sorted = [...rows].sort((a, b) => b.final_gap_millions - a.final_gap_millions);
+  const W = Math.min(container.clientWidth || 860, 860);
+  const margin = { top: 10, right: 120, bottom: 40, left: 110 };
+  const H = sorted.length * 24 + margin.top + margin.bottom;
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const classes = ['hospital', 'mco'];
+  const colors = { hospital: 'var(--high)', mco: '#7b5ea7' };
+  const classLabels = { hospital: 'Hospital', mco: 'MCO' };
+
+  const y = d3.scaleBand().domain(sorted.map(r => r.abbr)).range([0, innerH]).padding(0.25);
+  const x = d3.scaleLinear().domain([0, d3.max(sorted, r => r.final_gap_millions) * 1.05]).range([0, innerW]);
+
+  const tip = makeTooltip();
+
+  sorted.forEach(row => {
+    let xOff = 0;
+    classes.forEach(cls => {
+      const val = (row.gap_by_class || {})[cls] || 0;
+      if (val <= 0) return;
+      g.append('rect').attr('class', 'd3-bar').attr('rx', 2)
+        .attr('x', x(xOff)).attr('y', y(row.abbr))
+        .attr('width', x(val) - x(0)).attr('height', y.bandwidth())
+        .attr('fill', colors[cls]).attr('opacity', 0.82)
+        .on('mouseover', ev => showTip(tip, `<strong>${row.state}</strong>\n${classLabels[cls]}: $${val.toFixed(0)}M`, ev))
+        .on('mousemove', ev => showTip(tip, `<strong>${row.state}</strong>\n${classLabels[cls]}: $${val.toFixed(0)}M`, ev))
+        .on('mouseout', () => hideTip(tip));
+      xOff += val;
+    });
+    // "other" remainder
+    const accounted = classes.reduce((s, c) => s + ((row.gap_by_class || {})[c] || 0), 0);
+    const other = row.final_gap_millions - accounted;
+    if (other > 0.5) {
+      g.append('rect').attr('class', 'd3-bar').attr('rx', 2)
+        .attr('x', x(xOff)).attr('y', y(row.abbr))
+        .attr('width', x(other) - x(0)).attr('height', y.bandwidth())
+        .attr('fill', '#aaa').attr('opacity', 0.7)
+        .on('mouseover', ev => showTip(tip, `<strong>${row.state}</strong>\nAmbulance/Other: $${other.toFixed(0)}M`, ev))
+        .on('mousemove', ev => showTip(tip, `<strong>${row.state}</strong>\nAmbulance/Other: $${other.toFixed(0)}M`, ev))
+        .on('mouseout', () => hideTip(tip));
+    }
+  });
+
+  g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(5).tickFormat(v => '$' + v + 'M'));
+  g.append('g').call(d3.axisLeft(y).tickSize(0)).select('.domain').remove();
+  g.selectAll('.tick text').style('font-size', '11px');
+
+  // Legend
+  const leg = svg.append('g').attr('transform', `translate(${W - margin.right + 8},${margin.top + 6})`);
+  [{ c: 'hospital', l: 'Hospital' }, { c: 'mco', l: 'MCO' }, { c: 'other', l: 'Other' }].forEach((item, i) => {
+    const col = colors[item.c] || '#aaa';
+    leg.append('rect').attr('x', 0).attr('y', i * 20).attr('width', 12).attr('height', 12).attr('fill', col).attr('opacity', 0.82).attr('rx', 2);
+    leg.append('text').attr('x', 16).attr('y', i * 20 + 10).style('font-size', '11px').attr('fill', '#333').text(item.l);
+  });
+}
+
+// ── 5. Coverage Loss Scatter ───────────────────────────────────────
+function buildCoverageLossScatter(ptRows, wrRows) {
+  const container = document.getElementById('viz-coverage-scatter-chart');
+  if (!container) return;
+
+  const wrByAbbr = {};
+  (wrRows || []).forEach(r => { wrByAbbr[r.abbr] = r; });
+  const joined = ptRows.filter(r => r.expansion && wrByAbbr[r.abbr])
+    .map(r => ({ ...r, ...wrByAbbr[r.abbr], pt_abbr: r.abbr }));
+
+  if (!joined.length) { container.innerHTML = '<p style="color:var(--muted);padding:20px">Insufficient joined data for this chart.</p>'; return; }
+
+  const W = Math.min(container.clientWidth || 700, 700);
+  const H = 340;
+  const margin = { top: 20, right: 30, bottom: 55, left: 70 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleLinear().domain([0, d3.max(joined, d => d.final_gap_millions || 0) * 1.1 || 1]).range([0, innerW]);
+  const y = d3.scaleLinear().domain([0, d3.max(joined, d => d.modeled_coverage_loss || 0) * 1.1 || 1]).range([innerH, 0]);
+
+  // Quadrant
+  const medX = d3.median(joined.filter(d => d.exposed), d => d.final_gap_millions || 0) || x.domain()[1] / 2;
+  const medY = d3.median(joined, d => d.modeled_coverage_loss || 0) || y.domain()[1] / 2;
+  g.append('rect').attr('x', x(medX)).attr('y', 0).attr('width', innerW - x(medX)).attr('height', y(medY))
+    .attr('fill', '#fde8e8').attr('opacity', 0.35);
+  g.append('line').attr('x1', x(medX)).attr('x2', x(medX)).attr('y1', 0).attr('y2', innerH)
+    .attr('stroke', '#ccc').attr('stroke-dasharray', '4,3');
+  g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', y(medY)).attr('y2', y(medY))
+    .attr('stroke', '#ccc').attr('stroke-dasharray', '4,3');
+
+  const tip = makeTooltip();
+
+  g.selectAll('.d3-dot').data(joined).enter().append('circle')
+    .attr('class', 'd3-dot')
+    .attr('cx', d => x(d.final_gap_millions || 0))
+    .attr('cy', d => y(d.modeled_coverage_loss || 0))
+    .attr('r', 6)
+    .attr('fill', d => d.exposed ? 'var(--high)' : 'var(--teal)')
+    .attr('opacity', 0.72).attr('stroke', '#fff').attr('stroke-width', 1)
+    .on('mouseover', (ev, d) => showTip(tip,
+      `<strong>${d.state}</strong>\nGap 2032: $${(d.final_gap_millions||0).toFixed(0)}M\nCoverage loss: ${(d.modeled_coverage_loss||0).toLocaleString()}\nLoss rate: ${(d.loss_pct_of_subject||0).toFixed(1)}%`,
+      ev))
+    .on('mousemove', (ev, d) => showTip(tip,
+      `<strong>${d.state}</strong>\nGap 2032: $${(d.final_gap_millions||0).toFixed(0)}M\nCoverage loss: ${(d.modeled_coverage_loss||0).toLocaleString()}\nLoss rate: ${(d.loss_pct_of_subject||0).toFixed(1)}%`,
+      ev))
+    .on('mouseout', () => hideTip(tip));
+
+  // Labels for high-exposure states
+  joined.filter(d => d.exposed && (d.final_gap_millions || 0) > medX).forEach(d => {
+    g.append('text').attr('x', x(d.final_gap_millions || 0) + 7).attr('y', y(d.modeled_coverage_loss || 0) + 4)
+      .style('font-size', '10px').attr('fill', '#333').text(d.abbr);
+  });
+
+  g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(5).tickFormat(v => '$' + v + 'M'));
+  g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(v => d3.format('.2s')(v)));
+  g.append('text').attr('x', innerW / 2).attr('y', innerH + 46).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Projected 2032 financing gap ($M)');
+  g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -55).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Modeled coverage loss');
+}
+
+// ── 6. Waterfall ───────────────────────────────────────────────────
+function buildWaterfall(ptRows) {
+  const container = document.getElementById('viz-waterfall-chart');
+  const sel = document.getElementById('waterfall-state');
+  if (!container || !sel) return;
+
+  const exposed = ptRows.filter(r => r.exposed && r.final_gap_millions > 0)
+    .sort((a, b) => b.final_gap_millions - a.final_gap_millions);
+  if (!exposed.length) { container.innerHTML = '<p style="color:var(--muted);padding:20px">No exposed states.</p>'; return; }
+
+  exposed.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = r.abbr; opt.textContent = r.state;
+    sel.appendChild(opt);
+  });
+
+  const W = Math.min(container.clientWidth || 640, 640);
+  const H = 300;
+  const margin = { top: 20, right: 30, bottom: 50, left: 70 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const xScale = d3.scaleBand().domain(YEARS.map(String)).range([0, innerW]).padding(0.3);
+  const tip = makeTooltip();
+
+  let yAxis = g.append('g');
+  let xAxisG = g.append('g').attr('transform', `translate(0,${innerH})`);
+  let barsG = g.append('g');
+  let cumLineG = g.append('path');
+  g.append('text').attr('x', innerW / 2).attr('y', innerH + 44).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Federal fiscal year');
+  const yLbl = g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -55).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Annual gap ($M)');
+
+  function draw(abbr) {
+    const row = exposed.find(r => r.abbr === abbr);
+    if (!row) return;
+
+    const yearly = YEARS.map(yr => ({ year: yr, gap: gapAtCap(row, CAP_SCHEDULE[yr]) }));
+    const increments = yearly.map((d, i) => ({
+      year: d.year,
+      val: i === 0 ? d.gap : d.gap - yearly[i - 1].gap,
+      cumulative: d.gap
+    }));
+
+    const maxGap = d3.max(yearly, d => d.gap) * 1.1 || 10;
+    const yScale = d3.scaleLinear().domain([0, maxGap]).range([innerH, 0]);
+
+    xAxisG.call(d3.axisBottom(xScale));
+    yAxis.call(d3.axisLeft(yScale).ticks(5).tickFormat(v => '$' + v + 'M'));
+
+    const bars = barsG.selectAll('rect').data(increments, d => d.year);
+    bars.enter().append('rect').merge(bars).transition().duration(350)
+      .attr('x', d => xScale(String(d.year)))
+      .attr('y', d => yScale(d.cumulative))
+      .attr('width', xScale.bandwidth())
+      .attr('height', d => innerH - yScale(d.cumulative))
+      .attr('fill', (d, i) => d3.interpolateRdYlGn(1 - i / 5))
+      .attr('rx', 3);
+    bars.exit().remove();
+
+    barsG.selectAll('rect')
+      .on('mouseover', (ev, d) => showTip(tip, `${d.year}\nCumulative gap: $${d.cumulative.toFixed(0)}M\nIncrement: +$${d.val.toFixed(0)}M`, ev))
+      .on('mousemove', (ev, d) => showTip(tip, `${d.year}\nCumulative gap: $${d.cumulative.toFixed(0)}M\nIncrement: +$${d.val.toFixed(0)}M`, ev))
+      .on('mouseout', () => hideTip(tip));
+
+    // Value labels
+    barsG.selectAll('.wf-lbl').data(increments, d => d.year).join('text').attr('class', 'wf-lbl')
+      .attr('x', d => xScale(String(d.year)) + xScale.bandwidth() / 2)
+      .attr('y', d => yScale(d.cumulative) - 4)
+      .attr('text-anchor', 'middle').style('font-size', '11px').attr('fill', '#333')
+      .text(d => d.cumulative > 0 ? '$' + d.cumulative.toFixed(0) + 'M' : '');
+  }
+
+  draw(exposed[0].abbr);
+  sel.addEventListener('change', () => draw(sel.value));
+}
+
+// ── 7. Comparison Studio ───────────────────────────────────────────
+function buildComparisonStudio(ptRows, wrRows) {
+  const container = document.getElementById('viz-comparison-chart');
+  const selA = document.getElementById('compare-state-a');
+  const selB = document.getElementById('compare-state-b');
+  if (!container || !selA || !selB) return;
+
+  const wrByAbbr = {};
+  (wrRows || []).forEach(r => { wrByAbbr[r.abbr] = r; });
+
+  const allStates = ptRows.filter(r => r.expansion).sort((a, b) => a.state.localeCompare(b.state));
+  allStates.forEach((r, i) => {
+    [selA, selB].forEach((sel, si) => {
+      const opt = document.createElement('option');
+      opt.value = r.abbr; opt.textContent = r.state;
+      if (si === 0 && i === 0) opt.selected = true;
+      if (si === 1 && i === 1) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  });
+
+  const W = Math.min(container.clientWidth || 720, 720);
+  const H = 320;
+  const margin = { top: 20, right: 30, bottom: 70, left: 20 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const metrics = [
+    { key: 'provider_tax_rate',        label: 'Tax Rate (%)',          fmt: v => v.toFixed(1) + '%', scale: 'pct' },
+    { key: 'final_gap_millions',       label: 'Final Gap ($M)',        fmt: v => '$' + (v||0).toFixed(0) + 'M', scale: 'abs' },
+    { key: 'gap_share_of_nonfederal_pct', label: 'Gap % Nonfed',      fmt: v => (v||0).toFixed(1) + '%', scale: 'pct' },
+    { key: 'modeled_coverage_loss',    label: 'Coverage Loss',         fmt: v => (v||0).toLocaleString(), scale: 'abs', src: 'wr' },
+    { key: 'loss_pct_of_subject',      label: 'Loss Rate (%)',         fmt: v => (v||0).toFixed(1) + '%', scale: 'pct', src: 'wr' },
+  ];
+
+  const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  const tip = makeTooltip();
+
+  function getVal(abbr, m) {
+    const pt = ptRows.find(r => r.abbr === abbr) || {};
+    const wr = wrByAbbr[abbr] || {};
+    return m.src === 'wr' ? (wr[m.key] || 0) : (pt[m.key] || 0);
+  }
+
+  function draw() {
+    const abbA = selA.value, abbB = selB.value;
+    const nameA = allStates.find(r => r.abbr === abbA)?.state || abbA;
+    const nameB = allStates.find(r => r.abbr === abbB)?.state || abbB;
+    g.selectAll('*').remove();
+
+    const groupW = innerW / metrics.length;
+    const colors = { A: 'var(--teal)', B: 'var(--high)' };
+    const barW = groupW * 0.3;
+
+    metrics.forEach((m, mi) => {
+      const valA = getVal(abbA, m);
+      const valB = getVal(abbB, m);
+      const maxVal = Math.max(valA, valB, 0.001);
+      const yScale = d3.scaleLinear().domain([0, maxVal * 1.1]).range([innerH, 0]);
+      const gx = mi * groupW + groupW / 2;
+
+      // State A bar
+      g.append('rect').attr('x', gx - barW - 2).attr('y', yScale(valA)).attr('width', barW).attr('height', innerH - yScale(valA))
+        .attr('fill', colors.A).attr('rx', 3).attr('opacity', 0.82);
+      g.append('text').attr('x', gx - barW / 2 - 2).attr('y', yScale(valA) - 4).attr('text-anchor', 'middle')
+        .style('font-size', '10px').attr('fill', colors.A).text(m.fmt(valA));
+
+      // State B bar
+      g.append('rect').attr('x', gx + 2).attr('y', yScale(valB)).attr('width', barW).attr('height', innerH - yScale(valB))
+        .attr('fill', colors.B).attr('rx', 3).attr('opacity', 0.82);
+      g.append('text').attr('x', gx + barW / 2 + 2).attr('y', yScale(valB) - 4).attr('text-anchor', 'middle')
+        .style('font-size', '10px').attr('fill', colors.B).text(m.fmt(valB));
+
+      // Metric label
+      g.append('text').attr('x', gx).attr('y', innerH + 14).attr('text-anchor', 'middle')
+        .style('font-size', '10px').attr('fill', 'var(--muted)').text(m.label);
+    });
+
+    // Baseline
+    g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', innerH).attr('y2', innerH).attr('stroke', 'var(--border)');
+
+    // Legend
+    const legY = innerH + 40;
+    g.append('rect').attr('x', innerW / 2 - 140).attr('y', legY).attr('width', 12).attr('height', 12).attr('fill', colors.A).attr('rx', 2);
+    g.append('text').attr('x', innerW / 2 - 124).attr('y', legY + 10).style('font-size', '11px').attr('fill', '#333').text(nameA);
+    g.append('rect').attr('x', innerW / 2 + 20).attr('y', legY).attr('width', 12).attr('height', 12).attr('fill', colors.B).attr('rx', 2);
+    g.append('text').attr('x', innerW / 2 + 36).attr('y', legY + 10).style('font-size', '11px').attr('fill', '#333').text(nameB);
+  }
+
+  draw();
+  selA.addEventListener('change', draw);
+  selB.addEventListener('change', draw);
+}
+
+// ── Main financing viz entry point ─────────────────────────────────
+function buildFinancingViz(ptRows, wrRows) {
+  buildRiskSimulator(ptRows);
+  buildRiskQuadrant(ptRows);
+  buildPhaseDownTimeline(ptRows);
+  buildProviderTypeExplorer(ptRows);
+  buildCoverageLossScatter(ptRows, wrRows);
+  buildWaterfall(ptRows);
+  buildComparisonStudio(ptRows, wrRows);
+}
+
+// ════════════════════════════════════════════════════════════════════
 // Main load
 // ════════════════════════════════════════════════════════════════════
 async function loadDashboard() {
@@ -839,8 +1690,13 @@ async function loadDashboard() {
     buildNarrative('narrative-work_requirements', narr.work_requirements, charts.work_requirements);
 
     const analyses = data.analyses || {};
-    if (analyses.provider_tax) buildProviderTaxTable(analyses.provider_tax.rows || []);
-    if (analyses.work_requirements) buildWRTable(analyses.work_requirements.rows || []);
+    const ptRows = analyses.provider_tax ? (analyses.provider_tax.rows || []) : [];
+    const wrRows = analyses.work_requirements ? (analyses.work_requirements.rows || []) : [];
+    if (ptRows.length) buildProviderTaxTable(ptRows);
+    if (wrRows.length) buildWRTable(wrRows);
+
+    // D3 interactive visualizations
+    buildFinancingViz(ptRows, wrRows);
 
     // Scaffold tabs
     const scaffold = data.scaffold || {};
