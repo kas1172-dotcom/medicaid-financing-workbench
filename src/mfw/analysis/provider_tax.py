@@ -78,9 +78,13 @@ def run(df: pd.DataFrame, params: dict) -> dict:
         schedule[yr] = cap
 
     rows = []
+    waiver_rows = []
+
     for _, r in df.iterrows():
         taxes = r.get("provider_taxes_by_class") or {}
         expansion = bool(r["expansion"])
+        waiver_flag = r.get("provider_tax_waiver_flag") or None
+        data_source = r.get("provider_tax_data_source", "seed")
 
         if not expansion:
             rows.append({
@@ -93,7 +97,35 @@ def run(df: pd.DataFrame, params: dict) -> dict:
                 "gap_share_of_nonfederal_pct": 0.0,
                 "gap_by_year": {yr: 0.0 for yr in schedule},
                 "gap_by_class": {},
+                "waiver_flag": None,
+                "provider_tax_data_source": data_source,
                 "note": "Non-expansion state; not subject to reduced cap.",
+            })
+            continue
+
+        # Waiver states: flag separately, skip standard phase-down ranking.
+        if waiver_flag == "non_uniformity_waiver":
+            subject_rates = {c: taxes.get(c, 0.0) for c in SUBJECT_CLASSES}
+            max_subject = max(subject_rates.values()) if subject_rates else float(r.get("provider_tax_rate") or 0.0)
+            waiver_rows.append({
+                "state": r["state"],
+                "abbr": r["abbr"],
+                "expansion": True,
+                "provider_tax_rate": r["provider_tax_rate"],
+                "provider_taxes_by_class": taxes,
+                "exposed": False,
+                "final_gap_millions": 0.0,
+                "gap_share_of_nonfederal_pct": 0.0,
+                "gap_by_year": {yr: 0.0 for yr in schedule},
+                "gap_by_class": {},
+                "waiver_flag": waiver_flag,
+                "max_rate_pct": round(max_subject, 3),
+                "provider_tax_data_source": data_source,
+                "note": (
+                    "CMS non-uniformity waiver: rate exceeds 6% ceiling. "
+                    "OBBBA compliance risk distinct from standard phase-down. "
+                    "Excluded from standard exposure ranking."
+                ),
             })
             continue
 
@@ -126,12 +158,15 @@ def run(df: pd.DataFrame, params: dict) -> dict:
             "gap_share_of_nonfederal_pct": gap_share_of_nonfed,
             "gap_by_year": by_year,
             "gap_by_class": class_breakdown,
+            "waiver_flag": None,
+            "provider_tax_data_source": data_source,
             "note": None,
         })
 
     rows.sort(key=lambda x: x["final_gap_millions"], reverse=True)
     exposed_rows = [x for x in rows if x["exposed"]]
 
+    # National gap excludes waiver states (their risk is categorically different).
     national_gap = round(sum(x["final_gap_millions"] for x in rows) / 1000, 2)  # $B
 
     return {
@@ -139,7 +174,9 @@ def run(df: pd.DataFrame, params: dict) -> dict:
         "title": "Provider tax cap exposure",
         "schedule": schedule,
         "rows": rows,
+        "waiver_risk_states": waiver_rows,
         "n_exposed": len(exposed_rows),
+        "n_waiver_risk": len(waiver_rows),
         "national_final_gap_billion": national_gap,
         "top_state": exposed_rows[0]["state"] if exposed_rows else None,
         "exempt_classes": list(EXEMPT_CLASSES),

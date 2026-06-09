@@ -26,6 +26,9 @@ from ..sources import seed
 from ..sources._state_map import ANALYSIS_ABBRS
 
 CURRENT_DIR = Path("data/current")
+SCRAPED_TAXES_FILE = CURRENT_DIR / "state_provider_taxes.csv"
+
+_SUBJECT_CLASSES = frozenset({"hospital", "mco", "ambulance", "other"})
 
 
 def _load_live_spending() -> dict[str, dict] | None:
@@ -62,6 +65,68 @@ def _load_live_enrollment() -> dict[str, dict] | None:
     return result if result else None
 
 
+def _load_scraped_taxes() -> dict[str, dict] | None:
+    """
+    Load state_provider_taxes.csv (written by the state scraper runner).
+
+    Returns a dict keyed by abbr. Each value contains:
+      provider_taxes_by_class  — {class: effective_rate_pct} for comparable rows only
+      provider_tax_rate        — max subject-class rate (or None if all not_comparable)
+      provider_tax_waiver_flag — 'non_uniformity_waiver' for RI/NV, else None
+      provider_tax_data_source — 'scraped' (provenance tag for dashboard)
+
+    States with confidence=failed or all rows not_comparable are omitted so the
+    caller falls back to seed. Never fabricates a percentage.
+    """
+    if not SCRAPED_TAXES_FILE.exists():
+        return None
+    df = pd.read_csv(SCRAPED_TAXES_FILE)
+    if df.empty:
+        return None
+
+    result: dict[str, dict] = {}
+    for abbr, group in df.groupby("abbr"):
+        abbr = str(abbr).strip().upper()
+
+        # Non-failed rows with a usable effective_rate_pct.
+        usable = group[group["confidence"] != "failed"]
+        if usable.empty:
+            continue
+
+        # Comparable rows: rate_basis != not_comparable and effective_rate_pct present.
+        comparable = usable[
+            (usable["rate_basis"] != "not_comparable") &
+            usable["effective_rate_pct"].notna()
+        ]
+
+        taxes: dict[str, float] = {}
+        for _, row in comparable.iterrows():
+            pclass = str(row.get("provider_class", "")).strip().lower()
+            try:
+                taxes[pclass] = float(row["effective_rate_pct"])
+            except (ValueError, TypeError):
+                pass
+
+        # Waiver flag from any row.
+        waiver_rows = usable[usable["waiver_flag"].notna()]
+        waiver_flag = str(waiver_rows["waiver_flag"].iloc[0]) if not waiver_rows.empty else None
+
+        # Provider_tax_rate: max subject-class comparable rate.
+        subject_rates = [v for k, v in taxes.items() if k in _SUBJECT_CLASSES]
+        provider_tax_rate = max(subject_rates) if subject_rates else None
+
+        # Only add entry if we have something useful.
+        if taxes or waiver_flag:
+            result[abbr] = {
+                "provider_taxes_by_class": taxes,
+                "provider_tax_rate": provider_tax_rate,
+                "provider_tax_waiver_flag": waiver_flag,
+                "provider_tax_data_source": "scraped",
+            }
+
+    return result if result else None
+
+
 def _wr_status(abbr: str, expansion: bool) -> str:
     if abbr in seed.WORK_REQUIREMENT_STATUS:
         return seed.WORK_REQUIREMENT_STATUS[abbr]["status"]
@@ -82,14 +147,28 @@ def build_panel(prefer_live: bool = False) -> pd.DataFrame:
 
     live_spending   = _load_live_spending()   if prefer_live else None
     live_enrollment = _load_live_enrollment() if prefer_live else None
+    scraped_taxes   = _load_scraped_taxes()
 
     if not prefer_live or (live_spending is None and live_enrollment is None):
-        df = pd.DataFrame(records)
-        df["data_provenance"] = "seed"
-        df["work_req_status"] = [
-            _wr_status(r["abbr"], r["expansion"]) for r in records
-        ]
-        return df
+        rows = []
+        for r in records:
+            row = dict(r)
+            abbr = str(row["abbr"]).strip().upper()
+            if scraped_taxes and abbr in scraped_taxes:
+                st = scraped_taxes[abbr]
+                if st["provider_taxes_by_class"]:
+                    row["provider_taxes_by_class"] = st["provider_taxes_by_class"]
+                if st["provider_tax_rate"] is not None:
+                    row["provider_tax_rate"] = st["provider_tax_rate"]
+                row["provider_tax_waiver_flag"] = st["provider_tax_waiver_flag"]
+                row["provider_tax_data_source"] = "scraped"
+            else:
+                row["provider_tax_waiver_flag"] = None
+                row["provider_tax_data_source"] = "seed"
+            row["data_provenance"] = "seed"
+            row["work_req_status"] = _wr_status(abbr, row["expansion"])
+            rows.append(row)
+        return pd.DataFrame(rows)
 
     parts = []
     if live_spending:
@@ -105,6 +184,17 @@ def build_panel(prefer_live: bool = False) -> pd.DataFrame:
             row.update(live_spending[abbr])
         if live_enrollment and abbr in live_enrollment:
             row.update(live_enrollment[abbr])
+        if scraped_taxes and abbr in scraped_taxes:
+            st = scraped_taxes[abbr]
+            if st["provider_taxes_by_class"]:
+                row["provider_taxes_by_class"] = st["provider_taxes_by_class"]
+            if st["provider_tax_rate"] is not None:
+                row["provider_tax_rate"] = st["provider_tax_rate"]
+            row["provider_tax_waiver_flag"] = st["provider_tax_waiver_flag"]
+            row["provider_tax_data_source"] = "scraped"
+        else:
+            row["provider_tax_waiver_flag"] = None
+            row["provider_tax_data_source"] = "seed"
         row["data_provenance"] = provenance
         row["work_req_status"] = _wr_status(abbr, row["expansion"])
         rows.append(row)

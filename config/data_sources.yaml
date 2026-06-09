@@ -104,6 +104,33 @@ sources:
       exclusively for validation: if the workbench exposure ranking agrees
       with the KFF/CBO allocation ranking, that is a cross-check pass.
 
+  - id: state_provider_taxes
+    name: "State Provider-Tax Scraper (Phase 2)"
+    tier: api
+    method: >
+      Python scrapers under src/mfw/sources/state_scrapers/ fetch each state's
+      provider-tax rate from primary sources (state statutes, agency pages).
+      Run with: python -m mfw.sources.state_scrapers.run
+      Writes data/current/state_provider_taxes.csv and a run log.
+      Only sources classified "verified" in config/state_tax_sources.yaml have
+      full adapters; "likely" sources produce stubs with confidence=likely.
+      States where the structure is not_comparable (unit-based, capped,
+      amount-targeted) carry effective_rate_pct=null — never fabricated.
+    url: "https://github.com/kas1172-dotcom/medicaid-financing-workbench/blob/main/config/state_tax_sources.yaml"
+    expected_filename: null
+    refresh_frequency: quarterly
+    validate_against: kff_provider_taxes
+    uses:
+      - provider_taxes_by_class
+      - provider_tax_rate
+      - provider_tax_waiver_flag
+      - provider_tax_data_source
+    description: >
+      Per-state provider-tax rates scraped from 19 verified/likely primary
+      sources. Non-percentage structures (unit_based, capped, amount_targeted)
+      are reported in native units as not_comparable. Waiver states (RI, NV)
+      are flagged separately from standard phase-down exposure states.
+
   - id: cms_managed_care_enrollment
     name: "CMS Medicaid Managed Care Enrollment Report"
     tier: manual_upload

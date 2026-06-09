@@ -12,6 +12,8 @@ dependencies = [
   "pdfplumber>=0.10",   # Tier-3 PDF extraction for provider-tax detail PDFs
   "scipy>=1.11",        # Spearman rank correlation for validation layer
   "openpyxl>=3.1",      # Read .xlsx files from CMS managed care enrollment report
+  "beautifulsoup4>=4.12",  # HTML parsing for state provider-tax page scrapers
+  "lxml>=4.9",             # Fast HTML/XML parser backend for BeautifulSoup
 ]
 
 [project.scripts]
