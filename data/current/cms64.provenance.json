@@ -3,7 +3,7 @@
   "source_name": "CMS-64 Medicaid Financial Management Data",
   "tier": "api",
   "method": "data.medicaid.gov CMS-64 New Adult Group quarterly",
-  "retrieved_date": "2026-06-08",
+  "retrieved_date": "2026-06-10",
   "row_count": 51,
   "validation_status": "pending"
 }
