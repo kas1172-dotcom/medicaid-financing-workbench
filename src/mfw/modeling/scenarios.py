@@ -42,12 +42,37 @@ def run_scenario(df: pd.DataFrame, base_params: dict, overrides: dict) -> dict:
         base_out[name] = mod.run(df, base_params)
         scen_out[name] = mod.run(df, scen_params)
 
+    base_pt = base_out["provider_tax"]
+    scen_pt = scen_out["provider_tax"]
+
+    # Dollar gap delta (Tier-2 exposed states, revenue requiring replacement).
+    gap_delta_b = round(
+        scen_pt["national_final_gap_billion"] - base_pt["national_final_gap_billion"], 2
+    )
+
+    # Per-state replacement dollars at scenario cap vs base cap.
+    base_gaps = {r["abbr"]: r["final_gap_millions"] for r in base_pt.get("rows", [])}
+    scen_gaps = {r["abbr"]: r["final_gap_millions"] for r in scen_pt.get("rows", [])}
+    state_deltas = [
+        {
+            "abbr": abbr,
+            "base_gap_millions": base_gaps.get(abbr, 0.0),
+            "scenario_gap_millions": scen_gaps.get(abbr, 0.0),
+            "replacement_dollars_delta": round(
+                scen_gaps.get(abbr, 0.0) - base_gaps.get(abbr, 0.0), 1
+            ),
+        }
+        for abbr in set(list(base_gaps) + list(scen_gaps))
+        if scen_gaps.get(abbr, 0.0) != base_gaps.get(abbr, 0.0)
+    ]
+    state_deltas.sort(key=lambda x: -abs(x["replacement_dollars_delta"]))
+
     deltas = {
-        "provider_tax_national_gap_billion": round(
-            scen_out["provider_tax"]["national_final_gap_billion"]
-            - base_out["provider_tax"]["national_final_gap_billion"], 2),
+        "provider_tax_national_gap_billion": gap_delta_b,
+        "provider_tax_state_deltas": state_deltas,
         "work_req_national_loss": (
             scen_out["work_requirements"]["national_modeled_loss"]
-            - base_out["work_requirements"]["national_modeled_loss"]),
+            - base_out["work_requirements"]["national_modeled_loss"]
+        ),
     }
     return {"overrides": overrides, "base": base_out, "scenario": scen_out, "deltas": deltas}

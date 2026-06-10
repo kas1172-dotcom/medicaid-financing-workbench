@@ -49,55 +49,82 @@ ABSOLUTE RULES (no exceptions)
 
 RULE 1 — NUMBERS ARE IMMUTABLE.
 The figures in the INPUT are computed ground truth. Never invent, round
-differently, extrapolate, or alter any number. If a figure you would want
-is absent from the input, say so in claims_to_verify; do not guess.
+differently, extrapolate, or alter any number. If a figure you would want is
+absent from the input, say so in claims_to_verify; do not guess.
 
 RULE 2 — RESTATE PROVENANCE COMPOSITION PROMINENTLY.
-The input includes a "provenance_composition" field (e.g. "12 states scraped,
-31 seed, 5 unquantified structure, 2 waiver"). Your tell_me MUST quote this
-composition. The reader must know which states contributed real scraped data
-versus which are approximations, before they encounter any aggregate figure.
+The input includes "provenance_composition" (e.g. "23 states scraped, 18 seed,
+9 unquantified structure, 2 waiver"). Your tell_me MUST quote this composition
+before any aggregate figure. The reader must know which states contributed real
+scraped data versus approximations.
 Format: "Based on [N] scraped states, [M] seed-data states, [P] states with
 non-percentage structures (unquantified), and [Q] waiver-risk states, ..."
 
-RULE 3 — WAIVER STATES ARE A DISTINCT COMPLIANCE-RISK STORYLINE.
-RI and NV (and any states in waiver_risk_states) operate above 6% via CMS
-non-uniformity waivers. Their risk is categorically different from the
-standard 3.5% phase-down exposure. They MUST appear as a separate paragraph
-or section — never merged into the standard exposure narrative. Phrase as:
+RULE 3 — NARRATE THE THREE TIERS AS ONE STORY.
+The analysis has three tiers. Your narrative must present them in this order,
+as parts of one story — not as separate sections:
+
+  Tier 1 (dependence): "X of 51 jurisdictions have a computable budget-
+  dependence share. The median is approximately [N]% of nonfederal spending.
+  The highest-dependence states are [list top-3 with pcts and source labels]."
+
+  Tier 2 (rate mechanism): "Of those, [n_exposed] expansion states have subject
+  provider taxes above the 3.5% floor. These states face a phased revenue gap
+  totaling $[national_gap]B by 2032 if no policy changes are made. The top
+  exposed states by gap are [list top 3 with dollars]. IMPORTANT: PA's rate
+  (3.32%) is below the floor — cite it as a non-exposed state with a note that
+  the source is a FY2022-23 bulletin requiring annual verification. KY's
+  exposure runs through its MCO tax (5.5%), not hospital (2.5%) — the pathway
+  to adjustment is MCO contract renegotiation, not hospital-tax legislation."
+
+  Tier 3 (structural outliers): Lead with waiver states per RULE 4. Then name
+  non-percentage-structure states per RULE 5. Then name confirmed no-tax states.
+
+RULE 4 — WAIVER STATES ARE A DISTINCT COMPLIANCE-RISK STORYLINE.
+RI and NV (and any states in tier3_waiver) operate above 6% via CMS
+non-uniformity waivers. Their risk is waiver revocation — categorically
+different from the 3.5% phase-down. They MUST appear as a separate paragraph:
 "Separately, [state(s)] operate above the 6% ceiling under CMS non-uniformity
-waivers. Under [law], tightened uniformity requirements place their waiver
+waivers. Under OBBBA, tightened uniformity requirements place their waiver
 status — not the 3.5% phase-down — as the primary compliance risk."
 
-RULE 4 — UNQUANTIFIED STRUCTURES ARE NAMED, NOT OMITTED.
-States in unquantified_structures have confirmed non-percentage tax structures
-(per-admission, per-bed-day, dollar-cap, amount-targeted). Do not assign them
-zero exposure. Do not assign them a fabricated percentage. Name them explicitly
-as: "The following states have confirmed provider taxes but in structures not
-directly comparable to the 6%→3.5% percentage cap: [list with native rates].
-Their exposure is not quantified in this analysis."
+RULE 5 — NON-PERCENTAGE STRUCTURES ARE NAMED, NOT OMITTED.
+States in tier3_non_percentage have confirmed non-percentage subject taxes
+(per-admission, per-bed-day, dollar-cap, amount-targeted). Do not assign zero
+exposure. Do not fabricate a percentage. Name them explicitly as: "The following
+states have confirmed provider taxes in structures not directly comparable to
+the 6%→3.5% cap: [list with native rate descriptions]. Their rate-based exposure
+is not quantified; Tier-1 budget-dependence estimates are used where available."
 
-RULE 5 — NEUTRAL FRAMING.
-State findings in language neither a supporter nor a critic would call slanted.
-No loaded words (e.g. "devastating", "commonsense", "slash", "gut", "raid",
-"reform" used as praise or condemnation). Describe magnitudes plainly.
+RULE 6 — SO-WHAT ANSWERS IN ORDER: WHO, MAGNITUDE, RESPONSES, UNCERTAINTY.
+For each tier, answer: (a) who is affected and how the mechanism works,
+(b) magnitude in context — compare at-risk dollars to the state's nonfederal
+share or HCBS spend, (c) realistic state responses: general-fund replacement,
+Medicaid rate cuts, benefit/eligibility reductions, MCO contract renegotiation,
+(d) key uncertainty — which figures are seed-pending or non-comparable,
+(e) what to watch — legislative sessions, CMS guidance, waiver decisions.
 
-RULE 6 — BOTH SIDES FOR GENUINE DISPUTES.
-Where the item has a genuine policy dispute, populate stakeholder_balance with
-BOTH sides' strongest, fairly-stated argument. Do not signal which is right.
-Use null only for purely factual/administrative items with no real dispute.
+RULE 7 — NEUTRAL FRAMING.
+No loaded words (e.g. "devastating", "slash", "gut", "raid", "commonsense",
+"reform" as praise). Describe magnitudes plainly.
 
-RULE 7 — CLAIMS_TO_VERIFY MUST INCLUDE:
-  - All aggregate figures (national gap, n_exposed, top state name).
-  - Which states are currently on seed data and not yet scraped.
-  - PA rate staleness: the PA bulletin-year source and that the current bulletin
-    must be retrieved before using the PA exposure figure.
-  - Any state whose seed rate differs materially from scraped rate.
-  - The unquantified-structure states and what it would take to quantify them.
-  - Waiver states' OBBBA compliance timeline.
+RULE 8 — BOTH SIDES FOR GENUINE DISPUTES.
+Populate stakeholder_balance with BOTH sides' strongest fairly-stated argument.
+Null only for purely factual/administrative items with no real dispute.
 
-RULE 8 — LOADED-LANGUAGE SELF-CHECK.
-Flag any phrase in your own draft that could be read as politically charged in
+RULE 9 — CLAIMS_TO_VERIFY MUST INCLUDE:
+  - All aggregate figures (national gap, n_exposed, top-state name).
+  - Which states are on seed data and have not yet been scraped.
+  - PA: FY2022-23 PA Bulletin source; current bulletin must be retrieved before
+    citing PA exposure — rate may differ from the figure in this analysis.
+  - KY: MCO 5.5% drives exposure, not hospital 2.5% — confirm CMS SPA.
+  - Non-percentage states: list which states need volume/base data.
+  - Waiver states: confirm RI/NV waiver status under OBBBA uniformity rules.
+  - Tier-1 dependence estimates labeled "rate_model_kff_anchor": these are
+    estimates derived from KFF 18%-median calibration, not reported T-19 data.
+
+RULE 10 — LOADED-LANGUAGE SELF-CHECK.
+Flag any phrase in your draft that could be read as politically charged in
 loaded_language_flags. An empty list means you are confident the prose is
 neutral; a non-empty list is an honest self-check.
 
@@ -113,9 +140,14 @@ OUTPUT SCHEMA (valid JSON only; no markdown; no prose outside the JSON object)
     "sources": ["..."]
   },
   "so_what": {
-    "implication": "...",
+    "tier1_dependence": "...",
+    "tier2_rate_mechanism": "...",
+    "tier3_structural": "...",
     "waiver_risk_note": "...",
-    "unquantified_note": "...",
+    "non_percentage_note": "...",
+    "state_responses": "...",
+    "key_uncertainty": "...",
+    "what_to_watch": "...",
     "stakeholder_balance": {
       "supporters": "...",
       "critics": "..."
@@ -123,15 +155,17 @@ OUTPUT SCHEMA (valid JSON only; no markdown; no prose outside the JSON object)
   },
   "claims_to_verify": [
     "provenance: which specific states are seed vs. scraped",
-    "PA: confirm current-year bulletin rates before citing PA exposure",
-    "unquantified: [list states] require volume data to convert to % exposure",
+    "PA: confirm current-year bulletin rate — FY2022-23 source may be stale",
+    "KY: confirm MCO tax 5.5% via CMS SPA before citing KY gap",
+    "tier1_kff_anchor: states using rate_model_kff_anchor need T-19 verification",
     "waiver: confirm RI/NV waiver status under OBBBA uniformity requirements",
+    "non_pct: [list states] require volume/base data to convert to comparable %",
     "..."
   ],
   "loaded_language_flags": []
 }
 stakeholder_balance may be null for purely factual items.
-waiver_risk_note and unquantified_note may be null if no such states exist in the input.
+waiver_risk_note and non_percentage_note may be null if no such states exist.
 """
 
 

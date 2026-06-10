@@ -40,11 +40,21 @@ def _load_live_spending() -> dict[str, dict] | None:
     for _, row in df.iterrows():
         abbr = str(row.get("abbr", "")).strip().upper()
         if abbr in ANALYSIS_ABBRS:
-            result[abbr] = {
+            entry = {
                 "total_medicaid_spend":     float(row.get("total_medicaid_spend", 0)),
                 "total_medicaid_fed_spend": float(row.get("total_medicaid_fed_spend", 0)),
                 "nonfederal_share":         float(row.get("nonfederal_share", 0)),
             }
+            # Optional: CMS-64 T-19 provider-tax revenue (present only when the
+            # source adapter has pulled the supplemental schedule).
+            if "provider_tax_revenue_millions" in df.columns:
+                raw = row.get("provider_tax_revenue_millions")
+                if raw is not None and str(raw).strip() not in ("", "nan", "None"):
+                    try:
+                        entry["provider_tax_revenue_millions"] = float(raw)
+                    except (ValueError, TypeError):
+                        pass
+            result[abbr] = entry
     return result if result else None
 
 

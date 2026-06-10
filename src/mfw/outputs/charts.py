@@ -22,26 +22,86 @@ def _provenance_note(ax, provenance: str) -> None:
 
 
 def chart_provider_tax_gap(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
-    """Horizontal bar chart — provider-tax at-risk revenue, top exposed states."""
+    """
+    Two-panel chart: Tier-1 dependence ranking (top 20) with Tier-2 gap overlay.
+
+    Left panel: budget-dependence share (%) for states with available data,
+    sorted descending. States with Tier-2 rate exposure shown in a darker shade.
+    Right panel: Tier-2 at-risk revenue ($M) for exposed states.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
-    rows = [r for r in result["rows"] if r["exposed"]][:15]
-    if not rows:
-        return _empty_chart(out_dir / "provider_tax_gap.png", "No exposed states")
 
-    states = [r["abbr"] for r in rows]
-    gaps = [r["final_gap_millions"] for r in rows]
-    max_gap = max(gaps) if gaps else 1
+    # Tier 1: dependence ranking
+    t1_rows = [
+        r for r in result.get("tier1_ranked", result.get("rows", []))
+        if r.get("dependence_share_pct") is not None
+    ][:20]
 
-    fig, ax = plt.subplots(figsize=(8, max(4, len(states) * 0.5)))
-    ax.barh(states[::-1], gaps[::-1], color=ACCENT, edgecolor="none")
-    ax.set_xlabel("At-risk revenue ($M, final year of phase-down)")
-    ax.set_title("Provider Tax Cap — At-Risk Revenue by State\n(expansion states above 3.5% ceiling)",
-                 fontsize=11, fontweight="bold")
-    ax.set_xlim(0, max_gap * 1.18)
-    for bar, val in zip(ax.patches, gaps[::-1]):
-        ax.text(bar.get_width() + max_gap * 0.012, bar.get_y() + bar.get_height() / 2,
-                f"${val:,.0f}M", va="center", fontsize=8)
-    _provenance_note(ax, result["data_provenance"])
+    # Tier 2: gap rows
+    t2_rows = [r for r in result.get("tier2_exposed", []) if r.get("final_gap_millions", 0) > 0][:15]
+
+    if not t1_rows and not t2_rows:
+        return _empty_chart(out_dir / "provider_tax_gap.png", "Insufficient data")
+
+    fig, axes = plt.subplots(1, 2, figsize=(14, max(5, max(len(t1_rows), len(t2_rows)) * 0.45 + 1)))
+
+    # ── Left panel: Tier-1 dependence ────────────────────────────────
+    ax1 = axes[0]
+    if t1_rows:
+        abbrs = [r["abbr"] for r in t1_rows]
+        dep_pcts = [r["dependence_share_pct"] for r in t1_rows]
+        colors = [
+            "#0a5e56" if r.get("exposed") else (
+                "#e8a820" if r.get("tier") == 3 else ACCENT
+            )
+            for r in t1_rows
+        ]
+        ax1.barh(abbrs[::-1], dep_pcts[::-1], color=colors[::-1], edgecolor="none")
+        ax1.axvline(18, color="#666", linestyle="--", linewidth=0.8, alpha=0.6)
+        ax1.text(18.5, 0, "18% KFF\nmedian", fontsize=7, color="#666", va="bottom")
+        ax1.set_xlabel("Provider tax dependence (% of nonfederal share)")
+        ax1.set_title(
+            "High provider-tax dependence creates\nfinancing risk for 31+ states",
+            fontsize=10, fontweight="bold",
+        )
+        # Legend patches
+        patches = [
+            mpatches.Patch(color="#0a5e56", label="Tier 2: rate above 3.5%"),
+            mpatches.Patch(color=ACCENT,    label="Tier 1: dependence only"),
+            mpatches.Patch(color="#e8a820", label="Tier 3: structural outlier"),
+        ]
+        ax1.legend(handles=patches, fontsize=7, loc="lower right")
+        _provenance_note(ax1, result["data_provenance"])
+    else:
+        ax1.text(0.5, 0.5, "Dependence data unavailable", ha="center", va="center",
+                 transform=ax1.transAxes)
+        ax1.axis("off")
+
+    # ── Right panel: Tier-2 rate exposure ────────────────────────────
+    ax2 = axes[1]
+    if t2_rows:
+        states2 = [r["abbr"] for r in t2_rows]
+        gaps = [r["final_gap_millions"] for r in t2_rows]
+        max_gap = max(gaps) if gaps else 1
+        ax2.barh(states2[::-1], gaps[::-1], color="#0a5e56", edgecolor="none")
+        ax2.set_xlabel("Revenue requiring replacement ($M, 2032 phase-down)")
+        ax2.set_title(
+            "States above the 3.5% floor face direct\nprovider-tax revenue replacement pressure",
+            fontsize=10, fontweight="bold",
+        )
+        ax2.set_xlim(0, max_gap * 1.18)
+        for bar, val in zip(ax2.patches, gaps[::-1]):
+            ax2.text(
+                bar.get_width() + max_gap * 0.012,
+                bar.get_y() + bar.get_height() / 2,
+                f"${val:,.0f}M", va="center", fontsize=8,
+            )
+        _provenance_note(ax2, result["data_provenance"])
+    else:
+        ax2.text(0.5, 0.5, "No Tier-2 exposed states", ha="center", va="center",
+                 transform=ax2.transAxes)
+        ax2.axis("off")
+
     plt.tight_layout()
     out = out_dir / "provider_tax_gap.png"
     fig.savefig(out, dpi=140, bbox_inches="tight")

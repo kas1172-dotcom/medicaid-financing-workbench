@@ -198,12 +198,22 @@ def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
 
     is_seed = summary["data_provenance"] == "seed"
     prov_comp = pt_result.get("provenance_composition", "")
+    n_t1 = sum(1 for r in pt_result.get("rows", []) if r.get("dependence_share_pct") is not None)
+    n_t2 = pt_result.get("n_exposed", 0)
+    n_t3 = (
+        pt_result.get("n_waiver_risk", 0)
+        + pt_result.get("n_unquantified", 0)
+        + len(pt_result.get("tier3_no_tax", []))
+    )
     return {
         "meta": {
-            "generated_by": "Medicaid Financing Workbench v0.2.0",
+            "generated_by": "Medicaid Financing Workbench v0.3.0",
             "data_provenance": summary["data_provenance"],
             "provenance_composition": prov_comp,
-            "n_exposed": pt_result.get("n_exposed"),
+            "n_tier1_with_dependence": n_t1,
+            "n_tier2_exposed": n_t2,
+            "n_tier3_outliers": n_t3,
+            "n_exposed": n_t2,
             "n_waiver_risk": pt_result.get("n_waiver_risk"),
             "n_unquantified": pt_result.get("n_unquantified"),
             "national_gap_billion": pt_result.get("national_final_gap_billion"),

@@ -75,6 +75,43 @@ def fetch_cms64(timeout: int = 60) -> list[dict]:
     return all_rows
 
 
+def parse_provider_tax_revenue_by_state(rows: list[dict]) -> dict[str, float] | None:
+    """
+    Extract provider-tax revenue from CMS-64 T-19 supplemental data, if present.
+
+    The standard CMS-64 expenditure dataset (00505e90-...) does not include the
+    T-19 "Sources of Nonfederal Share" schedule, which is where states report
+    provider-tax revenue as a dollar amount. If a future dataset exposes T-19
+    fields (column names containing "provider_tax" or "provider_related_donation"),
+    this function will extract them automatically.
+
+    Returns dict keyed by state name: {state: revenue_millions} or None if the
+    column is not present in the dataset.
+    """
+    if not rows:
+        return None
+    # Look for T-19 provider-tax revenue columns in the first row.
+    sample = rows[0]
+    pt_col = next(
+        (k for k in sample if "provider_tax" in k.lower() or "provider_related" in k.lower()),
+        None,
+    )
+    if pt_col is None:
+        return None  # Column not present in this dataset — caller falls back to rate model.
+
+    by_state: dict[str, float] = {}
+    for r in rows:
+        state = r.get("state", "").strip()
+        if not state or state == "National Totals":
+            continue
+        try:
+            val = _parse_dollars(str(r.get(pt_col, "0")))
+            by_state[state] = by_state.get(state, 0.0) + val / 1_000_000
+        except (ValueError, TypeError):
+            pass
+    return by_state if by_state else None
+
+
 def parse_spending_by_state(rows: list[dict]) -> dict[str, dict]:
     """
     Aggregate rows to most-recent complete FFY state totals.

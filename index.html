@@ -333,6 +333,29 @@ svg text { font-family: 'DM Sans', sans-serif; }
 .stat-chip.gap-chip .val { color: var(--teal); }
 .gap-chip-comp { font-size: 10px; color: var(--muted); margin-top: 4px; line-height: 1.3; max-width: 180px; }
 
+/* ── Start Here panel ─────────────────────────────────────────────── */
+.start-here-panel { background: #f0f7f6; border: 1px solid #b2d8d4; border-radius: 6px; margin-bottom: 24px; }
+.start-here-panel > summary { cursor: pointer; padding: 12px 16px; font-size: 13px; color: var(--navy); list-style: none; display: flex; align-items: center; gap: 8px; }
+.start-here-panel > summary::before { content: '▶'; font-size: 10px; transition: transform 0.15s; }
+.start-here-panel[open] > summary::before { transform: rotate(90deg); }
+.start-here-body { padding: 4px 16px 14px; }
+.start-here-body p { font-size: 13px; color: var(--text); margin-bottom: 10px; line-height: 1.55; }
+.start-here-body a { color: var(--teal); text-decoration: none; border-bottom: 1px solid #b2d8d4; }
+
+/* ── Glossary ─────────────────────────────────────────────────────── */
+.glossary-panel { margin-top: 20px; }
+.glossary-panel > summary { cursor: pointer; font-weight: 700; font-size: 14px; color: var(--navy); padding: 8px 0; }
+.glossary-entry { margin-bottom: 10px; font-size: 13px; }
+.glossary-term { font-weight: 700; color: var(--navy); }
+.glossary-def { color: var(--text); }
+
+/* ── Tier badge ───────────────────────────────────────────────────── */
+.tier-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.3px; vertical-align: middle; }
+.tier-tag-1 { background: #e8f4f2; color: var(--teal); }
+.tier-tag-2 { background: #e8f0e4; color: #2a6b1f; }
+.tier-tag-3 { background: #fdf3e3; color: #8a5a00; }
+.tier-tag-w { background: #fde8e8; color: var(--high); }
+
 /* ── Loading / error ─────────────────────────────────────────────── */
 #loading { text-align: center; padding: 80px; color: var(--muted); }
 #error-msg { display: none; background: #fde8e8; border: 1px solid #c0392b; border-radius: 4px; padding: 16px; margin: 24px 0; }
@@ -416,8 +439,28 @@ svg text { font-family: 'DM Sans', sans-serif; }
     <div class="tab-panel active" id="tab-financing" role="tabpanel">
 
       <div class="section-head">
-        <h2>Provider Tax Cap Exposure — Interactive Analysis</h2>
-        <p>Expansion states with non-exempt provider taxes above the new 3.5% ceiling. Explore state exposure interactively; nursing facility and ICF/IID taxes are exempt from the phase-down.</p>
+        <h2>Provider Tax Financing Analysis — Three-Tier Model</h2>
+        <p>All 51 jurisdictions, three analytical lenses: budget dependence (how much non-federal Medicaid relies on provider-tax revenue), rate-based exposure (states above the 3.5% floor), and structural outliers (waiver states, non-percentage structures, no-tax states).</p>
+      </div>
+
+      <!-- ─── Start Here (collapsible) ─────────────────────────────── -->
+      <details class="start-here-panel" open>
+        <summary><strong>Start Here — What are provider taxes and what changed?</strong></summary>
+        <div class="start-here-body">
+          <p><strong>Provider taxes</strong> are fees states charge to hospitals, nursing homes, managed care plans (MCOs), and other Medicaid providers. States use the revenue to draw down additional federal matching funds — so a $1 tax can generate $2–$3 in total Medicaid spending. Provider taxes currently fund a median <strong>18% of the non-federal Medicaid share</strong> nationally. They are load-bearing: in high-reliance states, cutting a provider tax forces a direct cut to Medicaid or an equivalent general-fund replacement.</p>
+          <p>The 2025 "One Big Beautiful Bill" changed three things: (1) <strong>No new taxes</strong> — states cannot create or increase provider taxes, effective July 2025. (2) <strong>Phase-down</strong> — for expansion states, existing non-exempt taxes above 3.5% of net patient revenue must phase down 0.5 percentage points per year, from 6% (2027) to 3.5% (2032). (3) <strong>Waiver tightening</strong> — CMS non-uniformity waivers that allowed some states above the 6% ceiling now face new compliance requirements.</p>
+          <p><strong>Two exemptions:</strong> Nursing facility and ICF/IID taxes are entirely exempt from the phase-down. Only hospital, MCO, ambulance, and "other" provider taxes face the new ceiling. States with taxes primarily on exempt classes are NOT exposed even if those rates exceed 3.5%.</p>
+          <p><strong>CBO estimate:</strong> Provider-tax provisions reduce federal Medicaid spending by $226B of the law's $911B total 10-year reduction. Sources: <a href="https://www.kff.org/medicaid/fact-sheet/5-key-facts-about-medicaid-and-provider-taxes/" target="_blank" rel="noopener">KFF 5 Key Facts</a> · <a href="https://www.kff.org/medicaid/issue-brief/allocating-cbos-estimates-of-federal-medicaid-spending-reductions-across-the-states/" target="_blank" rel="noopener">KFF CBO State Allocation</a> · <a href="https://www.macpac.gov/subtopic/health-care-related-taxes/" target="_blank" rel="noopener">MACPAC provider-tax explainer</a> · <a href="https://www.medicaid.gov/medicaid/financing-and-reimbursement/provider-taxes/index.html" target="_blank" rel="noopener">Medicaid.gov provider taxes</a></p>
+        </div>
+      </details>
+
+      <!-- ─── 0. Tier-1 Dependence Ranking ─────────────────────────── -->
+      <div class="viz-section" id="viz-dependence">
+        <div class="viz-section-header">
+          <h3>States with the highest provider-tax dependence face the greatest financing pressure across all three law provisions</h3>
+          <p>Tier-1 metric: estimated provider-tax revenue as % of non-federal Medicaid share. States shown regardless of rate structure. Darker bars are Tier-2 rate-exposed; amber = Tier-3 structural outlier.</p>
+        </div>
+        <div class="viz-container" id="viz-dependence-chart"></div>
       </div>
 
       <!-- ─── 1. Risk Simulator ─────────────────────────────────────── -->
@@ -830,20 +873,34 @@ function buildProviderTaxTable(rows) {
   const tbl = document.querySelector('#tbl-provider_tax');
   if (tbl) tbl.classList.add('mobile-card');
   const thead = `<tr>
-    <th>State</th><th>Exp.</th><th>Max Subject Rate</th>
-    <th>Exposed</th><th>Final Gap $M</th><th>% of Nonfed Share</th><th>Classes at Risk</th>
+    <th>State</th><th>Tier</th><th>Dependence</th><th>Exp.</th><th>Max Subject Rate</th>
+    <th>Final Gap $M</th><th>% of Nonfed Share</th><th>Classes at Risk</th>
   </tr>`;
+  const tierTagHtml = r => {
+    if (r.waiver_flag) return '<span class="tier-tag tier-tag-w">W</span>';
+    const cls = `tier-tag tier-tag-${r.tier || 1}`;
+    return `<span class="${cls}">T${r.tier || 1}</span>`;
+  };
+  const depHtml = r => {
+    if (r.dependence_share_pct == null) return '<span style="color:var(--muted)">–</span>';
+    const est = r.dependence_source === 'rate_model_kff_anchor' ? '~' : '';
+    return `${r.dependence_share_pct}${est}%`;
+  };
   const tbody = rows.map(r => {
     const classBreakdown = r.gap_by_class
       ? Object.entries(r.gap_by_class).map(([c, v]) => `${c}: $${v}M`).join(', ')
       : '';
+    const rateStr = (r.provider_tax_rate || 0) > 0
+      ? `${Number(r.provider_tax_rate).toFixed(1)}%`
+      : r.structure === 'non_percentage' ? 'non-%' : '–';
     return `<tr>
       <td data-label="State">${escHtml(r.state)}</td>
+      <td data-label="Tier">${tierTagHtml(r)}</td>
+      <td data-label="Dependence" title="${escHtml(r.dependence_source || '')}">${depHtml(r)}</td>
       <td data-label="Expansion">${r.expansion ? '✓' : '–'}</td>
-      <td data-label="Max Rate" class="${r.provider_tax_rate > 3.5 ? 'above-cap' : ''}">${r.provider_tax_rate.toFixed(1)}%</td>
-      <td data-label="Exposed">${r.exposed ? '<span class="tier-badge tier-High">Yes</span>' : '<span class="tier-badge tier-Low">No</span>'}</td>
+      <td data-label="Max Rate" class="${(r.provider_tax_rate||0) > 3.5 ? 'above-cap' : ''}">${rateStr}</td>
       <td data-label="Gap $M">${r.exposed ? '$' + r.final_gap_millions.toLocaleString() + 'M' : '–'}</td>
-      <td data-label="% Nonfed">${r.exposed ? r.gap_share_of_nonfederal_pct.toFixed(1) + '%' : '–'}</td>
+      <td data-label="% Nonfed">${r.exposed ? (r.gap_share_of_nonfederal_pct||0).toFixed(1) + '%' : '–'}</td>
       <td data-label="Classes" style="font-size:11px;color:var(--muted)">${escHtml(classBreakdown)}</td>
     </tr>`;
   }).join('');
@@ -1197,12 +1254,32 @@ specific claims a reviewer should confirm before citing the numbers publicly.</p
       points, with a public record of those annotations.</li>
 </ul>
 
+<details class="glossary-panel">
+  <summary>Glossary of key terms</summary>
+  <div style="padding:8px 0 4px">
+    <div class="glossary-entry"><span class="glossary-term">Provider tax</span><span class="glossary-def"> — A fee levied by a state on hospitals, managed care plans, nursing facilities, or other Medicaid providers. Revenue is used to generate additional federal matching funds.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Nonfederal share</span><span class="glossary-def"> — The portion of Medicaid spending that states pay (also called "state share"). The federal government covers the rest via the FMAP rate.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">FMAP (Federal Medical Assistance Percentage)</span><span class="glossary-def"> — The rate at which the federal government matches state Medicaid spending. Ranges from 50% to 76.7% depending on state income levels.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Tier 1 — Budget dependence</span><span class="glossary-def"> — Provider tax revenue as a share of nonfederal Medicaid spending. Available for all 51 jurisdictions. Answers: how much of the state's own Medicaid budget depends on provider taxes?</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Tier 2 — Rate exposure</span><span class="glossary-def"> — Applies to expansion states with subject taxes above the 3.5% phase-down floor. Measures the revenue gap if rates are cut to the cap. Based on rate data from state statutes, agency notices, and CMS approvals.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Tier 3 — Structural outliers</span><span class="glossary-def"> — Three sub-groups: (a) waiver states (RI, NV) operating above 6% via CMS non-uniformity waiver; (b) states with non-percentage structures (per-admission, per-bed-day, dollar-cap); (c) expansion states with no subject taxes confirmed.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">6% hold-harmless ceiling</span><span class="glossary-def"> — Federal cap on provider tax rates as a share of net patient revenue. In effect since 2003. The 2025 law phases this down to 3.5% for expansion states by 2032.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Non-uniformity waiver</span><span class="glossary-def"> — CMS approval allowing a state to set a provider tax rate above the 6% ceiling. RI and NV hold such waivers. Under OBBBA, tightened uniformity rules make waiver revocation the primary risk for these states — distinct from the standard phase-down.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Subject classes</span><span class="glossary-def"> — Provider types subject to the 6%→3.5% phase-down: hospital, MCO, ambulance, other.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Exempt classes</span><span class="glossary-def"> — Provider types exempt from the phase-down ceiling: nursing facility, ICF/IID (intermediate care facilities for people with intellectual disabilities).</span></div>
+    <div class="glossary-entry"><span class="glossary-term">KFF-anchor estimate (~)</span><span class="glossary-def"> — When CMS-64 T-19 revenue data is unavailable, dependence share is estimated from the maximum subject tax rate using a KFF-published calibration: 18% median dependence at 5.5% median rate. Values marked with ~ are estimates, not reported data.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Seed data</span><span class="glossary-def"> — Values derived from published sources (state statutes, agency notices, KFF survey estimates) but not yet confirmed via direct scraping of a live state or CMS source. Labeled in the provenance badge.</span></div>
+    <div class="glossary-entry"><span class="glossary-term">Scraped data</span><span class="glossary-def"> — Values retrieved directly from an authoritative source (state agency website, CMS portal, official state statute) via automated collection. Higher provenance confidence than seed values.</span></div>
+  </div>
+</details>
+
 <p style="margin-top:32px;font-size:12px;color:var(--muted)">
 Medicaid Financing Workbench — open source, reproducible policy analysis.<br>
 Data sources: CMS Financial Management Reports (CMS-64), KFF State Health Facts,
 U.S. Census Bureau American Community Survey.<br>
 Policy parameters sourced from KFF "5 Key Facts About Medicaid and Provider Taxes"
-(Dec 2025, updated Feb 2026) and the KFF reconciliation law tracker.
+(Dec 2025, updated Feb 2026) and the KFF reconciliation law tracker.<br>
+Rate sourcing: rates derived from state statutes, agency notices, and CMS approvals; exposure rankings validated against KFF's published CBO allocation analysis (KFF publishes no downloadable rate table; its survey-based estimates are used for aggregate calibration only).
 </p>
   `;
 }
@@ -1239,8 +1316,92 @@ function addProvLegend(container, items) {
 // D3 Visualization helpers
 // ════════════════════════════════════════════════════════════════════
 function gapAtCap(row, cap) {
-  if (!row.exposed || row.provider_tax_rate <= cap) return 0;
+  // Use pre-computed yearly gap when available (more accurate than linear interp).
+  if (row.gap_by_year) {
+    const yr = Object.keys(CAP_SCHEDULE).find(y => Math.abs(CAP_SCHEDULE[y] - cap) < 0.01);
+    if (yr) return (row.gap_by_year[yr] || 0);
+  }
+  if (!row.exposed || !row.provider_tax_rate || row.provider_tax_rate <= cap) return 0;
   return Math.max(0, (row.provider_tax_rate - cap) / (row.provider_tax_rate - 3.5) * row.final_gap_millions);
+}
+
+// Tier color for dependence bars
+function tierColor(row) {
+  if (row.waiver_flag) return 'var(--high)';
+  if (row.tier === 3)  return '#e8a820';
+  if (row.tier === 2)  return '#0a5e56';
+  return 'var(--teal)';
+}
+
+// ── 0. Tier-1 Dependence Ranking ─────────────────────────────────
+function buildDependenceRanking(ptAnalysis) {
+  const container = document.getElementById('viz-dependence-chart');
+  if (!container) return;
+
+  const t1 = (ptAnalysis.tier1_ranked || ptAnalysis.rows || [])
+    .filter(r => r.dependence_share_pct != null)
+    .slice(0, 25);
+  if (!t1.length) { container.innerHTML = '<p style="color:var(--muted);padding:16px">Dependence data unavailable — run <code>mfw build --live</code>.</p>'; return; }
+
+  const mobile = isMobile();
+  const W = Math.max(container.clientWidth || 360, 280);
+  const BAR_H = mobile ? 22 : 18;
+  const margin = mobile
+    ? { top: 4, right: 50, bottom: 28, left: 36 }
+    : { top: 6, right: 90, bottom: 30, left: 110 };
+  const innerW = W - margin.left - margin.right;
+  const H = t1.length * BAR_H + margin.top + margin.bottom + 10;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = rsvg(container, W, H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const y = d3.scaleBand().domain(t1.map(r => r.abbr)).range([0, innerH]).padding(0.18);
+  const x = d3.scaleLinear().domain([0, Math.max(d3.max(t1, r => r.dependence_share_pct) * 1.1, 25)]).range([0, innerW]);
+
+  // KFF 18% median reference line
+  g.append('line').attr('x1', x(18)).attr('x2', x(18)).attr('y1', 0).attr('y2', innerH)
+    .attr('stroke', '#888').attr('stroke-dasharray', '4,3').attr('stroke-width', 1);
+  if (!mobile) {
+    g.append('text').attr('x', x(18) + 3).attr('y', -2).style('font-size', '9px').attr('fill', '#888').text('18% KFF median');
+  }
+
+  const tip = makeTooltip();
+  const htmlFn = d => {
+    const src = d.dependence_source === 'rate_model_kff_anchor' ? 'estimated (rate model, KFF anchor)' : d.dependence_source;
+    return `<strong>${d.state}</strong>\nDependence: ${d.dependence_share_pct}% (${src})\nTier: ${d.tier}${d.waiver_flag ? ' (waiver)' : ''}`;
+  };
+  const bars = g.selectAll('.d3-bar').data(t1).enter().append('rect')
+    .attr('class', 'd3-bar').attr('rx', 2)
+    .attr('x', 0).attr('y', r => y(r.abbr))
+    .attr('width', r => x(r.dependence_share_pct)).attr('height', y.bandwidth())
+    .attr('fill', r => tierColor(r)).attr('opacity', 0.84);
+  bindTip(bars, tip, htmlFn);
+
+  // Tier tags (text superimposed on bar end)
+  if (!mobile) {
+    g.selectAll('.dep-lbl').data(t1).enter().append('text').attr('class', 'dep-lbl')
+      .attr('x', r => x(r.dependence_share_pct) + 4)
+      .attr('y', r => y(r.abbr) + y.bandwidth() / 2)
+      .attr('dy', '0.35em').style('font-size', '10px').attr('fill', '#444')
+      .text(r => r.dependence_share_pct + '%' + (r.dependence_source === 'rate_model_kff_anchor' ? '~' : ''));
+  }
+
+  g.append('g').call(d3.axisLeft(y).tickSize(0)).select('.domain').remove();
+  g.selectAll('.tick text').style('font-size', mobile ? '9px' : '11px');
+  g.append('g').attr('transform', `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).ticks(mobile ? 3 : 5).tickFormat(v => v + '%'));
+
+  addProvLegend(container, [
+    { fill: '#0a5e56', label: 'Tier 2 — rate above 3.5%' },
+    { fill: 'var(--teal)', label: 'Tier 1 — dependence only' },
+    { fill: '#e8a820',     label: 'Tier 3 — structural outlier' },
+    { fill: 'var(--high)', label: 'Waiver state' },
+  ]);
+  const note = document.createElement('p');
+  note.style.cssText = 'font-size:10px;color:var(--muted);margin:4px 8px 0;';
+  note.textContent = '~ = estimated from max subject rate using KFF 18%-at-5.5% anchor; not CMS-64 T-19 reported revenue.';
+  container.appendChild(note);
 }
 
 const CAP_SCHEDULE = { 2028: 5.5, 2029: 5.0, 2030: 4.5, 2031: 4.0, 2032: 3.5 };
@@ -1353,7 +1514,7 @@ function buildRiskSimulator(ptRows) {
       .select('.domain').remove();
     xAxis.selectAll('text').style('font-size', mobile ? '9px' : '11px');
 
-    const htmlFn = d => `<strong>${d.state}</strong>\n${d.provider_tax_rate.toFixed(1)}% (${provLabel(d.provider_tax_data_source)})\nGap: $${d.gap.toFixed(0)}M`;
+    const htmlFn = d => `<strong>${d.state}</strong>\n${(d.provider_tax_rate||0).toFixed(1)}% (${provLabel(d.provider_tax_data_source)})\nGap: $${d.gap.toFixed(0)}M`;
     const b = bars.selectAll('.d3-bar').data(rows, r => r.abbr);
     const bEnter = b.enter().append('rect').attr('class', 'd3-bar').attr('rx', 2);
     bindTip(bEnter, tip, htmlFn);
@@ -1390,8 +1551,9 @@ function buildRiskQuadrant(ptRows) {
   const container = document.getElementById('viz-risk-quadrant-chart');
   if (!container) return;
 
-  const rows = ptRows.filter(r => r.provider_tax_rate > 0);
-  if (!rows.length) return;
+  // Use all states with a computable dependence share (Tier-1 universal metric)
+  const rows = ptRows.filter(r => r.dependence_share_pct != null);
+  if (!rows.length) { container.innerHTML = '<p style="color:var(--muted);padding:20px">Dependence data unavailable.</p>'; return; }
 
   const mobile = isMobile();
   const W = Math.max(container.clientWidth || 360, 280);
@@ -1405,52 +1567,59 @@ function buildRiskQuadrant(ptRows) {
   const svg = rsvg(container, W, H);
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-  const x = d3.scaleLinear().domain([0, d3.max(rows, r => r.provider_tax_rate) * 1.05]).range([0, innerW]);
+  const maxDep = d3.max(rows, r => r.dependence_share_pct) * 1.05 || 40;
+  const x = d3.scaleLinear().domain([0, maxDep]).range([0, innerW]);
   const maxY = d3.max(rows, r => r.gap_share_of_nonfederal_pct || 0) * 1.1 || 10;
   const y = d3.scaleLinear().domain([0, maxY]).range([innerH, 0]);
-  const medX = d3.median(rows, r => r.provider_tax_rate);
+  const medX = d3.median(rows, r => r.dependence_share_pct);
   const medY = d3.median(rows.filter(r => r.exposed), r => r.gap_share_of_nonfederal_pct || 0) || maxY / 2;
 
+  // High-risk quadrant shading (above median on both axes)
   g.append('rect').attr('x', x(medX)).attr('y', 0).attr('width', innerW - x(medX)).attr('height', y(medY))
     .attr('fill', '#fde8e8').attr('opacity', 0.4);
   g.append('line').attr('x1', x(medX)).attr('x2', x(medX)).attr('y1', 0).attr('y2', innerH)
     .attr('stroke', '#999').attr('stroke-dasharray', '4,3').attr('stroke-width', 1);
   g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', y(medY)).attr('y2', y(medY))
     .attr('stroke', '#999').attr('stroke-dasharray', '4,3').attr('stroke-width', 1);
-  g.append('line').attr('x1', x(3.5)).attr('x2', x(3.5)).attr('y1', 0).attr('y2', innerH)
-    .attr('stroke', 'var(--high)').attr('stroke-width', 1.5).attr('stroke-dasharray', '5,3');
-  g.append('text').attr('x', x(3.5) + 3).attr('y', 10).style('font-size', '9px').attr('fill', 'var(--high)').text('3.5%');
+  // 18% KFF median reference
+  g.append('line').attr('x1', x(18)).attr('x2', x(18)).attr('y1', 0).attr('y2', innerH)
+    .attr('stroke', '#666').attr('stroke-width', 1).attr('stroke-dasharray', '5,3').attr('opacity', 0.6);
+  if (!mobile) g.append('text').attr('x', x(18) + 3).attr('y', 10).style('font-size', '9px').attr('fill', '#666').text('18% KFF');
 
   const tip = makeTooltip();
-  const htmlFn = d => `<strong>${d.state}</strong>\n${d.provider_tax_rate.toFixed(1)}% (${provLabel(d.provider_tax_data_source)})\nGap/nonfed: ${(d.gap_share_of_nonfederal_pct||0).toFixed(1)}%\nFinal gap: $${(d.final_gap_millions||0).toFixed(0)}M`;
+  const htmlFn = d => {
+    const depSrc = d.dependence_source === 'rate_model_kff_anchor' ? 'estimated' : d.dependence_source;
+    return `<strong>${d.state}</strong>\nDependence: ${d.dependence_share_pct}% (${depSrc})\nTier: ${d.tier}${d.waiver_flag ? ' (waiver)' : ''}\nGap/nonfed: ${(d.gap_share_of_nonfederal_pct||0).toFixed(1)}%\nFinal gap: $${(d.final_gap_millions||0).toFixed(0)}M`;
+  };
   const dots = g.selectAll('.d3-dot').data(rows).enter().append('circle')
     .attr('class', 'd3-dot')
-    .attr('cx', d => x(d.provider_tax_rate))
+    .attr('cx', d => x(d.dependence_share_pct))
     .attr('cy', d => y(d.gap_share_of_nonfederal_pct || 0))
     .attr('r', mobile ? 8 : 6)
-    .attr('fill', d => d.exposed ? provColor(d.provider_tax_data_source) : '#d5d0c8')
+    .attr('fill', d => tierColor(d))
     .attr('opacity', 0.82)
     .attr('stroke', '#fff').attr('stroke-width', 1);
   bindTip(dots, tip, htmlFn);
 
-  // Labels: top N exposed states by gap
+  // Labels: top N states by dependence
   const topN = mobile ? 4 : 10;
-  rows.filter(r => r.exposed).sort((a,b) => (b.final_gap_millions||0)-(a.final_gap_millions||0)).slice(0, topN).forEach(d => {
-    g.append('text').attr('x', x(d.provider_tax_rate) + 8).attr('y', y(d.gap_share_of_nonfederal_pct || 0) + 4)
+  rows.sort((a,b) => b.dependence_share_pct - a.dependence_share_pct).slice(0, topN).forEach(d => {
+    g.append('text').attr('x', x(d.dependence_share_pct) + 8).attr('y', y(d.gap_share_of_nonfederal_pct || 0) + 4)
       .style('font-size', mobile ? '9px' : '10px').attr('fill', '#333').text(d.abbr);
   });
 
   g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(mobile ? 4 : 6).tickFormat(v => v + '%'));
   g.append('g').call(d3.axisLeft(y).ticks(mobile ? 4 : 5).tickFormat(v => v + '%'));
   if (!mobile) {
-    g.append('text').attr('x', innerW / 2).attr('y', innerH + 42).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Maximum subject provider tax rate');
+    g.append('text').attr('x', innerW / 2).attr('y', innerH + 42).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Provider tax dependence (% of nonfederal share)');
     g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -48).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Gap as % of nonfederal share');
   }
 
   addProvLegend(container, [
-    { fill: 'var(--teal)', label: 'Scraped — primary source' },
-    { fill: '#a8c8c4',    label: 'Seed estimate' },
-    { fill: '#d5d0c8',    label: 'Not exposed' },
+    { fill: '#0a5e56', label: 'Tier 2 — rate above 3.5%' },
+    { fill: 'var(--teal)', label: 'Tier 1 — dependence only' },
+    { fill: '#e8a820',    label: 'Tier 3 — structural outlier' },
+    { fill: 'var(--high)', label: 'Waiver state' },
   ]);
 }
 
@@ -1497,7 +1666,7 @@ function buildPhaseDownTimeline(ptRows) {
   g.append('g').call(d3.axisLeft(y).ticks(mobile ? 4 : 5).tickFormat(v => '$' + (v/1000).toFixed(0) + 'B'));
   if (!mobile) {
     g.append('text').attr('x', innerW / 2).attr('y', innerH + 42).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Federal fiscal year');
-    g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -55).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Annual gap ($M)');
+    g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -55).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Annual replacement gap ($M)');
   }
 
   const color = d3.scaleSequential(d3.interpolateBlues).domain([0, allStateData.length]);
@@ -1641,7 +1810,8 @@ function buildCoverageLossScatter(ptRows, wrRows) {
 
   const wrByAbbr = {};
   (wrRows || []).forEach(r => { wrByAbbr[r.abbr] = r; });
-  const joined = ptRows.filter(r => r.expansion && wrByAbbr[r.abbr])
+  // Include all expansion states with dependence data (Tier-1 universal metric)
+  const joined = ptRows.filter(r => r.expansion && wrByAbbr[r.abbr] && r.dependence_share_pct != null)
     .map(r => ({ ...r, ...wrByAbbr[r.abbr], pt_abbr: r.abbr }));
 
   if (!joined.length) { container.innerHTML = '<p style="color:var(--muted);padding:20px">Insufficient joined data for this chart.</p>'; return; }
@@ -1658,37 +1828,45 @@ function buildCoverageLossScatter(ptRows, wrRows) {
   const svg = rsvg(container, W, H);
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-  const x = d3.scaleLinear().domain([0, d3.max(joined, d => d.final_gap_millions || 0) * 1.1 || 1]).range([0, innerW]);
+  // X = Tier-1 dependence share (universal metric, all states)
+  const maxDep = d3.max(joined, d => d.dependence_share_pct) * 1.1 || 40;
+  const x = d3.scaleLinear().domain([0, maxDep]).range([0, innerW]);
   const y = d3.scaleLinear().domain([0, d3.max(joined, d => d.modeled_coverage_loss || 0) * 1.1 || 1]).range([innerH, 0]);
-  const medX = d3.median(joined.filter(d => d.exposed), d => d.final_gap_millions || 0) || x.domain()[1] / 2;
+  const medX = d3.median(joined, d => d.dependence_share_pct);
   const medY = d3.median(joined, d => d.modeled_coverage_loss || 0) || y.domain()[1] / 2;
 
   g.append('rect').attr('x', x(medX)).attr('y', 0).attr('width', innerW - x(medX)).attr('height', y(medY))
     .attr('fill', '#fde8e8').attr('opacity', 0.35);
   g.append('line').attr('x1', x(medX)).attr('x2', x(medX)).attr('y1', 0).attr('y2', innerH).attr('stroke', '#ccc').attr('stroke-dasharray', '4,3');
   g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', y(medY)).attr('y2', y(medY)).attr('stroke', '#ccc').attr('stroke-dasharray', '4,3');
+  // 18% KFF reference
+  g.append('line').attr('x1', x(18)).attr('x2', x(18)).attr('y1', 0).attr('y2', innerH)
+    .attr('stroke', '#888').attr('stroke-dasharray', '5,3').attr('opacity', 0.5);
 
   const tip = makeTooltip();
-  const htmlFn = d => `<strong>${d.state}</strong>\nGap: $${(d.final_gap_millions||0).toFixed(0)}M\nCov. loss: ${(d.modeled_coverage_loss||0).toLocaleString()}\nLoss rate: ${(d.loss_pct_of_subject||0).toFixed(1)}%`;
+  const htmlFn = d => {
+    const depSrc = d.dependence_source === 'rate_model_kff_anchor' ? 'est.' : d.dependence_source;
+    return `<strong>${d.state}</strong>\nDependence: ${d.dependence_share_pct}% (${depSrc})\nCov. loss: ${(d.modeled_coverage_loss||0).toLocaleString()}\nLoss rate: ${(d.loss_pct_of_subject||0).toFixed(1)}%${d.exposed ? `\nGap: $${(d.final_gap_millions||0).toFixed(0)}M` : ''}`;
+  };
   const dots = g.selectAll('.d3-dot').data(joined).enter().append('circle')
     .attr('class', 'd3-dot')
-    .attr('cx', d => x(d.final_gap_millions || 0))
+    .attr('cx', d => x(d.dependence_share_pct))
     .attr('cy', d => y(d.modeled_coverage_loss || 0))
     .attr('r', mobile ? 8 : 6)
-    .attr('fill', d => d.exposed ? 'var(--high)' : 'var(--teal)')
+    .attr('fill', d => tierColor(d))
     .attr('opacity', 0.72).attr('stroke', '#fff').attr('stroke-width', 1);
   bindTip(dots, tip, htmlFn);
 
   const topN = mobile ? 3 : 6;
-  joined.filter(d => d.exposed).sort((a,b) => (b.final_gap_millions||0)-(a.final_gap_millions||0)).slice(0, topN).forEach(d => {
-    g.append('text').attr('x', x(d.final_gap_millions || 0) + 8).attr('y', y(d.modeled_coverage_loss || 0) + 4)
+  joined.sort((a,b) => b.dependence_share_pct - a.dependence_share_pct).slice(0, topN).forEach(d => {
+    g.append('text').attr('x', x(d.dependence_share_pct) + 8).attr('y', y(d.modeled_coverage_loss || 0) + 4)
       .style('font-size', mobile ? '9px' : '10px').attr('fill', '#333').text(d.abbr);
   });
 
-  g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(mobile ? 3 : 5).tickFormat(v => '$' + v + 'M'));
+  g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(mobile ? 3 : 5).tickFormat(v => v + '%'));
   g.append('g').call(d3.axisLeft(y).ticks(mobile ? 4 : 5).tickFormat(v => d3.format('.2s')(v)));
   if (!mobile) {
-    g.append('text').attr('x', innerW / 2).attr('y', innerH + 46).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Projected 2032 financing gap ($M)');
+    g.append('text').attr('x', innerW / 2).attr('y', innerH + 46).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Provider tax dependence (% of nonfederal share, Tier 1)');
     g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -55).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Modeled coverage loss');
   }
 }
@@ -2008,8 +2186,15 @@ function buildUnquantifiedPanel(unquantifiedStructures) {
 }
 
 // ── Main financing viz entry point ─────────────────────────────────
-function buildFinancingViz(ptRows, wrRows, waiverRiskStates, unquantifiedStructures) {
-  // Chart 1 — always render immediately (first visible chart)
+function buildFinancingViz(ptAnalysis, wrRows) {
+  const ptRows = ptAnalysis.rows || [];
+  const waiverRiskStates = ptAnalysis.tier3_waiver || ptAnalysis.waiver_risk_states || [];
+  const unquantifiedStructures = ptAnalysis.tier3_non_percentage || ptAnalysis.unquantified_structures || [];
+
+  // Chart 0 — Tier-1 Dependence Ranking (always render immediately — first visible)
+  buildDependenceRanking(ptAnalysis);
+
+  // Chart 1 — Risk Simulator (immediate)
   buildRiskSimulator(ptRows);
 
   // Charts 2-9 — defer until near viewport (saves ~2s of parse + render on mobile)
@@ -2102,9 +2287,7 @@ async function loadDashboard() {
 
     // D3 interactive visualizations
     const ptAnalysis = analyses.provider_tax || {};
-    const waiverRiskStates = ptAnalysis.waiver_risk_states || [];
-    const unquantifiedStructures = ptAnalysis.unquantified_structures || [];
-    buildFinancingViz(ptRows, wrRows, waiverRiskStates, unquantifiedStructures);
+    buildFinancingViz(ptAnalysis, wrRows);
 
     // Scaffold tabs
     const scaffold = data.scaffold || {};
