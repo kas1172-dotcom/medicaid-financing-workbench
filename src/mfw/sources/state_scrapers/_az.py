@@ -18,7 +18,8 @@ from __future__ import annotations
 
 from ._base import (
     CONFIDENCE_LIKELY, CONFIDENCE_VERIFIED, RATE_BASIS_NOT_COMPARABLE,
-    RATE_BASIS_REPORTED, STRUCTURE_AMOUNT_TARGETED, STRUCTURE_PERCENTAGE,
+    RATE_BASIS_REPORTED, RATE_BASIS_SEED_CARRYOVER,
+    STRUCTURE_AMOUNT_TARGETED, STRUCTURE_PERCENTAGE,
     RateRow, StateScraperBase,
 )
 
@@ -52,19 +53,19 @@ class ArizonaScraper(StateScraperBase):
                     "is via MCO tax (4.5%)."
                 ),
             ),
-            # MCO tax: percentage → comparable
+            # MCO tax: rate from seed — not confirmed from primary source URL.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="mco",
                 structure=STRUCTURE_PERCENTAGE,
                 effective_rate_pct=4.5,
-                native_rate="4.5% (CMS-approved waiver; seed value)",
-                rate_basis=RATE_BASIS_REPORTED,
+                native_rate="4.5% (seed/MACPAC; not confirmed from primary source)",
+                rate_basis=RATE_BASIS_SEED_CARRYOVER,
                 revenue_base_used="MCO capitation revenue",
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed; confirm against CMS SPA for AZ.",
+                notes="MCO rate from seed — must be confirmed against CMS SPA for AZ before use.",
             ),
         ]
 

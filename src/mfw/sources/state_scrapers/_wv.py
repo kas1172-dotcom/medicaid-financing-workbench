@@ -24,7 +24,7 @@ from ._base import (
 URL = "https://code.wvlegislature.gov/11-27-38/"
 _BASE_RATE = 3.86
 _SUPPLEMENTAL = 0.13
-_TOTAL = _BASE_RATE + _SUPPLEMENTAL   # 3.99
+_TOTAL = round(_BASE_RATE + _SUPPLEMENTAL, 2)   # 3.99
 _NOTES = (
     "Base 3.86% (Administrative Notice 2024-11) + supplemental 0.13% (§11-27-39). "
     "Total ~3.99% exceeds 3.5% 2032 floor → exposed. Seed (5.5%) overstated."

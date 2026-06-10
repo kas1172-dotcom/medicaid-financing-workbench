@@ -70,13 +70,21 @@ def _load_scraped_taxes() -> dict[str, dict] | None:
     Load state_provider_taxes.csv (written by the state scraper runner).
 
     Returns a dict keyed by abbr. Each value contains:
-      provider_taxes_by_class  — {class: effective_rate_pct} for comparable rows only
-      provider_tax_rate        — max subject-class rate (or None if all not_comparable)
-      provider_tax_waiver_flag — 'non_uniformity_waiver' for RI/NV, else None
-      provider_tax_data_source — 'scraped' (provenance tag for dashboard)
+      provider_taxes_by_class  — {class: rate} for reported/derived rows only
+                                 (seed_carryover and not_comparable excluded)
+      not_comparable_classes   — set of classes confirmed as not_comparable by scraper
+                                 (the panel zeros these out from seed so the analysis
+                                 does not use the seed approximation for them)
+      provider_tax_unquantified — {class: native_rate} for not_comparable rows
+      provider_tax_rate         — max subject-class comparable rate (None if all not_comparable)
+      provider_tax_waiver_flag  — 'non_uniformity_waiver' for RI/NV, else None
+      provider_tax_data_source  — 'scraped' if ≥1 reported/derived row exists, else 'seed'
 
-    States with confidence=failed or all rows not_comparable are omitted so the
-    caller falls back to seed. Never fabricates a percentage.
+    Seed-carryover rows are NOT placed in provider_taxes_by_class — the panel's
+    existing seed overlay already supplies those values with correct provenance.
+
+    States with confidence=failed and no other rows are omitted so the caller
+    falls back to seed entirely.
     """
     if not SCRAPED_TAXES_FILE.exists():
         return None
@@ -88,40 +96,55 @@ def _load_scraped_taxes() -> dict[str, dict] | None:
     for abbr, group in df.groupby("abbr"):
         abbr = str(abbr).strip().upper()
 
-        # Non-failed rows with a usable effective_rate_pct.
+        # Non-failed rows only.
         usable = group[group["confidence"] != "failed"]
         if usable.empty:
             continue
 
-        # Comparable rows: rate_basis != not_comparable and effective_rate_pct present.
-        comparable = usable[
-            (usable["rate_basis"] != "not_comparable") &
+        # Confirmed primary-source rows (reported or derived).
+        primary = usable[
+            usable["rate_basis"].isin(("reported", "derived")) &
             usable["effective_rate_pct"].notna()
         ]
 
+        # not_comparable rows: classes where structure is confirmed non-percentage.
+        nc_rows = usable[usable["rate_basis"] == "not_comparable"]
+
         taxes: dict[str, float] = {}
-        for _, row in comparable.iterrows():
+        for _, row in primary.iterrows():
             pclass = str(row.get("provider_class", "")).strip().lower()
             try:
                 taxes[pclass] = float(row["effective_rate_pct"])
             except (ValueError, TypeError):
                 pass
 
-        # Waiver flag from any row.
+        not_comparable_classes: set[str] = set()
+        unquantified: dict[str, str] = {}
+        for _, row in nc_rows.iterrows():
+            pclass = str(row.get("provider_class", "")).strip().lower()
+            not_comparable_classes.add(pclass)
+            native = str(row.get("native_rate", "unknown")).strip()
+            unquantified[pclass] = native
+
+        # Waiver flag from any usable row.
         waiver_rows = usable[usable["waiver_flag"].notna()]
         waiver_flag = str(waiver_rows["waiver_flag"].iloc[0]) if not waiver_rows.empty else None
 
-        # Provider_tax_rate: max subject-class comparable rate.
+        # provider_tax_rate: max subject-class rate from PRIMARY rows only.
         subject_rates = [v for k, v in taxes.items() if k in _SUBJECT_CLASSES]
         provider_tax_rate = max(subject_rates) if subject_rates else None
 
-        # Only add entry if we have something useful.
-        if taxes or waiver_flag:
+        # Only 'scraped' provenance when at least one primary (reported/derived) row exists.
+        data_source = "scraped" if taxes else "seed"
+
+        if taxes or not_comparable_classes or waiver_flag:
             result[abbr] = {
                 "provider_taxes_by_class": taxes,
+                "not_comparable_classes": not_comparable_classes,
+                "provider_tax_unquantified": unquantified,
                 "provider_tax_rate": provider_tax_rate,
                 "provider_tax_waiver_flag": waiver_flag,
-                "provider_tax_data_source": "scraped",
+                "provider_tax_data_source": data_source,
             }
 
     return result if result else None
@@ -154,17 +177,7 @@ def build_panel(prefer_live: bool = False) -> pd.DataFrame:
         for r in records:
             row = dict(r)
             abbr = str(row["abbr"]).strip().upper()
-            if scraped_taxes and abbr in scraped_taxes:
-                st = scraped_taxes[abbr]
-                if st["provider_taxes_by_class"]:
-                    row["provider_taxes_by_class"] = st["provider_taxes_by_class"]
-                if st["provider_tax_rate"] is not None:
-                    row["provider_tax_rate"] = st["provider_tax_rate"]
-                row["provider_tax_waiver_flag"] = st["provider_tax_waiver_flag"]
-                row["provider_tax_data_source"] = "scraped"
-            else:
-                row["provider_tax_waiver_flag"] = None
-                row["provider_tax_data_source"] = "seed"
+            _apply_scraped_taxes(row, abbr, scraped_taxes)
             row["data_provenance"] = "seed"
             row["work_req_status"] = _wr_status(abbr, row["expansion"])
             rows.append(row)
@@ -184,22 +197,47 @@ def build_panel(prefer_live: bool = False) -> pd.DataFrame:
             row.update(live_spending[abbr])
         if live_enrollment and abbr in live_enrollment:
             row.update(live_enrollment[abbr])
-        if scraped_taxes and abbr in scraped_taxes:
-            st = scraped_taxes[abbr]
-            if st["provider_taxes_by_class"]:
-                row["provider_taxes_by_class"] = st["provider_taxes_by_class"]
-            if st["provider_tax_rate"] is not None:
-                row["provider_tax_rate"] = st["provider_tax_rate"]
-            row["provider_tax_waiver_flag"] = st["provider_tax_waiver_flag"]
-            row["provider_tax_data_source"] = "scraped"
-        else:
-            row["provider_tax_waiver_flag"] = None
-            row["provider_tax_data_source"] = "seed"
+        _apply_scraped_taxes(row, abbr, scraped_taxes)
         row["data_provenance"] = provenance
         row["work_req_status"] = _wr_status(abbr, row["expansion"])
         rows.append(row)
 
     return pd.DataFrame(rows)
+
+
+def _apply_scraped_taxes(row: dict, abbr: str, scraped: dict | None) -> None:
+    """
+    Overlay scraped tax data onto a panel row in place.
+
+    Rules:
+    - reported/derived rates override the seed value for their class.
+    - not_comparable classes are zeroed out in provider_taxes_by_class so the
+      analysis does not use the seed approximation for those classes.
+    - seed_carryover rows are NOT applied (seed already supplies those values).
+    - provider_tax_unquantified carries the native rates of not_comparable classes.
+    """
+    if scraped and abbr in scraped:
+        st = scraped[abbr]
+        current_taxes = dict(row.get("provider_taxes_by_class") or {})
+
+        # Overlay confirmed primary-source rates.
+        if st["provider_taxes_by_class"]:
+            current_taxes.update(st["provider_taxes_by_class"])
+
+        # Zero out classes the scraper confirmed are not_comparable.
+        for nc_class in st.get("not_comparable_classes", set()):
+            current_taxes.pop(nc_class, None)
+
+        row["provider_taxes_by_class"] = current_taxes
+        if st["provider_tax_rate"] is not None:
+            row["provider_tax_rate"] = st["provider_tax_rate"]
+        row["provider_tax_waiver_flag"] = st.get("provider_tax_waiver_flag")
+        row["provider_tax_data_source"] = st["provider_tax_data_source"]
+        row["provider_tax_unquantified"] = st.get("provider_tax_unquantified", {})
+    else:
+        row["provider_tax_waiver_flag"] = None
+        row["provider_tax_data_source"] = "seed"
+        row["provider_tax_unquantified"] = {}
 
 
 def panel_summary(df: pd.DataFrame) -> dict:

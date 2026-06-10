@@ -197,16 +197,22 @@ def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
     print(f"    ✓ provider_tax_ranking — {validation['provider_tax_ranking'].get('result', 'unknown')}")
 
     is_seed = summary["data_provenance"] == "seed"
+    prov_comp = pt_result.get("provenance_composition", "")
     return {
         "meta": {
             "generated_by": "Medicaid Financing Workbench v0.2.0",
             "data_provenance": summary["data_provenance"],
+            "provenance_composition": prov_comp,
+            "n_exposed": pt_result.get("n_exposed"),
+            "n_waiver_risk": pt_result.get("n_waiver_risk"),
+            "n_unquantified": pt_result.get("n_unquantified"),
+            "national_gap_billion": pt_result.get("national_final_gap_billion"),
             "provenance_note": (
                 "SEED DATA — illustrative values anchored to KFF-published magnitudes. "
                 "Run `mfw refresh` then `mfw build` for authoritative CMS data. "
                 "Do not cite these figures as official."
             ) if is_seed else (
-                "Live data from data.medicaid.gov and api.census.gov."
+                f"Live data from state scrapers + CMS. Provenance: {prov_comp}."
             ),
         },
         "summary": summary,

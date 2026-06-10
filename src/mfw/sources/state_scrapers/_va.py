@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from ._base import (
     CONFIDENCE_LIKELY, CONFIDENCE_VERIFIED, RATE_BASIS_REPORTED,
-    STRUCTURE_PERCENTAGE, RateRow, StateScraperBase,
+    RATE_BASIS_SEED_CARRYOVER, STRUCTURE_PERCENTAGE, RateRow, StateScraperBase,
 )
 
 URL = "https://law.lis.virginia.gov/admincode/title12/agency30/chapter160/section10/"
@@ -48,19 +48,19 @@ class VirginiaScraper(StateScraperBase):
                 confidence=confidence,
                 notes=_NOTES,
             ),
-            # MCO tax also exists per seed (2.0%)
+            # MCO tax: rate from seed — not confirmed from primary source URL.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="mco",
                 structure=STRUCTURE_PERCENTAGE,
                 effective_rate_pct=2.0,
-                native_rate="2.0% MCO assessment (CMS-approved waiver)",
-                rate_basis=RATE_BASIS_REPORTED,
+                native_rate="2.0% (seed/MACPAC; not confirmed from primary source)",
+                rate_basis=RATE_BASIS_SEED_CARRYOVER,
                 revenue_base_used="MCO capitation revenue",
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed data; verify against CMS SPA.",
+                notes="MCO rate from seed — verify against VA DMAS/CMS SPA.",
             ),
         ]
 

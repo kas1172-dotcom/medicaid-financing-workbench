@@ -26,11 +26,22 @@ URL = "https://www.pacodeandbulletin.gov/Display/pabull?file=/secure/pabulletin/
 
 _INPATIENT_RATE = 3.32
 _OUTPATIENT_RATE = 1.73
-_NOTES = (
-    "PA Bulletin FY2022-23 rates: 3.32% net inpatient revenue + 1.73% net "
-    "outpatient revenue. Both below 3.5% floor — PA exposure per seed (5.9%) "
-    "appears overstated. Seek current-year bulletin for updated rates."
+
+# ⚠ STALENESS WARNING: these rates are from the PA Bulletin FY2022–23 edition.
+# PA sets hospital assessment rates annually via a published bulletin in the
+# PA Code and Bulletin. The FY2022-23 rates (3.32% inpatient, 1.73% outpatient)
+# were the most recently confirmed values during Phase 1 research.
+# Current-year (FY2025-26) bulletin must be located at:
+#   https://www.pacodeandbulletin.gov/
+# and ingested before these rates are used for publication-grade analysis.
+_STALENESS_NOTE = (
+    "⚠ STALE: Source is PA Bulletin FY2022-23 (Vol. 51, No. 27). "
+    "PA resets rates annually; current-year bulletin required before use. "
+    "Both 2022-23 rates (3.32% inpatient, 1.73% outpatient) are below the "
+    "3.5% phase-down floor — PA may not be exposed, but this must be confirmed "
+    "with the current bulletin. Seed (5.9%) is likely overstated."
 )
+_NOTES = _STALENESS_NOTE
 
 
 class PennsylvaniaScraper(StateScraperBase):
@@ -63,7 +74,9 @@ class PennsylvaniaScraper(StateScraperBase):
         if resp is None:
             return _INPATIENT_RATE, _OUTPATIENT_RATE, CONFIDENCE_LIKELY
         text = resp.text
-        # Confirm the known rates appear on the page
+        # Even when the page confirms these rates, they are FY2022-23 values.
+        # We return CONFIDENCE_LIKELY (not verified) because the source is known-stale.
+        # Upgrade to verified only after the current-year bulletin is ingested.
         if "3.32" in text and "1.73" in text:
-            return _INPATIENT_RATE, _OUTPATIENT_RATE, CONFIDENCE_VERIFIED
+            return _INPATIENT_RATE, _OUTPATIENT_RATE, CONFIDENCE_LIKELY
         return _INPATIENT_RATE, _OUTPATIENT_RATE, CONFIDENCE_LIKELY

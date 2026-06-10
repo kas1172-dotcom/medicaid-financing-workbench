@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from ._base import (
     CONFIDENCE_LIKELY, CONFIDENCE_VERIFIED, RATE_BASIS_REPORTED,
-    STRUCTURE_PERCENTAGE, RateRow, StateScraperBase,
+    RATE_BASIS_SEED_CARRYOVER, STRUCTURE_PERCENTAGE, RateRow, StateScraperBase,
 )
 
 URL = "https://ksrevisor.gov/statutes/chapters/ch65/065_062_0008.html"
@@ -44,19 +44,19 @@ class KansasScraper(StateScraperBase):
                 confidence=confidence,
                 notes="Non-expansion — zero phase-down exposure. 6% confirmed per CMS 2025 preprint.",
             ),
-            # MCO tax also exists per seed
+            # MCO tax: rate from seed — not confirmed from primary source URL.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="mco",
                 structure=STRUCTURE_PERCENTAGE,
                 effective_rate_pct=1.8,
-                native_rate="1.8% (seed value; KS MCO tax per MACPAC)",
-                rate_basis=RATE_BASIS_REPORTED,
+                native_rate="1.8% (seed/MACPAC; not confirmed from primary source)",
+                rate_basis=RATE_BASIS_SEED_CARRYOVER,
                 revenue_base_used="MCO capitation revenue",
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed; verify against KS Medicaid agency.",
+                notes="MCO rate from seed — verify against KS Medicaid agency. Non-expansion: no exposure.",
             ),
         ]
 

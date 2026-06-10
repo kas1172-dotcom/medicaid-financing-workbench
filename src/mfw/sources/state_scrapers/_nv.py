@@ -16,8 +16,8 @@ MCO tax exists (4.5% per seed).
 from __future__ import annotations
 
 from ._base import (
-    CONFIDENCE_LIKELY, RATE_BASIS_REPORTED, STRUCTURE_PERCENTAGE,
-    RateRow, StateScraperBase,
+    CONFIDENCE_LIKELY, RATE_BASIS_REPORTED, RATE_BASIS_SEED_CARRYOVER,
+    STRUCTURE_PERCENTAGE, RateRow, StateScraperBase,
 )
 
 URL = "https://dhcfp.nv.gov/Providers/PI/Provider_Assessments/"
@@ -53,19 +53,19 @@ class NevadaScraper(StateScraperBase):
                     "MCO 4.5% also exists and IS standard exposure."
                 ),
             ),
-            # MCO: standard exposure
+            # MCO: rate from seed — not confirmed from primary source URL.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="mco",
                 structure=STRUCTURE_PERCENTAGE,
                 effective_rate_pct=4.5,
-                native_rate="4.5% (seed value; CMS-approved)",
-                rate_basis=RATE_BASIS_REPORTED,
+                native_rate="4.5% (seed/MACPAC; not confirmed from primary source)",
+                rate_basis=RATE_BASIS_SEED_CARRYOVER,
                 revenue_base_used="MCO capitation revenue",
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO 4.5% > 3.5% floor — standard phase-down exposure applies.",
+                notes="MCO 4.5% > 3.5% — standard phase-down exposure. Verify against NV DHCFP/CMS SPA.",
             ),
         ]
 

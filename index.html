@@ -270,6 +270,69 @@ svg text { font-family: 'DM Sans', sans-serif; }
 .d3-bar:hover { opacity: 0.8; }
 .d3-dot { cursor: pointer; }
 
+/* ── Provenance fills ────────────────────────────────────────────── */
+.prov-scraped { fill: var(--teal); }
+.prov-seed { fill: #a8c8c4; }
+.prov-waiver { fill: #f39c12; }
+.prov-unquantified { fill: #d0cfc9; }
+
+/* ── Provenance legend ───────────────────────────────────────────── */
+.prov-legend {
+  display: flex; flex-wrap: wrap; gap: 12px; padding: 8px 20px 10px;
+  border-top: 1px solid var(--border); font-size: 11px; color: var(--muted);
+  align-items: center;
+}
+.prov-legend-item { display: flex; align-items: center; gap: 5px; }
+.prov-legend-swatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+.prov-legend-label { font-size: 11px; color: #555; }
+
+/* ── Phase 2 findings ────────────────────────────────────────────── */
+.findings-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0;
+  border-top: 1px solid var(--border);
+}
+.finding-panel {
+  padding: 14px 16px; border-right: 1px solid var(--border);
+}
+.finding-panel:last-child { border-right: none; }
+.finding-panel h4 {
+  font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 6px;
+  font-family: 'IBM Plex Serif', serif;
+}
+.finding-tag {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 1px 6px; border-radius: 3px; margin-bottom: 6px;
+  text-transform: uppercase; letter-spacing: 0.4px;
+}
+.finding-tag-stale { background: #fff0cc; color: #8a5a00; }
+.finding-tag-shift { background: #e8e0fb; color: #5a3e99; }
+.finding-tag-waiver { background: #fff0d6; color: #8a4400; }
+
+/* ── Unquantified structures panel ───────────────────────────────── */
+.unquant-panel {
+  background: #fff; border: 1px solid var(--border); border-radius: 4px;
+  margin-bottom: 20px; overflow: hidden;
+}
+.unquant-header {
+  padding: 12px 20px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.unquant-header h3 { font-size: 14px; color: var(--navy); }
+.unquant-count {
+  font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+  background: #f0ebe0; color: #6a5a3a;
+}
+.unquant-body { padding: 12px 20px; }
+.unquant-row { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 12px; }
+.unquant-row:last-child { border-bottom: none; }
+.unquant-abbr { font-weight: 700; color: var(--navy); display: inline-block; min-width: 28px; }
+.unquant-native { color: var(--muted); font-size: 11px; margin-top: 2px; }
+
+/* ── National gap chip with provenance ───────────────────────────── */
+.stat-chip.gap-chip { border-left: 3px solid var(--teal); }
+.stat-chip.gap-chip .val { color: var(--teal); }
+.gap-chip-comp { font-size: 10px; color: var(--muted); margin-top: 4px; line-height: 1.3; max-width: 180px; }
+
 /* ── Loading / error ─────────────────────────────────────────────── */
 #loading { text-align: center; padding: 80px; color: var(--muted); }
 #error-msg { display: none; background: #fde8e8; border: 1px solid #c0392b; border-radius: 4px; padding: 16px; margin: 24px 0; }
@@ -323,8 +386,8 @@ svg text { font-family: 'DM Sans', sans-serif; }
       <!-- ─── 1. Risk Simulator ─────────────────────────────────────── -->
       <div class="viz-section" id="viz-risk-simulator">
         <div class="viz-section-header">
-          <h3>Risk Simulator — Cap Level Explorer</h3>
-          <p>Drag the slider to simulate any cap level from the 2032 floor (3.5%) to the current ceiling (6.0%). Bars show projected revenue gap for each exposed state at that cap.</p>
+          <h3>At the 3.5% floor, CA leads a $51B national gap — 5 states account for 60%</h3>
+          <p>Drag the slider to simulate any cap level. Bar fill shows data provenance: solid teal = primary-source scraped rate; grey = seed estimate. The 2032 floor exposes 26 states across the scraped + seed cohorts.</p>
         </div>
         <div class="viz-controls">
           <label>Cap level: <span class="cap-display" id="cap-display">5.5%</span></label>
@@ -362,8 +425,8 @@ svg text { font-family: 'DM Sans', sans-serif; }
       <!-- ─── 2. Risk Quadrant ──────────────────────────────────────── -->
       <div class="viz-section" id="viz-risk-quadrant">
         <div class="viz-section-header">
-          <h3>Risk Quadrant — Rate vs. Budget Dependence</h3>
-          <p>Each dot is a state. X-axis: maximum subject provider tax rate. Y-axis: projected gap as a share of nonfederal Medicaid spending. Upper-right quadrant = highest risk.</p>
+          <h3>High-rate + high-budget-dependence states face a compounded political-fiscal challenge</h3>
+          <p>Each dot is a state (teal = scraped primary source, grey = seed estimate). X-axis: max subject tax rate. Y-axis: gap as % of nonfederal spend. Upper-right = hardest to adjust and most exposed.</p>
         </div>
         <div class="viz-container" id="viz-risk-quadrant-chart"></div>
         <details class="viz-interp">
@@ -386,8 +449,8 @@ svg text { font-family: 'DM Sans', sans-serif; }
       <!-- ─── 3. Phase-Down Timeline ────────────────────────────────── -->
       <div class="viz-section" id="viz-timeline">
         <div class="viz-section-header">
-          <h3>Phase-Down Timeline — National Gap 2028–2032</h3>
-          <p>How total national provider-tax exposure grows as the cap steps down. Each line traces a state's cumulative annual gap; the bold line is the national total.</p>
+          <h3>Most exposure concentrates in the 2031–32 cliff, not the gradual 2028–30 ramp</h3>
+          <p>How national provider-tax exposure grows as the cap steps down. The 5.5% cap (2028) affects fewer states; the jump to 3.5% (2032) drives the steepest increase. Bold red line = national total.</p>
         </div>
         <div class="viz-controls">
           <button id="timeline-play">▶ Play</button>
@@ -417,8 +480,8 @@ svg text { font-family: 'DM Sans', sans-serif; }
       <!-- ─── 4. Provider Type Explorer ────────────────────────────── -->
       <div class="viz-section" id="viz-type-explorer">
         <div class="viz-section-header">
-          <h3>Provider Type Explorer — Hospital vs. MCO Contribution</h3>
-          <p>Stacked bars show each exposed state's total gap broken down by contributing provider class. Only hospital and MCO classes are shown (ambulance and "other" are smaller contributors).</p>
+          <h3>MCO-class taxes drive exposure in expansion states; hospital taxes set the floor</h3>
+          <p>Stacked bars show each state's gap by provider class. KY's exposure is MCO-class (5.5%), not hospital (2.5%) — seed data overstated hospital exposure. States with hospital-only tax face different adjustment paths than MCO-dominant states.</p>
         </div>
         <div class="viz-container" id="viz-type-explorer-chart"></div>
         <details class="viz-interp">
@@ -521,6 +584,40 @@ svg text { font-family: 'DM Sans', sans-serif; }
             </div>
           </div>
         </details>
+      </div>
+
+      <!-- ─── 8. Phase 2 Key Findings ─────────────────────────────── -->
+      <div class="viz-section" id="viz-phase2">
+        <div class="viz-section-header">
+          <h3>Phase 2 Findings: PA Staleness, KY Class Shift, and RI/NV Waiver Risk</h3>
+          <p>Three risk profiles discovered in Phase 2 scraping that are invisible in seed data. Each requires different policy tracking.</p>
+        </div>
+        <div class="findings-grid" id="phase2-findings-grid">
+          <!-- Rendered by JS from data -->
+        </div>
+        <div class="viz-container" id="viz-phase2-chart"></div>
+        <details class="viz-interp">
+          <summary>Why these three states matter differently</summary>
+          <div class="viz-interp-body">
+            <h4>PA — Stale rate, policy-floor risk</h4>
+            <p>PA's rate is sourced from the FY2022-23 bulletin. PA resets rates annually; the current-year rate may differ. The rate as published (5.5%) sits just above the 5.5% first-step cap — a single point of vulnerability at 2028. Verify the current bulletin before citing PA exposure.</p>
+            <h4>KY — Class identity matters</h4>
+            <p>Seed data showed KY hospital at 5.5%. Phase 2 parsing reveals: hospital = 2.5%, MCO = 5.5%. The exposure class is MCO, not hospital — these have different political economies and adjustment paths. MCO taxes are renegotiated in contracts; hospital taxes require direct legislative action.</p>
+            <h4>RI / NV — Waiver states are a compliance-risk storyline, not a phase-down story</h4>
+            <p>RI (13.12%) and NV (7.139%) operate above the 6% ceiling under CMS non-uniformity waivers. The OBBBA's tightened uniformity requirements put their waiver status — not the 3.5% phase-down — as the primary compliance risk. If CMS does not renew their waivers, the required rate cut is far larger than any phase-down step.</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- ─── Unquantified Structures Panel ─────────────────────── -->
+      <div class="unquant-panel" id="unquant-panel" style="display:none">
+        <div class="unquant-header">
+          <h3>Non-Percentage Structures — Exposure Not Directly Comparable</h3>
+          <span class="unquant-count" id="unquant-count"></span>
+        </div>
+        <div class="unquant-body" id="unquant-body">
+          <!-- Rendered by JS -->
+        </div>
       </div>
 
       <!-- Reference tables (collapsible) -->
@@ -1070,6 +1167,34 @@ Policy parameters sourced from KFF "5 Key Facts About Medicaid and Provider Taxe
 }
 
 // ════════════════════════════════════════════════════════════════════
+// Provenance encoding helpers
+// ════════════════════════════════════════════════════════════════════
+
+function provColor(src) {
+  if (src === 'scraped') return 'var(--teal)';
+  if (src === 'seed')    return '#a8c8c4';
+  return '#c8c4bc';
+}
+
+function provLabel(src) {
+  if (src === 'scraped') return 'scraped (primary source)';
+  if (src === 'seed')    return 'seed estimate';
+  return src || 'unknown';
+}
+
+function addProvLegend(container, items) {
+  const div = document.createElement('div');
+  div.className = 'prov-legend';
+  items.forEach(item => {
+    div.innerHTML += `<span class="prov-legend-item">
+      <span class="prov-legend-swatch" style="background:${escHtml(item.fill)}"></span>
+      <span class="prov-legend-label">${escHtml(item.label)}</span>
+    </span>`;
+  });
+  container.appendChild(div);
+}
+
+// ════════════════════════════════════════════════════════════════════
 // D3 Visualization helpers
 // ════════════════════════════════════════════════════════════════════
 function gapAtCap(row, cap) {
@@ -1145,11 +1270,12 @@ function buildRiskSimulator(ptRows) {
 
     const b = bars.selectAll('.d3-bar').data(rows, r => r.abbr);
     b.enter().append('rect').attr('class', 'd3-bar')
-      .attr('fill', 'var(--teal)').attr('rx', 2)
-      .on('mouseover', (ev, d) => showTip(tip, `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}%\nGap at ${capVal.toFixed(1)}%: $${d.gap.toFixed(0)}M`, ev))
-      .on('mousemove', (ev, d) => showTip(tip, `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}%\nGap at ${capVal.toFixed(1)}%: $${d.gap.toFixed(0)}M`, ev))
+      .attr('rx', 2)
+      .on('mouseover', (ev, d) => showTip(tip, `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}% (${provLabel(d.provider_tax_data_source)})\nGap at ${capVal.toFixed(1)}%: $${d.gap.toFixed(0)}M`, ev))
+      .on('mousemove', (ev, d) => showTip(tip, `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}% (${provLabel(d.provider_tax_data_source)})\nGap at ${capVal.toFixed(1)}%: $${d.gap.toFixed(0)}M`, ev))
       .on('mouseout', () => hideTip(tip))
       .merge(b)
+      .attr('fill', r => provColor(r.provider_tax_data_source))
       .transition().duration(300)
       .attr('x', 0).attr('y', r => y(r.abbr))
       .attr('width', r => x(r.gap)).attr('height', y.bandwidth());
@@ -1168,6 +1294,11 @@ function buildRiskSimulator(ptRows) {
 
   update(parseFloat(slider.value));
   slider.addEventListener('input', () => update(parseFloat(slider.value)));
+
+  addProvLegend(container, [
+    { fill: 'var(--teal)', label: 'Scraped — primary source confirmed' },
+    { fill: '#a8c8c4',    label: 'Seed — secondary estimate, not confirmed from primary URL' },
+  ]);
 }
 
 // ── 2. Risk Quadrant ───────────────────────────────────────────────
@@ -1214,14 +1345,14 @@ function buildRiskQuadrant(ptRows) {
     .attr('cx', d => x(d.provider_tax_rate))
     .attr('cy', d => y(d.gap_share_of_nonfederal_pct || 0))
     .attr('r', 6)
-    .attr('fill', d => d.exposed ? 'var(--high)' : 'var(--teal)')
-    .attr('opacity', 0.75)
+    .attr('fill', d => d.exposed ? provColor(d.provider_tax_data_source) : '#d5d0c8')
+    .attr('opacity', 0.82)
     .attr('stroke', '#fff').attr('stroke-width', 1)
     .on('mouseover', (ev, d) => showTip(tip,
-      `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}%\nGap/nonfed: ${(d.gap_share_of_nonfederal_pct||0).toFixed(1)}%\nFinal gap: $${(d.final_gap_millions||0).toFixed(0)}M`,
+      `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}% (${provLabel(d.provider_tax_data_source)})\nGap/nonfed: ${(d.gap_share_of_nonfederal_pct||0).toFixed(1)}%\nFinal gap: $${(d.final_gap_millions||0).toFixed(0)}M`,
       ev))
     .on('mousemove', (ev, d) => showTip(tip,
-      `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}%\nGap/nonfed: ${(d.gap_share_of_nonfederal_pct||0).toFixed(1)}%\nFinal gap: $${(d.final_gap_millions||0).toFixed(0)}M`,
+      `<strong>${d.state}</strong>\nRate: ${d.provider_tax_rate.toFixed(1)}% (${provLabel(d.provider_tax_data_source)})\nGap/nonfed: ${(d.gap_share_of_nonfederal_pct||0).toFixed(1)}%\nFinal gap: $${(d.final_gap_millions||0).toFixed(0)}M`,
       ev))
     .on('mouseout', () => hideTip(tip));
 
@@ -1235,6 +1366,12 @@ function buildRiskQuadrant(ptRows) {
   g.append('g').call(d3.axisLeft(y).ticks(5).tickFormat(v => v + '%'));
   g.append('text').attr('x', innerW / 2).attr('y', innerH + 42).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Maximum subject provider tax rate');
   g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -48).style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text('Gap as % of nonfederal share');
+
+  addProvLegend(container, [
+    { fill: 'var(--teal)', label: 'Scraped — primary source' },
+    { fill: '#a8c8c4',    label: 'Seed estimate' },
+    { fill: '#d5d0c8',    label: 'Not exposed (below cap or non-expansion)' },
+  ]);
 }
 
 // ── 3. Phase-Down Timeline ─────────────────────────────────────────
@@ -1635,8 +1772,133 @@ function buildComparisonStudio(ptRows, wrRows) {
   selB.addEventListener('change', draw);
 }
 
+// ── 8. Phase 2 Key Findings ────────────────────────────────────────
+function buildPhase2Findings(ptRows, waiverRiskStates) {
+  const container = document.getElementById('viz-phase2-chart');
+  const grid = document.getElementById('phase2-findings-grid');
+  if (!container) return;
+
+  // ── Finding cards (static from known data) ─────────────────────
+  const pa = ptRows.find(r => r.abbr === 'PA');
+  const ky = ptRows.find(r => r.abbr === 'KY');
+
+  if (grid) {
+    const paExposed = pa && pa.exposed;
+    const paNote = pa
+      ? `Rate: ${pa.provider_tax_rate.toFixed(2)}%${paExposed ? ` (exposed, gap: $${(pa.final_gap_millions||0).toFixed(0)}M)` : ' (below current cap — check current bulletin)'}. Source: FY2022-23 PA Bulletin. PA resets rates annually; figure may not reflect current year.`
+      : 'PA rate not in current data.';
+    const kyHospital = ky && ky.provider_taxes_by_class ? (ky.provider_taxes_by_class.hospital || 0) : 0;
+    const kyMco = ky && ky.provider_taxes_by_class ? (ky.provider_taxes_by_class.mco || 0) : 0;
+    const kyNote = ky
+      ? `Hospital: ${kyHospital.toFixed(1)}% · MCO: ${kyMco.toFixed(1)}%. Seed showed hospital at 5.5% — Phase 2 finds MCO drives exposure.`
+      : 'KY not in current data.';
+    const waiverNotes = (waiverRiskStates || []).map(w =>
+      `${w.abbr}: ${(w.waiver_rate_pct || w.provider_tax_rate || 0).toFixed(2)}% (above 6% ceiling)`
+    ).join(' · ') || 'NV: 7.139% · RI: 13.12%';
+
+    grid.innerHTML = `
+      <div class="finding-panel">
+        <span class="finding-tag finding-tag-stale">⚠ Stale source</span>
+        <h4>PA — FY2022-23 bulletin rate, verify annually</h4>
+        <p style="font-size:12px;color:var(--text)">${escHtml(paNote)}</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:6px">Action: retrieve current PA Bulletin before citing PA exposure. Rate may have changed.</p>
+      </div>
+      <div class="finding-panel">
+        <span class="finding-tag finding-tag-shift">Class shift</span>
+        <h4>KY — MCO tax drives exposure, not hospital</h4>
+        <p style="font-size:12px;color:var(--text)">${escHtml(kyNote)}</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:6px">Seed overstated hospital exposure. Adjustment path is MCO contract renegotiation, not direct hospital tax legislation.</p>
+      </div>
+      <div class="finding-panel">
+        <span class="finding-tag finding-tag-waiver">Waiver risk</span>
+        <h4>RI / NV — Waiver revocation is the primary risk, not phase-down</h4>
+        <p style="font-size:12px;color:var(--text)">${escHtml(waiverNotes)}</p>
+        <p style="font-size:11px;color:var(--muted);margin-top:6px">Both states operate above the 6% ceiling under CMS non-uniformity waivers. OBBBA tightened uniformity requirements — waiver status is the compliance question, not the 3.5% floor.</p>
+      </div>
+    `;
+  }
+
+  // ── D3 bar chart: PA (stale), KY hospital vs MCO, NV & RI vs ceiling ──
+  const nvRow = (waiverRiskStates || []).find(r => r.abbr === 'NV');
+  const riRow = (waiverRiskStates || []).find(r => r.abbr === 'RI');
+  const chartStates = [
+    pa ? { label: 'PA hospital\n(stale ⚠)', rate: pa.provider_tax_rate, fill: '#d4860b', note: `stale: ${pa.provider_tax_rate.toFixed(2)}%; FY2022-23 bulletin` } : null,
+    ky ? { label: 'KY hospital', rate: (ky.provider_taxes_by_class && ky.provider_taxes_by_class.hospital) || 2.5, fill: 'var(--teal)', note: 'scraped' } : null,
+    ky ? { label: 'KY MCO', rate: (ky.provider_taxes_by_class && ky.provider_taxes_by_class.mco) || 5.5, fill: '#7b5ea7', note: 'scraped — exposure is MCO-class, not hospital' } : null,
+    { label: 'NV (waiver)', rate: (nvRow && nvRow.provider_tax_rate) || 7.139, fill: '#e67e22', note: 'CMS non-uniformity waiver; above 6% ceiling' },
+    { label: 'RI (waiver)', rate: (riRow && riRow.provider_tax_rate) || 13.12, fill: '#c0392b', note: 'CMS non-uniformity waiver; above 6% ceiling' },
+  ].filter(Boolean);
+
+  const W = Math.min(container.clientWidth || 680, 680);
+  const margin = { top: 16, right: 30, bottom: 60, left: 90 };
+  const H = 260;
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = d3.select(container).append('svg').attr('width', W).attr('height', H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(chartStates.map(d => d.label)).range([0, innerW]).padding(0.3);
+  const y = d3.scaleLinear().domain([0, 14]).range([innerH, 0]);
+
+  // Floor lines
+  [{ pct: 3.5, label: '3.5% floor (2032)', color: 'var(--high)' },
+   { pct: 5.5, label: '5.5% cap (2028)', color: '#d35400' },
+   { pct: 6.0, label: '6.0% ceiling', color: '#7b5ea7' }].forEach(fl => {
+    g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', y(fl.pct)).attr('y2', y(fl.pct))
+      .attr('stroke', fl.color).attr('stroke-dasharray', '5,3').attr('stroke-width', 1.2);
+    g.append('text').attr('x', innerW + 4).attr('y', y(fl.pct) + 4)
+      .style('font-size', '10px').attr('fill', fl.color).text(fl.label);
+  });
+
+  const tip = makeTooltip();
+  g.selectAll('.d3-bar').data(chartStates).enter().append('rect')
+    .attr('class', 'd3-bar').attr('rx', 3)
+    .attr('x', d => x(d.label)).attr('width', x.bandwidth())
+    .attr('y', d => y(d.rate)).attr('height', d => innerH - y(d.rate))
+    .attr('fill', d => d.fill).attr('opacity', 0.85)
+    .on('mouseover', (ev, d) => showTip(tip, `${d.label.replace('\n', ' ')}\n${d.rate.toFixed(2)}% (${d.note})`, ev))
+    .on('mousemove', (ev, d) => showTip(tip, `${d.label.replace('\n', ' ')}\n${d.rate.toFixed(2)}% (${d.note})`, ev))
+    .on('mouseout', () => hideTip(tip));
+
+  // Rate labels on bars
+  g.selectAll('.bar-val').data(chartStates).enter().append('text').attr('class', 'bar-val')
+    .attr('x', d => x(d.label) + x.bandwidth() / 2).attr('y', d => y(d.rate) - 4)
+    .attr('text-anchor', 'middle').style('font-size', '10px').attr('fill', '#333')
+    .text(d => d.rate.toFixed(1) + '%');
+
+  g.append('g').attr('transform', `translate(0,${innerH})`)
+    .call(d3.axisBottom(x))
+    .selectAll('text').style('font-size', '10px')
+    .attr('transform', 'rotate(-20)').attr('text-anchor', 'end');
+  g.append('g').call(d3.axisLeft(y).ticks(7).tickFormat(v => v + '%'));
+}
+
+// ── Unquantified structures panel ─────────────────────────────────
+function buildUnquantifiedPanel(unquantifiedStructures) {
+  const panel = document.getElementById('unquant-panel');
+  const body = document.getElementById('unquant-body');
+  const count = document.getElementById('unquant-count');
+  if (!panel || !body || !unquantifiedStructures || !unquantifiedStructures.length) return;
+
+  panel.style.display = 'block';
+  count.textContent = unquantifiedStructures.length + ' states';
+
+  body.innerHTML = unquantifiedStructures.map(s => {
+    const nativeRates = Object.entries(s.native_rates || {}).map(([cls, nr]) =>
+      `<span style="font-size:11px;color:var(--muted)">[${escHtml(cls)}] ${escHtml(nr)}</span>`
+    ).join('<br>');
+    return `<div class="unquant-row">
+      <span class="unquant-abbr">${escHtml(s.abbr)}</span>
+      <strong style="font-size:12px">${escHtml(s.state)}</strong>
+      <span style="font-size:11px;color:var(--muted);margin-left:8px">(${escHtml(s.provider_tax_data_source || 'scraped')})</span>
+      <div class="unquant-native">${nativeRates}</div>
+    </div>`;
+  }).join('');
+}
+
 // ── Main financing viz entry point ─────────────────────────────────
-function buildFinancingViz(ptRows, wrRows) {
+function buildFinancingViz(ptRows, wrRows, waiverRiskStates, unquantifiedStructures) {
   buildRiskSimulator(ptRows);
   buildRiskQuadrant(ptRows);
   buildPhaseDownTimeline(ptRows);
@@ -1644,6 +1906,8 @@ function buildFinancingViz(ptRows, wrRows) {
   buildCoverageLossScatter(ptRows, wrRows);
   buildWaterfall(ptRows);
   buildComparisonStudio(ptRows, wrRows);
+  buildPhase2Findings(ptRows, waiverRiskStates);
+  buildUnquantifiedPanel(unquantifiedStructures);
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -1661,9 +1925,11 @@ async function loadDashboard() {
     // Provenance
     const meta = data.meta || {};
     const prov = meta.data_provenance || 'seed';
+    const provComp = meta.provenance_composition || '';
     const badge = document.getElementById('prov-badge');
-    badge.textContent = prov === 'seed' ? 'SEED DATA' : 'CURRENT DATA';
-    if (prov !== 'seed') badge.classList.add('live');
+    const hasScraped = provComp.includes('scraped');
+    badge.textContent = hasScraped ? 'SCRAPED DATA' : 'SEED DATA';
+    if (hasScraped) badge.classList.add('live');
     if (meta.provenance_note) {
       document.getElementById('prov-note').textContent = meta.provenance_note;
       document.getElementById('prov-banner').classList.add('visible');
@@ -1671,17 +1937,42 @@ async function loadDashboard() {
 
     // Summary bar
     const s = data.summary || {};
+    const gapB = meta.national_gap_billion;
     document.getElementById('header-meta').textContent =
       `${s.n_states} states · ${s.total_enrollment_million}M enrollees · $${s.total_medicaid_spend_billion}B spend`;
     const chips = [
-      { val: s.n_states, lbl: 'States' },
-      { val: s.n_expansion, lbl: 'Expansion states' },
-      { val: `${s.total_enrollment_million}M`, lbl: 'Total enrollment' },
-      { val: `$${s.total_medicaid_spend_billion}B`, lbl: 'Total Medicaid spend' },
+      { val: s.n_states, lbl: 'States', extra: '' },
+      { val: s.n_expansion, lbl: 'Expansion states', extra: '' },
+      { val: `${s.total_enrollment_million}M`, lbl: 'Total enrollment', extra: '' },
+      { val: `$${s.total_medicaid_spend_billion}B`, lbl: 'Total Medicaid spend', extra: '' },
     ];
-    document.getElementById('summary-bar').innerHTML = chips.map(c =>
-      `<div class="stat-chip"><span class="val">${c.val}</span><span class="lbl">${c.lbl}</span></div>`
-    ).join('');
+    let gapChipHtml = '';
+    if (gapB != null) {
+      gapChipHtml = `<div class="stat-chip gap-chip">
+        <span class="val">$${Number(gapB).toFixed(1)}B</span>
+        <span class="lbl">National gap (2032)</span>
+        ${provComp ? `<div class="gap-chip-comp">${escHtml(provComp)}</div>` : ''}
+      </div>`;
+    }
+    const nWaiver = meta.n_waiver_risk;
+    const nUnquant = meta.n_unquantified;
+    let waiverChipHtml = '';
+    if (nWaiver != null) {
+      waiverChipHtml = `<div class="stat-chip">
+        <span class="val">${nWaiver}</span>
+        <span class="lbl">Waiver-risk states</span>
+      </div>`;
+    }
+    let unquantChipHtml = '';
+    if (nUnquant != null) {
+      unquantChipHtml = `<div class="stat-chip">
+        <span class="val">${nUnquant}</span>
+        <span class="lbl">Non-% structures (unquantified)</span>
+      </div>`;
+    }
+    document.getElementById('summary-bar').innerHTML =
+      chips.map(c => `<div class="stat-chip"><span class="val">${c.val}</span><span class="lbl">${c.lbl}</span></div>`).join('') +
+      gapChipHtml + waiverChipHtml + unquantChipHtml;
 
     // Financing tab
     const narr = data.narrative || {};
@@ -1696,7 +1987,10 @@ async function loadDashboard() {
     if (wrRows.length) buildWRTable(wrRows);
 
     // D3 interactive visualizations
-    buildFinancingViz(ptRows, wrRows);
+    const ptAnalysis = analyses.provider_tax || {};
+    const waiverRiskStates = ptAnalysis.waiver_risk_states || [];
+    const unquantifiedStructures = ptAnalysis.unquantified_structures || [];
+    buildFinancingViz(ptRows, wrRows, waiverRiskStates, unquantifiedStructures);
 
     // Scaffold tabs
     const scaffold = data.scaffold || {};

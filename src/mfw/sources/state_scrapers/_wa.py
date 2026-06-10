@@ -17,7 +17,8 @@ from __future__ import annotations
 
 from ._base import (
     CONFIDENCE_LIKELY, CONFIDENCE_VERIFIED, RATE_BASIS_NOT_COMPARABLE,
-    RATE_BASIS_REPORTED, STRUCTURE_AMOUNT_TARGETED, STRUCTURE_PERCENTAGE,
+    RATE_BASIS_REPORTED, RATE_BASIS_SEED_CARRYOVER,
+    STRUCTURE_AMOUNT_TARGETED, STRUCTURE_PERCENTAGE,
     RateRow, StateScraperBase,
 )
 
@@ -55,13 +56,13 @@ class WashingtonScraper(StateScraperBase):
                 provider_class="mco",
                 structure=STRUCTURE_PERCENTAGE,
                 effective_rate_pct=2.0,
-                native_rate="2.0% (seed value; CMS-approved)",
-                rate_basis=RATE_BASIS_REPORTED,
+                native_rate="2.0% (seed/MACPAC; not confirmed from primary source)",
+                rate_basis=RATE_BASIS_SEED_CARRYOVER,
                 revenue_base_used="MCO capitation revenue",
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed; verify against WA HCA/CMS SPA.",
+                notes="MCO rate from seed — verify against WA HCA/CMS SPA.",
             ),
         ]
 

@@ -43,6 +43,10 @@ HEADERS = {
 RATE_BASIS_REPORTED = "reported"
 RATE_BASIS_DERIVED = "derived"
 RATE_BASIS_NOT_COMPARABLE = "not_comparable"
+# Seed-carryover: rate copied from seed/MACPAC/KFF secondary sources, not confirmed
+# from a primary state source URL. Treated identically to seed everywhere downstream —
+# the rate value is present but MUST NOT be labeled "scraped" in any UI element.
+RATE_BASIS_SEED_CARRYOVER = "seed_carryover"
 
 STRUCTURE_PERCENTAGE = "percentage"
 STRUCTURE_UNIT_BASED = "unit_based"

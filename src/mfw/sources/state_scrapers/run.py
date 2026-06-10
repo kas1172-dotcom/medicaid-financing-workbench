@@ -31,43 +31,75 @@ from ._base import RateRow, CONFIDENCE_FAILED, STRUCTURE_NONE, RATE_BASIS_NOT_CO
 
 from ._al import AlabamaScraper
 from ._az import ArizonaScraper
+from ._ca import CaliforniaScraper
+from ._ct import ConnecticutScraper
 from ._dc import DCScraperScraper
 from ._ga import GeorgiaScraper
 from ._id import IdahoScraper
+from ._il import IllinoisScraper
+from ._in import IndianaScraper
 from ._ks import KansasScraper
 from ._ky import KentuckyScraper
+from ._la import LouisianaScraper
+from ._ma import MassachusettsScraper
+from ._md import MarylandScraper
+from ._me import MaineScraper
 from ._mi import MichiganScraper
 from ._mn import MinnesotaScraper
+from ._mo import MissouriScraper
 from ._mt import MontanaScraper
+from ._nc import NorthCarolinaScraper
+from ._nh import NewHampshireScraper
 from ._nj import NewJerseyScraper
+from ._nm import NewMexicoScraper
 from ._nv import NevadaScraper
+from ._ny import NewYorkScraper
 from ._oh import OhioScraper
+from ._ok import OklahomaScraper
 from ._or import OregonScraper
 from ._pa import PennsylvaniaScraper
 from ._ri import RhodeIslandScraper
 from ._va import VirginiaScraper
+from ._vt import VermontScraper
 from ._wa import WashingtonScraper
+from ._wi import WisconsinScraper
 from ._wv import WestVirginiaScraper
 
 ALL_SCRAPERS = [
     AlabamaScraper,
     ArizonaScraper,
+    CaliforniaScraper,
+    ConnecticutScraper,
     DCScraperScraper,
     GeorgiaScraper,
     IdahoScraper,
+    IllinoisScraper,
+    IndianaScraper,
     KansasScraper,
     KentuckyScraper,
+    LouisianaScraper,
+    MassachusettsScraper,
+    MarylandScraper,
+    MaineScraper,
     MichiganScraper,
     MinnesotaScraper,
+    MissouriScraper,
     MontanaScraper,
+    NorthCarolinaScraper,
+    NewHampshireScraper,
     NewJerseyScraper,
+    NewMexicoScraper,
     NevadaScraper,
+    NewYorkScraper,
     OhioScraper,
+    OklahomaScraper,
     OregonScraper,
     PennsylvaniaScraper,
     RhodeIslandScraper,
     VirginiaScraper,
+    VermontScraper,
     WashingtonScraper,
+    WisconsinScraper,
     WestVirginiaScraper,
 ]
 

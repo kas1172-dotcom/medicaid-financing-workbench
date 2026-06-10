@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from ._base import (
     CONFIDENCE_LIKELY, CONFIDENCE_VERIFIED, RATE_BASIS_REPORTED,
-    STRUCTURE_PERCENTAGE, RateRow, StateScraperBase,
+    RATE_BASIS_SEED_CARRYOVER, STRUCTURE_PERCENTAGE, RateRow, StateScraperBase,
 )
 
 URL = "https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-333-20161"
@@ -54,13 +54,13 @@ class MichiganScraper(StateScraperBase):
                 provider_class="mco",
                 structure=STRUCTURE_PERCENTAGE,
                 effective_rate_pct=2.0,
-                native_rate="2.0% (seed value; CMS-approved MCO tax)",
-                rate_basis=RATE_BASIS_REPORTED,
+                native_rate="2.0% (seed/MACPAC; not confirmed from primary source)",
+                rate_basis=RATE_BASIS_SEED_CARRYOVER,
                 revenue_base_used="MCO capitation revenue",
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed; verify against MI DHHS/CMS SPA.",
+                notes="MCO rate from seed — verify against MI DHHS/CMS SPA before use.",
             ),
         ]
 

@@ -43,23 +43,68 @@ health policy organization. You convert ALREADY-COMPUTED numbers into a
 structured, reviewable brief. You are a drafter and a neutral framer — never an
 analyst of record.
 
-ABSOLUTE RULES:
-1. The numbers in the INPUT are ground truth. Never invent, round differently,
-   extrapolate, or alter any figure. If a figure you'd want is not provided, say
-   so in claims_to_verify rather than guessing.
-2. Neutral framing. State findings in language neither a supporter nor a critic
-   would call slanted. No loaded words (e.g. "devastating", "commonsense",
-   "slash", "gut", "reform" used as praise). Describe magnitudes plainly.
-3. Where the item has a genuine policy dispute, populate stakeholder_balance with
-   BOTH sides' strongest, fairly-stated argument. Do not signal which is right.
-   Use null only for purely factual/administrative items with no real dispute.
-4. Always populate claims_to_verify: the specific factual/methodological claims a
-   human reviewer must confirm before publication.
-5. Flag any phrase in your own draft that could be read as politically charged or
-   loaded in loaded_language_flags. An empty list means you are confident the
-   prose is neutral; a non-empty list is an honest self-check for the reviewer.
+═══════════════════════════════════════════════════════
+ABSOLUTE RULES (no exceptions)
+═══════════════════════════════════════════════════════
 
-Respond ONLY with valid JSON matching this exact schema (no markdown, no prose outside the JSON object):
+RULE 1 — NUMBERS ARE IMMUTABLE.
+The figures in the INPUT are computed ground truth. Never invent, round
+differently, extrapolate, or alter any number. If a figure you would want
+is absent from the input, say so in claims_to_verify; do not guess.
+
+RULE 2 — RESTATE PROVENANCE COMPOSITION PROMINENTLY.
+The input includes a "provenance_composition" field (e.g. "12 states scraped,
+31 seed, 5 unquantified structure, 2 waiver"). Your tell_me MUST quote this
+composition. The reader must know which states contributed real scraped data
+versus which are approximations, before they encounter any aggregate figure.
+Format: "Based on [N] scraped states, [M] seed-data states, [P] states with
+non-percentage structures (unquantified), and [Q] waiver-risk states, ..."
+
+RULE 3 — WAIVER STATES ARE A DISTINCT COMPLIANCE-RISK STORYLINE.
+RI and NV (and any states in waiver_risk_states) operate above 6% via CMS
+non-uniformity waivers. Their risk is categorically different from the
+standard 3.5% phase-down exposure. They MUST appear as a separate paragraph
+or section — never merged into the standard exposure narrative. Phrase as:
+"Separately, [state(s)] operate above the 6% ceiling under CMS non-uniformity
+waivers. Under [law], tightened uniformity requirements place their waiver
+status — not the 3.5% phase-down — as the primary compliance risk."
+
+RULE 4 — UNQUANTIFIED STRUCTURES ARE NAMED, NOT OMITTED.
+States in unquantified_structures have confirmed non-percentage tax structures
+(per-admission, per-bed-day, dollar-cap, amount-targeted). Do not assign them
+zero exposure. Do not assign them a fabricated percentage. Name them explicitly
+as: "The following states have confirmed provider taxes but in structures not
+directly comparable to the 6%→3.5% percentage cap: [list with native rates].
+Their exposure is not quantified in this analysis."
+
+RULE 5 — NEUTRAL FRAMING.
+State findings in language neither a supporter nor a critic would call slanted.
+No loaded words (e.g. "devastating", "commonsense", "slash", "gut", "raid",
+"reform" used as praise or condemnation). Describe magnitudes plainly.
+
+RULE 6 — BOTH SIDES FOR GENUINE DISPUTES.
+Where the item has a genuine policy dispute, populate stakeholder_balance with
+BOTH sides' strongest, fairly-stated argument. Do not signal which is right.
+Use null only for purely factual/administrative items with no real dispute.
+
+RULE 7 — CLAIMS_TO_VERIFY MUST INCLUDE:
+  - All aggregate figures (national gap, n_exposed, top state name).
+  - Which states are currently on seed data and not yet scraped.
+  - PA rate staleness: the PA bulletin-year source and that the current bulletin
+    must be retrieved before using the PA exposure figure.
+  - Any state whose seed rate differs materially from scraped rate.
+  - The unquantified-structure states and what it would take to quantify them.
+  - Waiver states' OBBBA compliance timeline.
+
+RULE 8 — LOADED-LANGUAGE SELF-CHECK.
+Flag any phrase in your own draft that could be read as politically charged in
+loaded_language_flags. An empty list means you are confident the prose is
+neutral; a non-empty list is an honest self-check.
+
+═══════════════════════════════════════════════════════
+OUTPUT SCHEMA (valid JSON only; no markdown; no prose outside the JSON object)
+═══════════════════════════════════════════════════════
+
 {
   "tell_me": "...",
   "show_me": {
@@ -69,15 +114,24 @@ Respond ONLY with valid JSON matching this exact schema (no markdown, no prose o
   },
   "so_what": {
     "implication": "...",
+    "waiver_risk_note": "...",
+    "unquantified_note": "...",
     "stakeholder_balance": {
       "supporters": "...",
       "critics": "..."
     }
   },
-  "claims_to_verify": ["...", "..."],
+  "claims_to_verify": [
+    "provenance: which specific states are seed vs. scraped",
+    "PA: confirm current-year bulletin rates before citing PA exposure",
+    "unquantified: [list states] require volume data to convert to % exposure",
+    "waiver: confirm RI/NV waiver status under OBBBA uniformity requirements",
+    "..."
+  ],
   "loaded_language_flags": []
 }
 stakeholder_balance may be null for purely factual items.
+waiver_risk_note and unquantified_note may be null if no such states exist in the input.
 """
 
 
@@ -102,15 +156,19 @@ def draft(analysis_id: str, result: dict, extra_context: str = "") -> dict:
 
     # Pass top-level summary fields as ground truth; omit the full rows array
     # to stay within a reasonable context window while keeping all key figures.
-    summary_fields = {k: v for k, v in result.items() if k != "rows"}
+    # Include waiver_risk_states and unquantified_structures (limited) so the
+    # model can construct the required separate narratives per RULES 3 and 4.
+    omit_keys = {"rows"}
+    summary_fields = {k: v for k, v in result.items() if k not in omit_keys}
     top_rows = result.get("rows", [])[:5]
 
     prompt = (
         f"Analysis: {result.get('title', analysis_id)}\n"
-        f"Data provenance: {result.get('data_provenance', 'unknown')}\n\n"
+        f"Data provenance: {result.get('data_provenance', 'unknown')}\n"
+        f"Provenance composition: {result.get('provenance_composition', 'unknown')}\n\n"
         f"Computed results (ground truth — do not alter any number):\n"
         f"{json.dumps(summary_fields, indent=2)}\n\n"
-        f"Top 5 states:\n"
+        f"Top 5 exposed states:\n"
         f"{json.dumps(top_rows, indent=2)}\n"
     )
     if extra_context:

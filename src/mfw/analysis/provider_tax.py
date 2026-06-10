@@ -79,12 +79,14 @@ def run(df: pd.DataFrame, params: dict) -> dict:
 
     rows = []
     waiver_rows = []
+    unquantified_states = []   # expansion states with confirmed not_comparable structures
 
     for _, r in df.iterrows():
         taxes = r.get("provider_taxes_by_class") or {}
         expansion = bool(r["expansion"])
         waiver_flag = r.get("provider_tax_waiver_flag") or None
         data_source = r.get("provider_tax_data_source", "seed")
+        unquantified = r.get("provider_tax_unquantified") or {}
 
         if not expansion:
             rows.append({
@@ -134,6 +136,24 @@ def run(df: pd.DataFrame, params: dict) -> dict:
         max_subject = max(subject_rates.values()) if subject_rates else 0.0
         exposed = max_subject > target
 
+        # Record any subject-class structures confirmed not_comparable by scraper.
+        subject_unquantified = {
+            c: v for c, v in unquantified.items() if c in SUBJECT_CLASSES
+        }
+        if subject_unquantified:
+            unquantified_states.append({
+                "state": r["state"],
+                "abbr": r["abbr"],
+                "expansion": True,
+                "native_rates": subject_unquantified,
+                "has_comparable_mco": bool(taxes.get("mco")),
+                "provider_tax_data_source": data_source,
+                "note": (
+                    "Primary hospital structure is non-percentage; exposure not directly "
+                    "comparable to the 6%→3.5% cap. Listed in native units only."
+                ),
+            })
+
         if exposed:
             final_gap, class_breakdown = _compute_state_gap(r["nonfederal_share"], taxes, target)
             gap_share_of_nonfed = round(100 * final_gap / r["nonfederal_share"], 1) if r["nonfederal_share"] else 0.0
@@ -158,6 +178,7 @@ def run(df: pd.DataFrame, params: dict) -> dict:
             "gap_share_of_nonfederal_pct": gap_share_of_nonfed,
             "gap_by_year": by_year,
             "gap_by_class": class_breakdown,
+            "unquantified_classes": subject_unquantified or None,
             "waiver_flag": None,
             "provider_tax_data_source": data_source,
             "note": None,
@@ -169,15 +190,28 @@ def run(df: pd.DataFrame, params: dict) -> dict:
     # National gap excludes waiver states (their risk is categorically different).
     national_gap = round(sum(x["final_gap_millions"] for x in rows) / 1000, 2)  # $B
 
+    # Provenance composition for the LLM prompt and dashboard badge.
+    all_expansion = [x for x in rows if x["expansion"]] + waiver_rows
+    n_scraped = sum(1 for x in all_expansion if x.get("provider_tax_data_source") == "scraped")
+    n_seed = sum(1 for x in all_expansion if x.get("provider_tax_data_source") == "seed")
+    n_unquantified_exp = len(unquantified_states)
+    provenance_composition = (
+        f"{n_scraped} states scraped, {n_seed} seed, "
+        f"{n_unquantified_exp} unquantified structure, {len(waiver_rows)} waiver"
+    )
+
     return {
         "id": "provider_tax",
         "title": "Provider tax cap exposure",
         "schedule": schedule,
         "rows": rows,
         "waiver_risk_states": waiver_rows,
+        "unquantified_structures": unquantified_states,
         "n_exposed": len(exposed_rows),
         "n_waiver_risk": len(waiver_rows),
+        "n_unquantified": len(unquantified_states),
         "national_final_gap_billion": national_gap,
+        "provenance_composition": provenance_composition,
         "top_state": exposed_rows[0]["state"] if exposed_rows else None,
         "exempt_classes": list(EXEMPT_CLASSES),
         "subject_classes": SUBJECT_CLASSES,
