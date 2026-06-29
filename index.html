@@ -121,6 +121,7 @@ tr:hover td { background: rgba(13,143,130,0.06); }
 .tier-High { background: #fde8e8; color: var(--high); }
 .tier-Medium { background: #fef0e0; color: var(--medium); }
 .tier-Low { background: #e6f5ec; color: var(--low); }
+.risk-pill { display: inline-block; padding: 2px 9px; border-radius: 11px; font-size: 11px; font-weight: 600; }
 .above-cap { color: var(--high); font-weight: 600; }
 .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; }
 
@@ -415,9 +416,9 @@ svg text { font-family: 'DM Sans', sans-serif; }
 
 <nav class="tab-bar" id="tab-bar" role="tablist" aria-label="Analysis tabs">
   <button class="tab-btn active" data-tab="financing" role="tab">Financing</button>
-  <button class="tab-btn" data-tab="hcbs" role="tab">HCBS <span class="tab-badge">In progress</span></button>
-  <button class="tab-btn" data-tab="managed_care" role="tab">Managed Care <span class="tab-badge">In progress</span></button>
-  <button class="tab-btn" data-tab="dual_eligibles" role="tab">Dual Eligibles <span class="tab-badge">In progress</span></button>
+  <button class="tab-btn" data-tab="hcbs" role="tab">HCBS</button>
+  <button class="tab-btn" data-tab="managed_care" role="tab">Managed Care</button>
+  <button class="tab-btn" data-tab="dual_eligibles" role="tab">Dual Eligibles</button>
   <button class="tab-btn" data-tab="data_methods" role="tab">Data &amp; Methods</button>
   <button class="tab-btn" data-tab="how_it_works" role="tab">How It Works</button>
 </nav>
@@ -930,44 +931,314 @@ function buildWRTable(rows) {
 // ════════════════════════════════════════════════════════════════════
 // Scaffold tab renderer
 // ════════════════════════════════════════════════════════════════════
-function buildScaffoldTab(containerId, info) {
+// ── Shared tab building blocks ──────────────────────────────────────
+const RISK_COLOR = { High: 'var(--high)', Medium: 'var(--medium)', Low: 'var(--low)' };
+
+function statBarHtml(chips) {
+  return `<div class="summary-bar" style="margin-bottom:20px">` + chips.map(c =>
+    `<div class="stat-chip"><span class="val">${escHtml(String(c.val))}</span><span class="lbl">${escHtml(c.lbl)}</span></div>`
+  ).join('') + `</div>`;
+}
+
+function methodBlockHtml(info) {
+  return `
+    <div class="method-box"><h3>Analytical question</h3><p>${escHtml(info.analytical_question || '')}</p></div>
+    <div class="method-box"><h3>Method</h3><p>${escHtml(info.method || '')}</p></div>
+    <div class="method-box"><h3>Primary data source</h3><p>${escHtml(info.data_source || '')}</p>
+      <p class="source-link"><a href="${escHtml(info.source_url || '#')}" target="_blank" rel="noopener">${escHtml(info.source_url || '')}</a></p></div>`;
+}
+
+function vizCardHtml(id, title, sub) {
+  return `<div class="viz-section">
+    <div class="viz-section-header"><h3>${escHtml(title)}</h3><p>${escHtml(sub)}</p></div>
+    <div class="viz-container" id="${id}"></div>
+  </div>`;
+}
+
+function tableHtml(tableId, cols, rows) {
+  const thead = '<tr>' + cols.map(c => `<th>${escHtml(c.label)}</th>`).join('') + '</tr>';
+  const tbody = rows.map((r, i) => '<tr>' + cols.map(c =>
+    `<td>${c.fmt ? c.fmt(r, i) : escHtml(String(r[c.key] ?? ''))}</td>`).join('') + '</tr>').join('');
+  return `<div class="table-wrap"><table id="${tableId}"><thead>${thead}</thead><tbody>${tbody}</tbody></table></div>`;
+}
+
+function seedNoteHtml() {
+  return `<p style="font-size:11px;color:var(--muted);margin:10px 2px 0">
+    Figures derive from the bundled <strong>seed dataset</strong> (illustrative values anchored to
+    KFF-published magnitudes). Run <code>mfw build --live</code> for authoritative CMS figures. This is a
+    risk screen, not a forecast of cuts.</p>`;
+}
+
+// ── Generic horizontal-bar ranking (animated) ───────────────────────
+function hbar(containerId, items, opts) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  if (!items.length) { container.innerHTML = '<p class="chart-missing">No data available.</p>'; return; }
+  container.innerHTML = '';
+
+  const mobile = isMobile();
+  const W = Math.max(container.clientWidth || 360, 280);
+  const BAR_H = mobile ? 22 : 18;
+  const margin = mobile ? { top: 6, right: 46, bottom: 28, left: 38 }
+                        : { top: 8, right: 64, bottom: 30, left: 116 };
+  const innerW = W - margin.left - margin.right;
+  const H = items.length * BAR_H + margin.top + margin.bottom + 8;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = rsvg(container, W, H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  const y = d3.scaleBand().domain(items.map(d => d.abbr)).range([0, innerH]).padding(0.18);
+  const xMax = opts.xMax || d3.max(items, opts.value) * 1.12;
+  const x = d3.scaleLinear().domain([0, xMax]).range([0, innerW]);
+
+  (opts.refs || []).forEach(ref => {
+    g.append('line').attr('x1', x(ref.x)).attr('x2', x(ref.x)).attr('y1', 0).attr('y2', innerH)
+      .attr('stroke', ref.color || '#888').attr('stroke-dasharray', '4,3').attr('stroke-width', 1);
+    if (!mobile) g.append('text').attr('x', x(ref.x) + 3).attr('y', -2)
+      .style('font-size', '9px').attr('fill', ref.color || '#888').text(ref.label);
+  });
+
+  const tip = makeTooltip();
+  const bars = g.selectAll('.d3-bar').data(items).enter().append('rect')
+    .attr('class', 'd3-bar').attr('rx', 2)
+    .attr('x', 0).attr('y', d => y(d.abbr)).attr('height', y.bandwidth())
+    .attr('fill', opts.color).attr('opacity', 0.86).attr('width', 0);
+  bars.transition().duration(700).delay((d, i) => i * 18).attr('width', d => x(opts.value(d)));
+  bindTip(bars, tip, opts.tip);
+
+  if (!mobile) {
+    g.selectAll('.bar-lbl').data(items).enter().append('text').attr('class', 'bar-lbl')
+      .attr('x', d => x(opts.value(d)) + 4).attr('y', d => y(d.abbr) + y.bandwidth() / 2)
+      .attr('dy', '0.35em').style('font-size', '10px').attr('fill', '#444').attr('opacity', 0)
+      .text(opts.barLabel).transition().delay(420).duration(400).attr('opacity', 1);
+  }
+
+  g.append('g').call(d3.axisLeft(y).tickSize(0)).select('.domain').remove();
+  g.selectAll('.tick text').style('font-size', mobile ? '9px' : '11px');
+  g.append('g').attr('transform', `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).ticks(mobile ? 3 : 5).tickFormat(opts.xFmt || (v => v)));
+
+  if (opts.legend) addProvLegend(container, opts.legend);
+}
+
+// ── Generic scatter (animated) ──────────────────────────────────────
+function scatterChart(containerId, items, opts) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  if (!items.length) { container.innerHTML = '<p class="chart-missing">No data available.</p>'; return; }
+  container.innerHTML = '';
+
+  const mobile = isMobile();
+  const W = Math.max(container.clientWidth || 360, 280);
+  const H = mobile ? 300 : 360;
+  const margin = mobile ? { top: 16, right: 18, bottom: 46, left: 48 }
+                        : { top: 20, right: 28, bottom: 56, left: 64 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+
+  const svg = rsvg(container, W, H);
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  const xMax = opts.xMax || d3.max(items, opts.x) * 1.1;
+  const yMax = opts.yMax || d3.max(items, opts.y) * 1.1;
+  const x = d3.scaleLinear().domain([0, xMax]).range([0, innerW]);
+  const y = d3.scaleLinear().domain([0, yMax]).range([innerH, 0]);
+  const r = opts.size
+    ? d3.scaleSqrt().domain([0, d3.max(items, opts.size)]).range([3, mobile ? 16 : 22])
+    : () => (mobile ? 7 : 6);
+
+  if (opts.diagonal) {
+    const m = Math.min(xMax, yMax);
+    g.append('line').attr('x1', x(0)).attr('y1', y(0)).attr('x2', x(m)).attr('y2', y(m))
+      .attr('stroke', '#bbb').attr('stroke-dasharray', '5,4');
+    if (!mobile) g.append('text').attr('x', x(m) - 4).attr('y', y(m) - 6)
+      .attr('text-anchor', 'end').style('font-size', '9px').attr('fill', '#999').text('1 : 1 (proportional)');
+  }
+  (opts.refsX || []).forEach(ref => {
+    g.append('line').attr('x1', x(ref.x)).attr('x2', x(ref.x)).attr('y1', 0).attr('y2', innerH)
+      .attr('stroke', ref.color || '#888').attr('stroke-dasharray', '4,3').attr('opacity', 0.6);
+    if (!mobile) g.append('text').attr('x', x(ref.x) + 3).attr('y', 8)
+      .style('font-size', '9px').attr('fill', ref.color || '#888').text(ref.label);
+  });
+  (opts.refsY || []).forEach(ref => {
+    g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', y(ref.y)).attr('y2', y(ref.y))
+      .attr('stroke', ref.color || '#888').attr('stroke-dasharray', '4,3').attr('opacity', 0.6);
+    if (!mobile) g.append('text').attr('x', innerW - 2).attr('y', y(ref.y) - 4)
+      .attr('text-anchor', 'end').style('font-size', '9px').attr('fill', ref.color || '#888').text(ref.label);
+  });
+
+  const tip = makeTooltip();
+  const dots = g.selectAll('.d3-dot').data(items).enter().append('circle')
+    .attr('class', 'd3-dot').attr('cx', d => x(opts.x(d))).attr('cy', d => y(opts.y(d)))
+    .attr('fill', opts.color).attr('opacity', 0.74).attr('stroke', '#fff').attr('stroke-width', 1)
+    .attr('r', 0);
+  dots.transition().duration(650).delay((d, i) => i * 8).attr('r', d => r(opts.size ? opts.size(d) : 0));
+  bindTip(dots, tip, opts.tip);
+
+  const topN = mobile ? 4 : 8;
+  items.slice().sort((a, b) => opts.rank(b) - opts.rank(a)).slice(0, topN).forEach(d => {
+    g.append('text').attr('x', x(opts.x(d)) + (r(opts.size ? opts.size(d) : 0)) + 3)
+      .attr('y', y(opts.y(d)) + 3).style('font-size', mobile ? '9px' : '10px').attr('fill', '#333').text(d.abbr);
+  });
+
+  g.append('g').attr('transform', `translate(0,${innerH})`)
+    .call(d3.axisBottom(x).ticks(mobile ? 3 : 5).tickFormat(opts.xFmt || (v => v)));
+  g.append('g').call(d3.axisLeft(y).ticks(mobile ? 4 : 5).tickFormat(opts.yFmt || (v => v)));
+  if (!mobile) {
+    g.append('text').attr('x', innerW / 2).attr('y', innerH + 44).style('font-size', '12px')
+      .attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text(opts.xLabel || '');
+    g.append('text').attr('transform', 'rotate(-90)').attr('x', -innerH / 2).attr('y', -48)
+      .style('font-size', '12px').attr('fill', 'var(--muted)').attr('text-anchor', 'middle').text(opts.yLabel || '');
+  }
+}
+
+// ── TAB: HCBS vulnerability ──────────────────────────────────────────
+function buildHcbsTab(containerId, a) {
   const el = document.getElementById(containerId);
-  if (!el || !info) return;
+  if (!el || !a) return;
+  const rows = a.rows || [];
+  const tc = a.tier_counts || {};
+  const top = rows[0] || {};
 
   el.innerHTML = `
-    <div class="section-head">
-      <h2>${escHtml(info.label)}</h2>
-    </div>
-
-    <div class="in-progress-banner">
-      <h3>In progress: no state-level findings published yet</h3>
-      <p>The analytical method for this tab is designed and documented below.
-         State-level results will appear here once the required data source is ingested.
-         Until then, <strong>no results are displayed</strong>: showing fabricated or
-         seed-derived figures here would misrepresent the state of the analysis.</p>
-    </div>
-
-    <div class="method-box">
-      <h3>Analytical question</h3>
-      <p>${escHtml(info.analytical_question)}</p>
-    </div>
-
-    <div class="method-box">
-      <h3>Method</h3>
-      <p>${escHtml(info.method)}</p>
-    </div>
-
-    <div class="method-box">
-      <h3>Primary data source</h3>
-      <p>${escHtml(info.data_source)}</p>
-      <p class="source-link"><a href="${escHtml(info.source_url)}" target="_blank" rel="noopener">${escHtml(info.source_url)}</a></p>
-    </div>
-
-    <div class="method-box">
-      <h3>What is needed to complete this tab</h3>
-      <p>${escHtml(info.why_in_progress)}</p>
-    </div>
+    <div class="section-head"><h2>${escHtml(a.label || 'HCBS')}</h2>
+      <p>${escHtml(a.analytical_question || '')}</p></div>
+    ${statBarHtml([
+      { val: `${(top.hcbs_index ?? 0)}`, lbl: `Top: ${top.abbr || ''} index` },
+      { val: tc.High || 0, lbl: 'High-risk states' },
+      { val: tc.Medium || 0, lbl: 'Medium-risk states' },
+      { val: tc.Low || 0, lbl: 'Low-risk states' },
+    ])}
+    ${vizCardHtml('viz-hcbs-ranking', `${top.state || 'The top state'} leads the HCBS vulnerability screen`,
+      'Composite 0-10 index. Red = High (>=6.5), orange = Medium (>=4.0), green = Low. Hover a bar for the components.')}
+    ${vizCardHtml('viz-hcbs-scatter', 'Stakes vs. exposure: where high HCBS reliance meets a large projected cut',
+      'X = HCBS share of Medicaid spending (stakes). Y = projected 10-year federal cut (exposure). Bubble size = HCBS spend. Upper-right = most vulnerable.')}
+    ${tableHtml('tbl-hcbs', [
+      { label: '#', fmt: (r, i) => i + 1 },
+      { label: 'State', key: 'state' },
+      { label: 'Index', fmt: r => `<strong>${r.hcbs_index}</strong>` },
+      { label: 'Risk', fmt: r => `<span class="risk-pill tier-${r.risk_tier}">${r.risk_tier}</span>` },
+      { label: 'HCBS share', fmt: r => `${r.hcbs_share}%` },
+      { label: 'HCBS spend', fmt: r => `$${(r.hcbs_spend_millions || 0).toLocaleString()}M` },
+      { label: 'Proj. 10yr cut', fmt: r => `$${(r.projected_cut_millions || 0).toLocaleString()}M` },
+    ], rows)}
+    ${seedNoteHtml()}
+    ${methodBlockHtml(a)}
   `;
+
+  const color = d => RISK_COLOR[d.risk_tier] || 'var(--teal)';
+  const tip = d => `<strong>${d.state}</strong>\nIndex: ${d.hcbs_index} (${d.risk_tier})\nHCBS share: ${d.hcbs_share}%\nProj. cut: $${(d.projected_cut_millions||0).toLocaleString()}M`;
+  lazyChart('viz-hcbs-ranking', () => hbar('viz-hcbs-ranking', rows.slice(0, 25), {
+    value: d => d.hcbs_index, color, tip, xMax: 10,
+    barLabel: d => d.hcbs_index,
+    refs: [{ x: 4.0, label: 'Medium 4.0', color: 'var(--medium)' }, { x: 6.5, label: 'High 6.5', color: 'var(--high)' }],
+    legend: [{ fill: 'var(--high)', label: 'High risk' }, { fill: 'var(--medium)', label: 'Medium' }, { fill: 'var(--low)', label: 'Low' }],
+  }));
+  lazyChart('viz-hcbs-scatter', () => scatterChart('viz-hcbs-scatter', rows, {
+    x: d => d.hcbs_share, y: d => d.projected_cut_millions, size: d => d.hcbs_spend_millions,
+    color, tip, rank: d => d.hcbs_index,
+    xFmt: v => v + '%', yFmt: v => '$' + d3.format('.2s')(v),
+    xLabel: 'HCBS share of Medicaid spending', yLabel: 'Projected 10-year federal cut',
+  }));
+}
+
+// ── TAB: Managed care MCO-tax exposure ───────────────────────────────
+function buildManagedCareTab(containerId, a) {
+  const el = document.getElementById(containerId);
+  if (!el || !a) return;
+  const rows = a.rows || [];
+  const floor = a.floor_pct || 3.5;
+  const mcoColor = d => d.exposed ? 'var(--high)' : (d.expansion ? 'var(--teal)' : '#b9b4ab');
+  const tip = d => `<strong>${d.state}</strong>\nMCO tax: ${d.mco_rate}%${d.exposed ? ` (exposed, +${d.rate_gap_above_floor} above floor)` : ''}\n${d.expansion ? 'Expansion' : 'Non-expansion'} · ${d.enrollment_millions}M enrollees\nRate source: ${d.data_source}`;
+
+  el.innerHTML = `
+    <div class="section-head"><h2>${escHtml(a.label || 'Managed Care')}</h2>
+      <p>${escHtml(a.analytical_question || '')}</p></div>
+    ${statBarHtml([
+      { val: a.n_states_with_mco_tax || 0, lbl: 'States taxing MCOs' },
+      { val: a.n_exposed || 0, lbl: 'Exposed above 3.5%' },
+      { val: `${a.max_rate || 0}%`, lbl: `Highest: ${(rows[0]||{}).abbr || ''}` },
+      { val: `${floor}%`, lbl: '2032 hold-harmless floor' },
+    ])}
+    ${vizCardHtml('viz-mco-rates', 'MCO provider-tax rates against the 3.5% phase-down floor',
+      'Each bar is a state with an MCO tax. Red = expansion state above the floor (exposed). Teal = expansion at/below floor. Grey = non-expansion. Dashed line = 3.5% floor.')}
+    ${vizCardHtml('viz-mco-scatter', 'Enrollment vs. MCO tax rate: which exposed states are large',
+      'X = total Medicaid enrollment. Y = MCO tax rate. Red dots above the floor line are exposed; larger-enrollment states carry broader managed-care impact.')}
+    ${tableHtml('tbl-mco', [
+      { label: '#', fmt: (r, i) => i + 1 },
+      { label: 'State', key: 'state' },
+      { label: 'MCO rate', fmt: r => `<strong>${r.mco_rate}%</strong>` },
+      { label: 'Above floor', fmt: r => r.rate_gap_above_floor > 0 ? `+${r.rate_gap_above_floor}` : '–' },
+      { label: 'Exposed', fmt: r => r.exposed ? '<span class="risk-pill tier-High">Yes</span>' : '<span class="risk-pill tier-Low">No</span>' },
+      { label: 'Enrollment', fmt: r => `${r.enrollment_millions}M` },
+      { label: 'Source', fmt: r => r.data_source },
+    ], rows)}
+    ${seedNoteHtml()}
+    ${methodBlockHtml(a)}
+  `;
+
+  lazyChart('viz-mco-rates', () => hbar('viz-mco-rates', rows, {
+    value: d => d.mco_rate, color: mcoColor, tip,
+    xMax: Math.max(6, (a.max_rate || 6) * 1.1), barLabel: d => d.mco_rate + '%',
+    xFmt: v => v + '%', refs: [{ x: floor, label: `${floor}% floor`, color: 'var(--high)' }],
+    legend: [{ fill: 'var(--high)', label: 'Exposed (above floor)' }, { fill: 'var(--teal)', label: 'Expansion, at/below floor' }, { fill: '#b9b4ab', label: 'Non-expansion' }],
+  }));
+  lazyChart('viz-mco-scatter', () => scatterChart('viz-mco-scatter', rows, {
+    x: d => d.enrollment_millions, y: d => d.mco_rate, color: mcoColor, tip,
+    rank: d => d.mco_rate, yMax: Math.max(6, (a.max_rate || 6) * 1.1),
+    xFmt: v => v + 'M', yFmt: v => v + '%',
+    xLabel: 'Total Medicaid enrollment (millions)', yLabel: 'MCO provider-tax rate',
+    refsY: [{ y: floor, label: `${floor}% floor`, color: 'var(--high)' }],
+  }));
+}
+
+// ── TAB: Dual eligibles ──────────────────────────────────────────────
+function buildDualsTab(containerId, a) {
+  const el = document.getElementById(containerId);
+  if (!el || !a) return;
+  const rows = a.rows || [];
+  const top = rows[0] || {};
+  const maxRatio = d3.max(rows, d => d.concentration_ratio) || 2.5;
+  const concColor = d3.scaleLinear().domain([1.4, maxRatio]).range(['#7bb1a8', '#c0392b']).clamp(true);
+  const color = d => concColor(d.concentration_ratio);
+  const tip = d => `<strong>${d.state}</strong>\nDuals: ${(d.duals||0).toLocaleString()}\nEnrollment share: ${d.dual_enroll_share_pct}%\nSpending share: ${d.dual_spend_share_pct}%\nConcentration: ${d.concentration_ratio}x\nEst. dual spend: $${(d.est_dual_spend_millions||0).toLocaleString()}M`;
+
+  el.innerHTML = `
+    <div class="section-head"><h2>${escHtml(a.label || 'Dual Eligibles')}</h2>
+      <p>${escHtml(a.analytical_question || '')}</p></div>
+    ${statBarHtml([
+      { val: `${a.national_dual_spend_share_pct || 0}%`, lbl: 'National dual spend share' },
+      { val: `${top.dual_spend_share_pct || 0}%`, lbl: `Sharpest: ${top.abbr || ''}` },
+      { val: `${a.cost_multiple || 3}x`, lbl: 'Per-capita cost multiple' },
+      { val: rows.length, lbl: 'States analyzed' },
+    ])}
+    ${vizCardHtml('viz-duals-scatter', 'A small enrollee share maps to a large spending share',
+      'X = duals as % of enrollment. Y = estimated duals as % of spending. Every state sits above the 1:1 line; the further above, the sharper the concentration. Bubble size = estimated dual spend; color = concentration ratio.')}
+    ${vizCardHtml('viz-duals-ranking', 'States ranked by estimated dual-eligible spending share',
+      'Top 25 states. Color runs teal (lower concentration) to red (higher), the same scale as the scatter.')}
+    ${tableHtml('tbl-duals', [
+      { label: '#', fmt: (r, i) => i + 1 },
+      { label: 'State', key: 'state' },
+      { label: 'Duals', fmt: r => (r.duals || 0).toLocaleString() },
+      { label: 'Enroll share', fmt: r => `${r.dual_enroll_share_pct}%` },
+      { label: 'Spend share', fmt: r => `<strong>${r.dual_spend_share_pct}%</strong>` },
+      { label: 'Concentration', fmt: r => `${r.concentration_ratio}x` },
+      { label: 'Est. dual spend', fmt: r => `$${(r.est_dual_spend_millions || 0).toLocaleString()}M` },
+    ], rows)}
+    ${seedNoteHtml()}
+    ${methodBlockHtml(a)}
+  `;
+
+  lazyChart('viz-duals-scatter', () => scatterChart('viz-duals-scatter', rows, {
+    x: d => d.dual_enroll_share_pct, y: d => d.dual_spend_share_pct, size: d => d.est_dual_spend_millions,
+    color, tip, rank: d => d.dual_spend_share_pct, diagonal: true,
+    xFmt: v => v + '%', yFmt: v => v + '%',
+    xLabel: 'Dual eligibles as % of enrollment', yLabel: 'Estimated dual eligibles as % of spending',
+  }));
+  lazyChart('viz-duals-ranking', () => hbar('viz-duals-ranking', rows.slice(0, 25), {
+    value: d => d.dual_spend_share_pct, color, tip,
+    barLabel: d => d.dual_spend_share_pct + '%', xFmt: v => v + '%',
+  }));
 }
 
 // ════════════════════════════════════════════════════════════════════
@@ -2289,11 +2560,10 @@ async function loadDashboard() {
     const ptAnalysis = analyses.provider_tax || {};
     buildFinancingViz(ptAnalysis, wrRows);
 
-    // Scaffold tabs
-    const scaffold = data.scaffold || {};
-    buildScaffoldTab('scaffold-hcbs', scaffold.hcbs);
-    buildScaffoldTab('scaffold-managed_care', scaffold.managed_care);
-    buildScaffoldTab('scaffold-dual_eligibles', scaffold.dual_eligibles);
+    // HCBS, Managed Care, Dual Eligibles tabs (dynamic)
+    buildHcbsTab('scaffold-hcbs', analyses.hcbs);
+    buildManagedCareTab('scaffold-managed_care', analyses.managed_care);
+    buildDualsTab('scaffold-dual_eligibles', analyses.dual_eligibles);
 
     // Data & Methods
     buildDataMethodsTab(data.data_sources || [], data.validation || {});

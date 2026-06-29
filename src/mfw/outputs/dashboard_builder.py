@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 from mfw.etl.panel import build_panel, panel_summary
-from mfw.analysis import provider_tax, hcbs_risk, work_requirements, duals
+from mfw.analysis import provider_tax, hcbs_risk, work_requirements, duals, managed_care
 from mfw.outputs.charts import (
     chart_provider_tax_gap,
     chart_work_req_loss,
@@ -155,6 +155,21 @@ _SCAFFOLD_TABS = {
 }
 
 
+def _with_context(result: dict, tab_id: str) -> dict:
+    """Merge the analytical-question / method / source narrative into a computed
+    result so the front-end can render context alongside live figures."""
+    meta = _SCAFFOLD_TABS.get(tab_id, {})
+    return {
+        **result,
+        "status": "complete",
+        "label": meta.get("label", result.get("title", "")),
+        "analytical_question": meta.get("analytical_question", ""),
+        "method": meta.get("method", ""),
+        "data_source": meta.get("data_source", ""),
+        "source_url": meta.get("source_url", ""),
+    }
+
+
 def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
     df = build_panel(prefer_live=prefer_live)
     summary = panel_summary(df)
@@ -164,6 +179,13 @@ def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
     wr_result = work_requirements.run(df, params)
     print(f"    ✓ {pt_result['title']}: provenance={pt_result['data_provenance']}")
     print(f"    ✓ {wr_result['title']}: provenance={wr_result['data_provenance']}")
+
+    print("  Running HCBS, managed-care, and dual-eligible analyses...")
+    hcbs_result = _with_context(hcbs_risk.run(df, params), "hcbs")
+    mc_result = _with_context(managed_care.run(df, params), "managed_care")
+    du_result = _with_context(duals.run(df, params), "dual_eligibles")
+    for res in (hcbs_result, mc_result, du_result):
+        print(f"    ✓ {res['title']}: {len(res['rows'])} states")
 
     print("  Generating charts...")
     charts = {}
@@ -229,10 +251,12 @@ def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
         "analyses": {
             "provider_tax": pt_result,
             "work_requirements": wr_result,
+            "hcbs": hcbs_result,
+            "managed_care": mc_result,
+            "dual_eligibles": du_result,
         },
         "narrative": narrative,
         "charts": charts,
-        "scaffold": _SCAFFOLD_TABS,
         "data_sources": data_sources,
         "validation": validation,
     }
