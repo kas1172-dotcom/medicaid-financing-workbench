@@ -1,9 +1,9 @@
 """
-North Carolina — Hospital Assessment Program (HASP)
+North Carolina: Hospital Assessment Program (HASP)
 Source: NC DHHS Medicaid assessments page
 URL:    https://medicaid.ncdhhs.gov/providers/cost-reports-and-assessments/nursing-facility-cost-assessment
 Structure: percentage (~6% NPR; >$2.5B/year)
-Phase 1 confidence: likely — hospital page redirects; rate from press and NC legislation.
+Phase 1 confidence: likely: hospital page redirects; rate from press and NC legislation.
 
 NC HASP: ~6% of net patient revenue; >$2.5B/year confirmed in press.
 Statute: NCGS HB397 §10.28(a). NC expanded Medicaid in 2023.

@@ -1,5 +1,5 @@
 """
-New Mexico — Health Care Delivery and Access Assessment (HDAA)
+New Mexico: Health Care Delivery and Access Assessment (HDAA)
 Source: NM Taxation & Revenue HDAA page
 URL:    https://www.tax.newmexico.gov/businesses/health-care-delivery-and-access-assessment/
 Structure: amount_targeted (rate set annually by HCA; tiered rural reductions)

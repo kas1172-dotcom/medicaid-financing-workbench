@@ -1,15 +1,15 @@
 """
-Idaho — Hospital Assessment Act
+Idaho: Hospital Assessment Act
 Source: IC §56-1404
 URL:    https://legislature.idaho.gov/statutesrules/idstat/Title56/T56CH14/SECT56-1404/
 Structure: amount_targeted (formula-based, not a simple % of revenue)
-Verified by Phase 1 fetch — statute structure confirmed.
+Verified by Phase 1 fetch: statute structure confirmed.
 
 Rate is formula-based: the department sets a rate equal to the percentage that,
 when applied to the assessment base, produces an amount equal to the upper payment
 limit payment. An additional 30% is assessed for general fund Medicaid starting
 July 1, 2023. Not a published % of NPR → not_comparable.
-Seed shows 0.0% — confirms no simple rate published.
+Seed shows 0.0%: confirms no simple rate published.
 """
 
 from __future__ import annotations

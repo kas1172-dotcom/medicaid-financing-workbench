@@ -1,9 +1,9 @@
 """
-Missouri — Federal Reimbursement Allowance (FRA)
+Missouri: Federal Reimbursement Allowance (FRA)
 Source: RSMo §208.471
 URL:    https://revisor.mo.gov/main/OneSection.aspx?section=208.471&bid=11092
 Structure: percentage (5% hospital; SFY2027 emergency regulation)
-Phase 1 confidence: likely — statute confirms FRA program; rate set by emergency reg.
+Phase 1 confidence: likely: statute confirms FRA program; rate set by emergency reg.
 
 MO FRA = 5% for SFY2027 per MO HealthNet emergency regulation.
 Four provider taxes total ~$900M from hospitals in Missouri.

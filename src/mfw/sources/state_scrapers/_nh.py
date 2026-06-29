@@ -1,9 +1,9 @@
 """
-New Hampshire — Medicaid Enhancement Tax (MET)
+New Hampshire: Medicaid Enhancement Tax (MET)
 Source: NH DRA FAQ page
 URL:    https://www.revenue.nh.gov/faq/medicaid-enhancement.htm
 Structure: percentage (5.4% NPSV; RSA 84-A)
-Phase 1 confidence: likely — URL returned 403; rate confirmed from NH Fiscal Policy Institute.
+Phase 1 confidence: likely: URL returned 403; rate confirmed from NH Fiscal Policy Institute.
 
 NH MET: 5.4% of net patient service revenue on all 26 acute care hospitals.
 Generated ~$348M SFY2025. Will phase down to 3.5% by October 2031 under OBBBA.

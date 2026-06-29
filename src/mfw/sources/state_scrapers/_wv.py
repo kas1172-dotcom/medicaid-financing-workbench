@@ -1,5 +1,5 @@
 """
-West Virginia — Hospital Directed Payment Tax
+West Virginia: Hospital Directed Payment Tax
 Source: WV Code §11-27-38 (+ §11-27-39 supplemental)
 URL:    https://code.wvlegislature.gov/11-27-38/
 Structure: percentage
@@ -11,7 +11,7 @@ Confirmed rates:
   Total:                   ~3.99% of gross receipts
 
 Note: total ~3.99% is above the 3.5% 2032 floor → WV IS exposed.
-Seed shows 5.5% — seed appears overstated.
+Seed shows 5.5%: seed appears overstated.
 """
 
 from __future__ import annotations

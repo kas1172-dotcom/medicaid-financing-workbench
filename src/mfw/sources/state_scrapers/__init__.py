@@ -1,5 +1,5 @@
 """
-State-level provider-tax scrapers — Phase 2 collection system.
+State-level provider-tax scrapers: Phase 2 collection system.
 
 Adapters are built ONLY for Phase 1 "verified" sources.
 Phase 1 "likely" sources have stubs that return their known structure

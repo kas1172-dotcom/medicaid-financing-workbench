@@ -1,5 +1,5 @@
 """
-Ohio — Hospital Franchise Fee
+Ohio: Hospital Franchise Fee
 Source: OAC Rule 5160-2-30
 URL:    https://codes.ohio.gov/ohio-administrative-code/rule-5160-2-30
 Structure: percentage
@@ -60,7 +60,7 @@ class OhioScraper(StateScraperBase):
         )
 
         return [
-            # Primary row: CY2026+ rate — the rate in effect when phase-down begins.
+            # Primary row: CY2026+ rate: the rate in effect when phase-down begins.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="hospital",

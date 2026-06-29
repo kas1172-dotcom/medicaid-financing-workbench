@@ -1,4 +1,4 @@
-"""Chart generation — one function per analysis, deterministic output paths."""
+"""Chart generation: one function per analysis, deterministic output paths."""
 
 from __future__ import annotations
 
@@ -110,7 +110,7 @@ def chart_provider_tax_gap(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
 
 
 def chart_hcbs_index(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
-    """Horizontal bar chart — HCBS vulnerability index, top 20 states, color by tier."""
+    """Horizontal bar chart: HCBS vulnerability index, top 20 states, color by tier."""
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = result["rows"][:20]
 
@@ -121,7 +121,7 @@ def chart_hcbs_index(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
     fig, ax = plt.subplots(figsize=(8, max(5, len(states) * 0.5)))
     ax.barh(states[::-1], scores[::-1], color=colors[::-1], edgecolor="none")
     ax.set_xlabel("HCBS Vulnerability Index (0–10)")
-    ax.set_title("HCBS Vulnerability Index — Top 20 States\n(risk screen, not a forecast)",
+    ax.set_title("HCBS Vulnerability Index: Top 20 States\n(risk screen, not a forecast)",
                  fontsize=11, fontweight="bold")
     ax.set_xlim(0, 10.5)
     ax.axvline(6.5, color=TIER_COLORS["High"], linestyle="--", linewidth=0.8, alpha=0.5)
@@ -138,7 +138,7 @@ def chart_hcbs_index(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
 
 
 def chart_work_req_loss(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
-    """Horizontal bar chart — modeled procedural coverage loss by state."""
+    """Horizontal bar chart: modeled procedural coverage loss by state."""
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = result["rows"][:15]
     if not rows:
@@ -151,7 +151,7 @@ def chart_work_req_loss(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
     ax.barh(states[::-1], losses[::-1], color="#8e44ad", edgecolor="none")
     ax.set_xlabel("Modeled coverage loss (persons, procedural/administrative)")
     ax.set_title(
-        "Work Requirements — Modeled Coverage Loss by State\n"
+        "Work Requirements: Modeled Coverage Loss by State\n"
         f"(~{result['exempt_share']*100:.0f}% already work or qualify for exemption; "
         f"loss is procedural churn, not non-work)",
         fontsize=10, fontweight="bold",
@@ -165,7 +165,7 @@ def chart_work_req_loss(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
 
 
 def chart_duals_concentration(result: dict, out_dir: Path = CHARTS_DIR) -> Path:
-    """Scatter — dual enrollment share vs. estimated dual spending share by state."""
+    """Scatter: dual enrollment share vs. estimated dual spending share by state."""
     out_dir.mkdir(parents=True, exist_ok=True)
     rows = result["rows"]
 

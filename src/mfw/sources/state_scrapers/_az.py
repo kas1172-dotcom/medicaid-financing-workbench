@@ -1,5 +1,5 @@
 """
-Arizona — Hospital Assessment (AHCCCS)
+Arizona: Hospital Assessment (AHCCCS)
 Source: AHCCCS Hospital Assessment page
 URL:    https://www.azahcccs.gov/PlansProviders/RatesAndBilling/hospitalassessment.html
 Structure: amount_targeted (per-discharge tiers → not_comparable)
@@ -10,7 +10,7 @@ group tier (Pediatric Intensive = 80%, Medium Pediatric = 90% of general acute
 rate). FFY2026 total ~$1.275B directed payments.
 Per-discharge structure → not a simple % of revenue → not_comparable.
 
-MCO tax: 4.5% (seed; CMS waiver) — this IS a percentage and is above 3.5%.
+MCO tax: 4.5% (seed; CMS waiver): this IS a percentage and is above 3.5%.
 AZ's primary exposure is via MCO tax, not hospital assessment.
 """
 
@@ -53,7 +53,7 @@ class ArizonaScraper(StateScraperBase):
                     "is via MCO tax (4.5%)."
                 ),
             ),
-            # MCO tax: rate from seed — not confirmed from primary source URL.
+            # MCO tax: rate from seed, not confirmed from primary source URL.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="mco",
@@ -65,7 +65,7 @@ class ArizonaScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed — must be confirmed against CMS SPA for AZ before use.",
+                notes="MCO rate from seed: must be confirmed against CMS SPA for AZ before use.",
             ),
         ]
 

@@ -1,12 +1,12 @@
 """
 Source-adapter interface for the three-tier ingestion system.
 
-Tier 1 (api)           — auto-fetched via HTTP. fetch() hits the endpoint,
+Tier 1 (api)          : auto-fetched via HTTP. fetch() hits the endpoint,
                           parse() returns a tidy DataFrame.
-Tier 2 (manual_upload) — user downloads a file and drops it in data/inbox/.
+Tier 2 (manual_upload): user downloads a file and drops it in data/inbox/.
                           fetch() is a no-op (just validates the inbox file).
                           parse() reads and normalises the file.
-Tier 3 (pdf)           — PDF table extraction via pdfplumber or camelot.
+Tier 3 (pdf)          : PDF table extraction via pdfplumber or camelot.
                           fetch() validates the PDF in data/inbox/.
                           parse() extracts and normalises the table.
 

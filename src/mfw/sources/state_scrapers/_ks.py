@@ -1,5 +1,5 @@
 """
-Kansas — Hospital Assessment (non-expansion state)
+Kansas: Hospital Assessment (non-expansion state)
 Source: KSA 65-6208
 URL:    https://ksrevisor.gov/statutes/chapters/ch65/065_062_0008.html
 Structure: percentage (ceiling confirmed; current rate at ceiling)
@@ -42,9 +42,9 @@ class KansasScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=confidence,
-                notes="Non-expansion — zero phase-down exposure. 6% confirmed per CMS 2025 preprint.",
+                notes="Non-expansion: zero phase-down exposure. 6% confirmed per CMS 2025 preprint.",
             ),
-            # MCO tax: rate from seed — not confirmed from primary source URL.
+            # MCO tax: rate from seed, not confirmed from primary source URL.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="mco",
@@ -56,7 +56,7 @@ class KansasScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed — verify against KS Medicaid agency. Non-expansion: no exposure.",
+                notes="MCO rate from seed: verify against KS Medicaid agency. Non-expansion: no exposure.",
             ),
         ]
 

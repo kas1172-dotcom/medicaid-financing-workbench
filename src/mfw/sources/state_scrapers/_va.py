@@ -1,5 +1,5 @@
 """
-Virginia — Hospital Coverage Assessment
+Virginia: Hospital Coverage Assessment
 Source: 12VAC30-160-10 (Virginia Administrative Code)
 URL:    https://law.lis.virginia.gov/admincode/title12/agency30/chapter160/section10/
 Structure: percentage (quarterly calculated, effectively ~6%)
@@ -48,7 +48,7 @@ class VirginiaScraper(StateScraperBase):
                 confidence=confidence,
                 notes=_NOTES,
             ),
-            # MCO tax: rate from seed — not confirmed from primary source URL.
+            # MCO tax: rate from seed, not confirmed from primary source URL.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="mco",
@@ -60,7 +60,7 @@ class VirginiaScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed — verify against VA DMAS/CMS SPA.",
+                notes="MCO rate from seed: verify against VA DMAS/CMS SPA.",
             ),
         ]
 

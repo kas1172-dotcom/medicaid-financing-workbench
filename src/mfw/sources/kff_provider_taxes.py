@@ -1,5 +1,5 @@
 """
-KFF State Health Facts — Provider Taxes (manual_upload adapter).
+KFF State Health Facts: Provider Taxes (manual_upload adapter).
 
 This is a Tier-2 adapter: the user downloads the CSV from the KFF State Health
 Facts indicator page and drops it in data/inbox/kff_provider_taxes.csv.
@@ -76,7 +76,7 @@ def _find_column(df_cols_lower: list[str], aliases: list[str]) -> str | None:
 
 class KFFProviderTaxesAdapter(SourceAdapter):
     source_id = "kff_provider_taxes"
-    source_name = "KFF State Health Facts — Provider Taxes by Class"
+    source_name = "KFF State Health Facts: Provider Taxes by Class"
     tier = "manual_upload"
     method = "Manual download from KFF State Health Facts"
     url = "https://www.kff.org/medicaid/state-indicator/provider-taxes/"

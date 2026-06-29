@@ -1,9 +1,9 @@
 """
-Illinois — Hospital Assessment Program (HAP)
+Illinois: Hospital Assessment Program (HAP)
 Source: ILCS Art. V-A (305 ILCS 5)
 URL:    https://www.ilga.gov/legislation/ilcs/ilcs4.asp?DocName=030500050HArt.+V-A&ActID=1413&ChapterID=0&SeqStart=35500000&SeqEnd=38200000
 Structure: percentage (~5.9% NPR; set administratively by HFS)
-Phase 1 confidence: likely — statute confirms program; rate set by HFS notice, not statute.
+Phase 1 confidence: likely: statute confirms program; rate set by HFS notice, not statute.
 
 HB2771 (2025) amends HAP. Specific rate not in statute text; set by HFS annual notice.
 Rate near 5.9% of net revenue per HFS annual notice. Seed shows 5.9%.

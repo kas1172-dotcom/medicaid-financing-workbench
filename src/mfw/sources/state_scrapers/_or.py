@@ -1,5 +1,5 @@
 """
-Oregon — Hospital Assessment
+Oregon: Hospital Assessment
 Source: ORS 414.855
 URL:    https://oregon.public.law/statutes/ors_414.855
 Structure: amount_targeted (rate set by OHA Director by rule to hit % of Medicare)
@@ -9,7 +9,7 @@ Rate set by OHA Director by rule (estimated ~6% per legislative background).
 Caps: ≤30% of Medicare FFS inpatient payments, ≤41% Medicare FFS outpatient.
 Not a fixed published % of NPR → reports as amount_targeted.
 Extended to December 2032 by HB2010 (expired Sept 30, 2025).
-Seed shows 5.5% — approximation from secondary sources.
+Seed shows 5.5%: approximation from secondary sources.
 """
 
 from __future__ import annotations

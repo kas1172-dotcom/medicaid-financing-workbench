@@ -1,9 +1,9 @@
 """
-Maryland — Hospital Quality Programs Assessment
+Maryland: Hospital Quality Programs Assessment
 Source: MDH OBBBA one-pager (July 2025)
 URL:    https://health.maryland.gov/mmcp/Documents/OBBBA%20One-Pager_7.11.25.pdf
 Structure: percentage (~5.5% NPR; seed value; primary source is PDF)
-Phase 1 confidence: likely — PDF; specific hospital rate not confirmed from fetch.
+Phase 1 confidence: likely: PDF; specific hospital rate not confirmed from fetch.
 
 MDH OBBBA one-pager confirms three provider taxes (hospital, NF, MCO); $1.17B at risk.
 Specific hospital rate not extractable from PDF binary. Seed shows 5.5%.

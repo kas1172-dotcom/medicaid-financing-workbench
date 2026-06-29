@@ -1,5 +1,5 @@
 """
-Analysis 2 — HCBS vulnerability index.
+Analysis 2: HCBS vulnerability index.
 
 THE QUESTION: home- and community-based services (HCBS) are an OPTIONAL Medicaid
 benefit. History shows optional benefits are first on the chopping block when
@@ -10,10 +10,10 @@ THE METHOD: a composite 0-10 index. Each state is scored 0-1 on four normalized
 components, weighted (weights live in config, so the analyst can re-weight and
 re-rank without touching code), then scaled to 0-10:
 
-  1. hcbs_spending_share   — how much of the program is HCBS        (the STAKES)
-  2. provider_tax_reliance — reliance on the now-capped financing   (EXPOSURE)
-  3. federal_cut_magnitude — projected dollar hit, size-normalized  (EXPOSURE)
-  4. nonfederal_share_strain — share of the bill the state already carries (EXPOSURE)
+  1. hcbs_spending_share  : how much of the program is HCBS        (the STAKES)
+  2. provider_tax_reliance: reliance on the now-capped financing   (EXPOSURE)
+  3. federal_cut_magnitude: projected dollar hit, size-normalized  (EXPOSURE)
+  4. nonfederal_share_strain: share of the bill the state already carries (EXPOSURE)
 
 This is deliberately a RISK SCREEN, not a forecast. It surfaces states warranting
 a closer look; it does not predict that any state will cut HCBS. That distinction
@@ -40,7 +40,7 @@ def run(df: pd.DataFrame, params: dict) -> dict:
 
     # Component 1: HCBS share of spending (stakes).
     c_hcbs = _normalize(d["hcbs_share"])
-    # Component 2: provider-tax reliance — rate scaled by whether it's exposed.
+    # Component 2: provider-tax reliance: rate scaled by whether it's exposed.
     reliance_raw = d["provider_tax_rate"] * d["expansion"].astype(int)
     c_reliance = _normalize(reliance_raw)
     # Component 3: projected federal cut, allocated proportional to federal spend,

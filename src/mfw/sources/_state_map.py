@@ -67,7 +67,7 @@ for _abbr, (_name, _fips) in STATES.items():
 _CMS_EXTRAS = {
     "dist. of col.": "DC",
     "district of columbia": "DC",
-    "n. mariana islands": "MP",   # territory — excluded from 50+DC analysis
+    "n. mariana islands": "MP",   # territory: excluded from 50+DC analysis
     "northern mariana islands": "MP",
     "amer. samoa": "AS",
     "american samoa": "AS",

@@ -1,12 +1,12 @@
 """
-Maine — Health Care Provider Tax (MRS Title 36, Chapter 373)
+Maine: Health Care Provider Tax (MRS Title 36, Chapter 373)
 Source: Maine Legislature
 URL:    https://www.mainelegislature.org/legis/statutes/36/title36ch373.pdf
 Structure: percentage (6% of net patient revenues; MRS Title 36 Ch. 373)
-Phase 1 confidence: likely — PDF binary-encoded on fetch; rate confirmed from statute excerpts.
+Phase 1 confidence: likely: PDF binary-encoded on fetch; rate confirmed from statute excerpts.
 
 Hospital rate: 6% of net patient revenues (increased from 5.5% effective Oct 1, 2011).
-Seed shows 0.0% — significant discrepancy; Phase 2 verification required.
+Seed shows 0.0%: significant discrepancy; Phase 2 verification required.
 """
 
 from __future__ import annotations
@@ -44,7 +44,7 @@ class MaineScraper(StateScraperBase):
                     f"Rate {_FALLBACK_RATE}% confirmed from statute text excerpts. "
                     "PDF binary-encoded on direct fetch. "
                     "Increased from 5.5% effective Oct 1, 2011. "
-                    "Seed (0.0%) is incorrect — ME does have a hospital provider tax."
+                    "Seed (0.0%) is incorrect: ME does have a hospital provider tax."
                 ),
             ),
         ]

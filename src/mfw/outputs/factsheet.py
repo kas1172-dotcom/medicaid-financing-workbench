@@ -1,4 +1,4 @@
-"""State fact sheet — all four analyses filtered to one state."""
+"""State fact sheet: all four analyses filtered to one state."""
 
 from __future__ import annotations
 
@@ -49,7 +49,7 @@ def build_factsheet(state_abbr: str, params: dict, prefer_live: bool = False) ->
             "projected_cut_millions": float(hcbs_row.get("projected_cut_millions", 0)),
         },
         "work_requirements": wr_row if wr_row else {
-            "note": "Non-expansion state — not subject to expansion work requirement provision.",
+            "note": "Non-expansion state, not subject to expansion work requirement provision.",
             "status": "not_applicable",
         },
         "dual_eligible": dual_row,

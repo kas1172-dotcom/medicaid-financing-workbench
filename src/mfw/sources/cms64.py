@@ -1,5 +1,5 @@
 """
-CMS-64 Medicaid expenditures — data.medicaid.gov.
+CMS-64 Medicaid expenditures: data.medicaid.gov.
 
 Uses the "Medicaid CMS-64 New Adult Group Expenditures" dataset which has
 quarterly state-level totals back to 2014 and is the most current available.
@@ -7,10 +7,10 @@ quarterly state-level totals back to 2014 and is the most current available.
 Dataset: Medicaid CMS-64 New Adult Group Expenditures
 ID:      00505e90-f8ac-5921-b12f-5e23ba7ffcf3
 Fields used:
-  state                                                        — state name (CMS format)
-  quarter_end_date                                             — YYYY-MM-DD
-  total_computable_all_medical_assistance_expenditures         — total Medicaid spend ($)
-  total_federal_share_all_medical_assistance_expenditures      — federal share ($)
+  state                                                       : state name (CMS format)
+  quarter_end_date                                            : YYYY-MM-DD
+  total_computable_all_medical_assistance_expenditures        : total Medicaid spend ($)
+  total_federal_share_all_medical_assistance_expenditures     : federal share ($)
 
 We sum the four quarters of the most recent complete federal fiscal year
 (FFY = Oct 1 – Sep 30, so quarters ending Dec, Mar, Jun, Sep of the same FFY).
@@ -97,7 +97,7 @@ def parse_provider_tax_revenue_by_state(rows: list[dict]) -> dict[str, float] | 
         None,
     )
     if pt_col is None:
-        return None  # Column not present in this dataset — caller falls back to rate model.
+        return None  # Column not present in this dataset: caller falls back to rate model.
 
     by_state: dict[str, float] = {}
     for r in rows:

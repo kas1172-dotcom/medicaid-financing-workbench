@@ -1,9 +1,9 @@
 """
-New York — Provider-Specific Taxes (Hospital + MCO)
+New York: Provider-Specific Taxes (Hospital + MCO)
 Source: NY DOH Quarterly Provider-Specific Tax Reports
 URL:    https://www.health.ny.gov/health_care/medicaid/rates/dfrs/prov_spec_taxes/2025/
 Structure: percentage (4–5% NPR hospital; MCO PMPM CMS-approved)
-Phase 1 confidence: likely — DOH page returns 403; rates from NYS DOH secondary sources.
+Phase 1 confidence: likely: DOH page returns 403; rates from NYS DOH secondary sources.
 
 Hospital tax: 4–5% of net patient revenue per NYS DOH rate methodology.
 MCO per-member-per-month tax approved by CMS effective January 1, 2025.

@@ -40,7 +40,7 @@
     "so_what": {
       "implication": "HCBS is an optional Medicaid benefit with no federal floor, historically the first target when states face fiscal pressure. This index is a risk screen, not a forecast. High-tier states warrant early modeling of where HCBS would rank in a budget-shortfall scenario and monitoring of whether fiscal pressure translates into enrollment or service reductions.",
       "stakeholder_balance": {
-        "supporters": "Advocates for the financing changes argue that containing provider taxes addresses structural imbalances in the federal-state match and that states have other budget levers — including managed care efficiency and care coordination — to sustain HCBS programs.",
+        "supporters": "Advocates for the financing changes argue that containing provider taxes addresses structural imbalances in the federal-state match and that states have other budget levers (including managed care efficiency and care coordination) to sustain HCBS programs.",
         "critics": "Disability rights advocates and aging organizations argue that HCBS cuts would fall disproportionately on the most medically complex and socially vulnerable Medicaid enrollees, whose access to community-based care is already constrained by workforce shortages and waitlists."
       }
     },
@@ -54,9 +54,9 @@
     "_source": "reviewed_draft"
   },
   "work_requirements": {
-    "tell_me": "The modeled coverage loss from work requirements is driven primarily by procedural and administrative factors — not by adults who fail to work. Using the Arkansas 2018 experience as the calibration anchor, the modeled national loss runs to several million adults across expansion states, the majority of whom are estimated to already work or qualify for an exemption.",
+    "tell_me": "The modeled coverage loss from work requirements is driven primarily by procedural and administrative factors, not by adults who fail to work. Using the Arkansas 2018 experience as the calibration anchor, the modeled national loss runs to several million adults across expansion states, the majority of whom are estimated to already work or qualify for an exemption.",
     "show_me": {
-      "computation": "Subject adults = expansion enrollees in each state. KFF documents approximately 92% of adults subject to requirements already work or qualify for a statutory exemption. Of that eligible pool, 18% are modeled at risk of procedural disenrollment — calibrated to Arkansas's documented 2018 experience (~18,000 losses). All outputs label the loss 'procedural/administrative.'",
+      "computation": "Subject adults = expansion enrollees in each state. KFF documents approximately 92% of adults subject to requirements already work or qualify for a statutory exemption. Of that eligible pool, 18% are modeled at risk of procedural disenrollment: calibrated to Arkansas's documented 2018 experience (~18,000 losses). All outputs label the loss 'procedural/administrative.'",
       "figure_description": "Horizontal bar chart of modeled coverage loss by state, sorted by magnitude. Large expansion states dominate by population size. The chart subtitle notes that the loss mechanism is procedural churn, not non-work.",
       "sources": [
         "KFF, A Closer Look at the Work Requirement Provisions (2025)",
@@ -65,10 +65,10 @@
       ]
     },
     "so_what": {
-      "implication": "The principal analytical finding is methodological: the dominant mechanism for coverage loss is procedural churn among adults who are already compliant with the requirement, not refusal to work. This distinction matters directly for how states design verification systems, exemption processes, and outreach — and for how policymakers interpret enrollment declines after implementation.",
+      "implication": "The principal analytical finding is methodological: the dominant mechanism for coverage loss is procedural churn among adults who are already compliant with the requirement, not refusal to work. This distinction matters directly for how states design verification systems, exemption processes, and outreach, and for how policymakers interpret enrollment declines after implementation.",
       "stakeholder_balance": {
         "supporters": "Proponents argue that community engagement requirements encourage labor force participation and self-sufficiency, that exemptions are broad enough to protect people who cannot work, and that connecting coverage to activity is a reasonable condition for a voluntary public benefit.",
-        "critics": "Researchers and patient advocates argue that the evidence — from Arkansas (2018) and Georgia's Pathways program — shows requirements reduce coverage without meaningfully increasing employment, because most affected adults already work or face barriers that administrative reporting requirements do not address."
+        "critics": "Researchers and patient advocates argue that the evidence (from Arkansas (2018) and Georgia's Pathways program) shows requirements reduce coverage without meaningfully increasing employment, because most affected adults already work or face barriers that administrative reporting requirements do not address."
       }
     },
     "claims_to_verify": [
@@ -81,7 +81,7 @@
     "_source": "reviewed_draft"
   },
   "duals": {
-    "tell_me": "Dual eligibles — people enrolled in both Medicare and Medicaid — represent a small share of Medicaid enrollment in most states but an estimated 40 to 50 percent of Medicaid spending in many of them. States where this concentration is sharpest face outsized fiscal consequences from any Medicaid change that affects long-term services, HCBS, or supplemental benefits.",
+    "tell_me": "Dual eligibles (people enrolled in both Medicare and Medicaid) represent a small share of Medicaid enrollment in most states but an estimated 40 to 50 percent of Medicaid spending in many of them. States where this concentration is sharpest face outsized fiscal consequences from any Medicaid change that affects long-term services, HCBS, or supplemental benefits.",
     "show_me": {
       "computation": "Dual enrollment share = duals ÷ total Medicaid enrollment. Spending share estimated by applying a 3× per-capita cost multiple (a standard published approximation reflecting duals' LTSS, HCBS, and complex-care utilization). Concentration ratio = spending share ÷ enrollment share.",
       "figure_description": "Scatter plot of dual enrollment share (x-axis) vs. estimated dual spending share (y-axis) by state. States above the 1:1 reference line have a spending share larger than their enrollment share, which is the norm given duals' higher per-capita costs. States in the upper-right quadrant carry the sharpest concentration.",
@@ -92,7 +92,7 @@
       ]
     },
     "so_what": {
-      "implication": "Provisions that appear modest in enrollment terms can land heavily on state Medicaid budgets when they concentrate in the duals population. Dual-eligible enrollment trends and spending shares are a leading indicator of Medicaid fiscal stress — particularly relevant for states with large LTSS and HCBS programs.",
+      "implication": "Provisions that appear modest in enrollment terms can land heavily on state Medicaid budgets when they concentrate in the duals population. Dual-eligible enrollment trends and spending shares are a leading indicator of Medicaid fiscal stress: particularly relevant for states with large LTSS and HCBS programs.",
       "stakeholder_balance": null
     },
     "claims_to_verify": [

@@ -1,5 +1,5 @@
 """
-Rhode Island — Hospital Licensing Fee
+Rhode Island: Hospital Licensing Fee
 Source: RI General Laws 23-17-38.1
 URL:    https://webserver.rilegislature.gov/Statutes/TITLE23/23-17/23-17-38.1.htm
 Structure: percentage (above 6% via CMS non-uniformity waiver)
@@ -8,7 +8,7 @@ Phase 1 confidence: likely
 COMPLIANCE-RISK STATE: RI operates at 13.12% inpatient NPR under a CMS
 non-uniformity waiver. This rate is above the 6% ceiling but is legally valid
 because of the waiver. Under OBBBA's tightened uniformity requirements, this
-waiver is at risk — RI faces a different compliance risk than standard exposure.
+waiver is at risk: RI faces a different compliance risk than standard exposure.
 
 This state is flagged waiver_flag='non_uniformity_waiver' and should NOT be
 ranked alongside standard 3.5%-cap-exposure states in the primary analysis.
@@ -50,7 +50,7 @@ class RhodeIslandScraper(StateScraperBase):
                 waiver_flag="non_uniformity_waiver",
                 notes=(
                     "Rate 13.12% exceeds 6% ceiling under CMS non-uniformity waiver. "
-                    "OBBBA tightens waiver rules — compliance risk distinct from standard "
+                    "OBBBA tightens waiver rules: compliance risk distinct from standard "
                     "phase-down exposure. DO NOT rank alongside standard exposure states."
                 ),
             ),

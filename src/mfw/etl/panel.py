@@ -1,5 +1,5 @@
 """
-Panel builder — assembles one analysis-ready state-level DataFrame.
+Panel builder: assembles one analysis-ready state-level DataFrame.
 
 Live build path (prefer_live=True and live CSVs present in data/current/):
   1. Load spending from data/current/cms64.csv
@@ -80,17 +80,17 @@ def _load_scraped_taxes() -> dict[str, dict] | None:
     Load state_provider_taxes.csv (written by the state scraper runner).
 
     Returns a dict keyed by abbr. Each value contains:
-      provider_taxes_by_class  — {class: rate} for reported/derived rows only
+      provider_taxes_by_class : {class: rate} for reported/derived rows only
                                  (seed_carryover and not_comparable excluded)
-      not_comparable_classes   — set of classes confirmed as not_comparable by scraper
+      not_comparable_classes  : set of classes confirmed as not_comparable by scraper
                                  (the panel zeros these out from seed so the analysis
                                  does not use the seed approximation for them)
-      provider_tax_unquantified — {class: native_rate} for not_comparable rows
-      provider_tax_rate         — max subject-class comparable rate (None if all not_comparable)
-      provider_tax_waiver_flag  — 'non_uniformity_waiver' for RI/NV, else None
-      provider_tax_data_source  — 'scraped' if ≥1 reported/derived row exists, else 'seed'
+      provider_tax_unquantified: {class: native_rate} for not_comparable rows
+      provider_tax_rate        : max subject-class comparable rate (None if all not_comparable)
+      provider_tax_waiver_flag : 'non_uniformity_waiver' for RI/NV, else None
+      provider_tax_data_source : 'scraped' if ≥1 reported/derived row exists, else 'seed'
 
-    Seed-carryover rows are NOT placed in provider_taxes_by_class — the panel's
+    Seed-carryover rows are NOT placed in provider_taxes_by_class: the panel's
     existing seed overlay already supplies those values with correct provenance.
 
     States with confidence=failed and no other rows are omitted so the caller

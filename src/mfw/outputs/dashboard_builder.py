@@ -100,13 +100,13 @@ _SCAFFOLD_TABS = {
         "analytical_question": (
             "More than two-thirds of Medicaid enrollees are in managed care plans. "
             "How do the reconciliation law's financing changes interact with managed care "
-            "contracts, MCO taxes, and capitation rates — and what does that mean for "
+            "contracts, MCO taxes, and capitation rates, and what does that mean for "
             "plan participation and enrollee access?"
         ),
         "method": (
-            "Analysis will combine: (1) MCO tax exposure — states with MCO provider taxes "
+            "Analysis will combine: (1) MCO tax exposure: states with MCO provider taxes "
             "above 3.5% face the same hold-harmless cap as hospital taxes; (2) managed care "
-            "penetration rate by state; (3) capitation rate adequacy — whether per-member "
+            "penetration rate by state; (3) capitation rate adequacy: whether per-member "
             "per-month payments remain viable after the financing change. "
             "Source: CMS managed care enrollment report + state contract actuarial filings."
         ),
@@ -126,7 +126,7 @@ _SCAFFOLD_TABS = {
         "label": "Dual Eligibles",
         "status": "in_progress",
         "analytical_question": (
-            "Dual eligibles — people enrolled in both Medicare and Medicaid — are a small "
+            "Dual eligibles (people enrolled in both Medicare and Medicaid) are a small "
             "share of Medicaid enrollment but account for 40-50% of spending in many states. "
             "Where is that concentration sharpest, and what do Medicaid financing cuts mean "
             "for people at the Medicare-Medicaid seam?"
@@ -162,8 +162,8 @@ def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
     print("  Running financing analyses...")
     pt_result = provider_tax.run(df, params)
     wr_result = work_requirements.run(df, params)
-    print(f"    ✓ {pt_result['title']} — provenance={pt_result['data_provenance']}")
-    print(f"    ✓ {wr_result['title']} — provenance={wr_result['data_provenance']}")
+    print(f"    ✓ {pt_result['title']}: provenance={pt_result['data_provenance']}")
+    print(f"    ✓ {wr_result['title']}: provenance={wr_result['data_provenance']}")
 
     print("  Generating charts...")
     charts = {}
@@ -183,7 +183,7 @@ def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
     for analysis_id, result in [("provider_tax", pt_result), ("work_requirements", wr_result)]:
         narrative[analysis_id] = draft(analysis_id, result)
         src = narrative[analysis_id].get("_source", "llm")
-        print(f"    ✓ {analysis_id} — source={src}")
+        print(f"    ✓ {analysis_id}: source={src}")
 
     print("  Building data sources manifest...")
     raw_sources = _load_data_sources()
@@ -194,7 +194,7 @@ def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
     validation = {
         "provider_tax_ranking": pt_validation.run(pt_result),
     }
-    print(f"    ✓ provider_tax_ranking — {validation['provider_tax_ranking'].get('result', 'unknown')}")
+    print(f"    ✓ provider_tax_ranking: {validation['provider_tax_ranking'].get('result', 'unknown')}")
 
     is_seed = summary["data_provenance"] == "seed"
     prov_comp = pt_result.get("provenance_composition", "")
@@ -218,7 +218,7 @@ def build_dashboard_data(params: dict, prefer_live: bool = False) -> dict:
             "n_unquantified": pt_result.get("n_unquantified"),
             "national_gap_billion": pt_result.get("national_final_gap_billion"),
             "provenance_note": (
-                "SEED DATA — illustrative values anchored to KFF-published magnitudes. "
+                "SEED DATA: illustrative values anchored to KFF-published magnitudes. "
                 "Run `mfw refresh` then `mfw build` for authoritative CMS data. "
                 "Do not cite these figures as official."
             ) if is_seed else (

@@ -1,14 +1,14 @@
 """
-Michigan — Quality Assurance Assessment Program (QAAP)
+Michigan: Quality Assurance Assessment Program (QAAP)
 Source: MCL 333.20161
 URL:    https://www.legislature.mi.gov/Laws/MCL?objectName=mcl-333-20161
 Structure: percentage (rate in annual DHHS notice, up to federal maximum ~6%)
-Verified by Phase 1 fetch — statute structure confirmed.
+Verified by Phase 1 fetch: statute structure confirmed.
 
 Actual current rate is set by DHHS annual rule/notice, not in the statute.
 The statute confirms the program exists and sets the ceiling at the federal max.
 Rate near 6% ($6B+ in QAAP revenue per legislative analysis).
-Seed shows 6.0% — consistent with known program scope.
+Seed shows 6.0%: consistent with known program scope.
 """
 
 from __future__ import annotations
@@ -60,7 +60,7 @@ class MichiganScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed — verify against MI DHHS/CMS SPA before use.",
+                notes="MCO rate from seed: verify against MI DHHS/CMS SPA before use.",
             ),
         ]
 

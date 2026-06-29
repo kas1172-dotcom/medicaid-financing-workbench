@@ -1,5 +1,5 @@
 """
-CLI entry point — the `mfw` command.
+CLI entry point: the `mfw` command.
 
 Commands:
   mfw refresh              interactive; fetches APIs + ingests manual uploads
@@ -12,7 +12,7 @@ Commands:
   mfw draft                generate tell/show/so-what (requires ANTHROPIC_API_KEY)
 
 `mfw build` is what the GitHub Action runs. It never prompts for files and never
-fails because a manual-upload source is missing — it proceeds with the last-good
+fails because a manual-upload source is missing: it proceeds with the last-good
 data from data/current/ and surfaces the "as of" date in the site.
 
 `mfw refresh` is for local interactive use. It auto-fetches API sources and
@@ -78,7 +78,7 @@ def _refresh_frequency_days(freq: str) -> int:
 
 def cmd_refresh(args, params):
     """
-    Interactive refresh — runs for each source in the manifest.
+    Interactive refresh: runs for each source in the manifest.
     API sources are fetched automatically. Manual sources are looked for in
     data/inbox/ and the analyst is prompted clearly when a file is needed.
     """
@@ -256,7 +256,7 @@ def _write_simple_provenance(source_id: str, name: str, tier: str, method: str, 
 
 def cmd_build(args, params):
     """
-    Non-interactive build — what the GitHub Action runs.
+    Non-interactive build: what the GitHub Action runs.
     Builds the dashboard from data/current/. Never prompts for files.
     For any stale or missing manual source, uses seed data and surfaces
     the "as of" date in the site rather than failing.
@@ -311,7 +311,7 @@ def cmd_analyze(args, params):
         print(f"  Running {name}...")
         r = mod.run(df, params)
         results[name] = r
-        print(f"    ✓ {r['title']} — provenance={r['data_provenance']}")
+        print(f"    ✓ {r['title']}: provenance={r['data_provenance']}")
 
     out_path = Path("outputs/results.json")
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -403,7 +403,7 @@ def cmd_fetch(args, params):
 
 def cmd_draft(args, params):
     if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("[info] ANTHROPIC_API_KEY not set — using reviewed stubs from dashboard/reviewed_drafts.json")
+        print("[info] ANTHROPIC_API_KEY not set: using reviewed stubs from dashboard/reviewed_drafts.json")
 
     results_path = Path("outputs/results.json")
     if not results_path.exists():
@@ -430,8 +430,8 @@ def main():
         description=(
             "Medicaid Financing Workbench.\n\n"
             "Typical workflow:\n"
-            "  mfw refresh   — fetch APIs + prompt for manual downloads\n"
-            "  mfw build     — build dashboard from available data\n"
+            "  mfw refresh  : fetch APIs + prompt for manual downloads\n"
+            "  mfw build    : build dashboard from available data\n"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )

@@ -1,5 +1,5 @@
 """
-Montana — Hospital Facility Utilization Fee (HUF)
+Montana: Hospital Facility Utilization Fee (HUF)
 Source: MT Department of Revenue
 URL:    https://revenue.mt.gov/taxes/miscellaneous/huf
 Structure: unit_based (per-bed-day) + percentage (outpatient)
@@ -50,7 +50,7 @@ class MontanaScraper(StateScraperBase):
                 notes=(
                     "Hybrid structure: $70/bed-day (unit_based, not_comparable) "
                     "+ 0.90% outpatient (below 3.5% floor, not exposed). "
-                    "Seed (0.0%) incorrect — MT does have a hospital tax."
+                    "Seed (0.0%) incorrect: MT does have a hospital tax."
                 ),
             ),
         ]

@@ -1,5 +1,5 @@
 """
-Kentucky — Health Care Provider Tax
+Kentucky: Health Care Provider Tax
 Source: KY Department of Revenue
 URL:    https://revenue.ky.gov/Business/Health-Care-Provider-Tax/Pages/default.aspx
 
@@ -15,7 +15,7 @@ Confirmed rates:
   Nursing facility:        per-bed-day (unit_based, EXEMPT from phase-down)
 
 Phase 2 finding: KY's max SUBJECT-class rate is MCO 5.5%, not hospital.
-Seed shows hospital 5.5% — the seed hospital rate is significantly overstated.
+Seed shows hospital 5.5%: the seed hospital rate is significantly overstated.
 The analytical story here is that KY exposure shifts from hospital to MCO class.
 """
 
@@ -58,7 +58,7 @@ class KentuckyScraper(StateScraperBase):
                 confidence=confidence,
                 notes=(
                     "Live-parsed from KY DOR Health Care Provider Tax page. "
-                    "Seed (5.5%) overstated — hospital is 2.5%. "
+                    "Seed (5.5%) overstated: hospital is 2.5%. "
                     "Phase 2 finding: KY exposure is MCO-class led, not hospital."
                 ),
             ),
@@ -75,7 +75,7 @@ class KentuckyScraper(StateScraperBase):
                 confidence=confidence,
                 notes=(
                     "Live-parsed from KY DOR page. "
-                    f"MCO {mco_rate:.1f}% > 3.5% floor — KY primary cap-exposure class."
+                    f"MCO {mco_rate:.1f}% > 3.5% floor: KY primary cap-exposure class."
                 ),
             ),
             RateRow(
@@ -89,7 +89,7 @@ class KentuckyScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=confidence,
-                notes="Live-parsed from KY DOR page. EXEMPT class — not counted toward cap exposure.",
+                notes="Live-parsed from KY DOR page. EXEMPT class, not counted toward cap exposure.",
             ),
         ]
 

@@ -1,5 +1,5 @@
 """
-Medicaid managed care enrollment — data.medicaid.gov.
+Medicaid managed care enrollment: data.medicaid.gov.
 
 Provides MCO penetration and dual-eligible-by-plan counts by state, used by the
 duals and managed-care analyses. Same public API pattern as cms64.py.

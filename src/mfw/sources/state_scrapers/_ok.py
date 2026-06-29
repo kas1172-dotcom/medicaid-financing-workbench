@@ -1,12 +1,12 @@
 """
-Oklahoma — Supplemental Hospital Offset Payment Program (SHOPP)
+Oklahoma: Supplemental Hospital Offset Payment Program (SHOPP)
 Source: Oklahoma Health Care Authority supplemental payments page
 URL:    https://www.ohca.com/providers/financial-data/supplemental-payments/
 Structure: percentage (4% of net revenue; SB1045, Title 63 §5020A)
-Phase 1 confidence: likely — page not confirmed via fetch; rate from OHCA budget review.
+Phase 1 confidence: likely: page not confirmed via fetch; rate from OHCA budget review.
 
 SHOPP rate: 4% of net revenue per SB1045. Expansion state; 4% > 3.5% floor → exposed.
-Seed shows 0.0% for hospital — significant discrepancy.
+Seed shows 0.0% for hospital: significant discrepancy.
 """
 
 from __future__ import annotations
@@ -44,7 +44,7 @@ class OklahomaScraper(StateScraperBase):
                 retrieved_date=today,
                 confidence=confidence,
                 notes=(
-                    f"SHOPP {_FALLBACK_RATE}% > 3.5% floor — OK is exposed. "
+                    f"SHOPP {_FALLBACK_RATE}% > 3.5% floor: OK is exposed. "
                     "Seed (0.0%) significantly understated. "
                     "Rate from OHCA budget review documents; page not confirmed via fetch."
                 ),

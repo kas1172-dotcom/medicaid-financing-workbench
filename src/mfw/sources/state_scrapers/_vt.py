@@ -1,13 +1,13 @@
 """
-Vermont — Hospital Provider Tax (18 VSA §9410 area)
+Vermont: Hospital Provider Tax (18 VSA §9410 area)
 Source: VT Joint Fiscal Office Provider Tax Overview (Jan 2026)
 URL:    https://legislature.vermont.gov/Documents/2026/Workgroups/House%20Health%20Care/Orientation/W~Nolan%20Langweil~Provider%20Tax%20Overview~1-7-2026.pdf
 Structure: percentage (>5.5% NPR; hospital component is 93% of VT provider tax revenue)
-Phase 1 confidence: likely — PDF binary-encoded; rate from JFO overview excerpt.
+Phase 1 confidence: likely: PDF binary-encoded; rate from JFO overview excerpt.
 
 VT hospital provider tax >5.5% (VT among ~13 states above 5.5%). Hospital component is
 93% of all VT provider tax revenue. OBBBA phases down from 6% to 3.5% by 2032.
-Seed shows 0.0% — significant discrepancy.
+Seed shows 0.0%: significant discrepancy.
 """
 
 from __future__ import annotations

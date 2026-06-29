@@ -6,13 +6,13 @@ federal datasets the work depends on, joins them into one analysis-ready panel,
 runs four financing analyses tied to the 2025 reconciliation law, and drafts
 reviewable findings in a **tell / show / so what** structure.
 
-The design goal is to automate the mechanical 80% of the job — fetch, clean,
-compute, chart, draft — so the analyst's time goes to the analysis and the
+The design goal is to automate the mechanical 80% of the job (fetch, clean,
+compute, chart, draft) so the analyst's time goes to the analysis and the
 "so what," not to wrangling spreadsheets.
 
 > **What this is and isn't.** The tool runs the arithmetic and drafts prose from
-> verified numbers. The analytical judgment — which questions to ask, how to
-> weight an index, whether a result is real or an artifact — stays with the
+> verified numbers. The analytical judgment (which questions to ask, how to
+> weight an index, whether a result is real or an artifact) stays with the
 > analyst. Every generated draft ships with a claims-to-verify checklist; the
 > analyst owns every published conclusion.
 
@@ -27,10 +27,10 @@ compute, chart, draft — so the analyst's time goes to the analysis and the
 
 ## Data sources
 
-- **CMS-64 Medicaid Financial Management Data** — `data.medicaid.gov` (state expenditures and federal match)
-- **CMS Managed Care Enrollment Report** — `data.medicaid.gov` (MCO penetration, dual-by-plan counts)
-- **Census ACS Subject Table S2704** — `api.census.gov` (state public-coverage estimates)
-- **KFF** — 2025–26 Medicaid Budget Survey; "5 Key Facts About Medicaid and Provider Taxes"; reconciliation-law tracker (policy parameters and CBO scores)
+- **CMS-64 Medicaid Financial Management Data**: `data.medicaid.gov` (state expenditures and federal match)
+- **CMS Managed Care Enrollment Report**: `data.medicaid.gov` (MCO penetration, dual-by-plan counts)
+- **Census ACS Subject Table S2704**: `api.census.gov` (state public-coverage estimates)
+- **KFF**: 2025–26 Medicaid Budget Survey; "5 Key Facts About Medicaid and Provider Taxes"; reconciliation-law tracker (policy parameters and CBO scores)
 
 ## Install
 
@@ -66,9 +66,9 @@ GitHub Pages as-is.
 
 `mfw draft` (and the dashboard) produce a **tell / show / so what** brief per finding:
 
-- **Tell me** — the plain-language finding
-- **Show me** — the computation, an accurate figure description, and sources
-- **So what** — a neutral implication plus both stakeholder cases
+- **Tell me**: the plain-language finding
+- **Show me**: the computation, an accurate figure description, and sources
+- **So what**: a neutral implication plus both stakeholder cases
 
 The LLM layer passes computed numbers as **immutable ground truth**, returns a
 **claims-to-verify** checklist and **loaded-language flags** with every draft,
@@ -89,12 +89,12 @@ screen via the `data_provenance` flag.
   models. The architecture leaves a clear slot for them.
 - The indices and models encode **analyst choices** (index weights, churn rate,
   dual cost multiple). They are documented, configurable, and meant to be argued
-  with — not treated as settled.
+  with, not treated as settled.
 
 ## Project layout
 
 ```
-config/policy_parameters.yaml   # the control panel — edit a number, everything recomputes
+config/policy_parameters.yaml   # the control panel: edit a number, everything recomputes
 src/mfw/sources/                # data fetchers (CMS-64, managed care, ACS) + seed
 src/mfw/etl/panel.py            # the single join point
 src/mfw/analysis/               # the four analyses (the real arithmetic)

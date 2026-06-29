@@ -1,8 +1,8 @@
 """
-Analysis 4 — Dual-eligible spending concentration.
+Analysis 4: Dual-eligible spending concentration.
 
 THE QUESTION: dual eligibles (Medicare + Medicaid) are a small share of enrollees
-but a large share of spending. Where is that concentration sharpest — and why does
+but a large share of spending. Where is that concentration sharpest, and why does
 it matter for this role? Because the team's work sits at the Medicare-Medicaid seam,
 and cuts that look small in enrollee terms can land heavily on duals.
 

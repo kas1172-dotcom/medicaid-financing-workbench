@@ -1,8 +1,8 @@
 """
-Minnesota — Hospital Assessment + MinnesotaCare Tax
+Minnesota: Hospital Assessment + MinnesotaCare Tax
 Sources:
-  MN Stat. 256.9657 — hospital assessment (outpatient % + inpatient per-day)
-  MN Stat. 295.52   — MinnesotaCare gross-receipts tax
+  MN Stat. 256.9657: hospital assessment (outpatient % + inpatient per-day)
+  MN Stat. 295.52  : MinnesotaCare gross-receipts tax
 
 URL: https://www.revisor.mn.gov/statutes/cite/256.9657
      https://www.revisor.mn.gov/statutes/cite/295.52
@@ -47,7 +47,7 @@ class MinnesotaScraper(StateScraperBase):
         care_rate, care_confidence = self._parse_minnesota_care()
 
         rows = [
-            # Outpatient percentage component — cap-comparable
+            # Outpatient percentage component: cap-comparable
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="hospital",

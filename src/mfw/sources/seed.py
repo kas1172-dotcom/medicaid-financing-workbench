@@ -1,8 +1,8 @@
 """
-Seed dataset — offline fallback so the workbench runs for anyone, immediately.
+Seed dataset: offline fallback so the workbench runs for anyone, immediately.
 =============================================================================
 
-IMPORTANT — read before citing any number from this file.
+IMPORTANT: read before citing any number from this file.
 
 These are ILLUSTRATIVE seed values used so the tool is runnable without network
 access. Spending and enrollment magnitudes are anchored to publicly reported
@@ -128,7 +128,7 @@ _COLUMNS = [
 # Key: (hospital, mco, ambulance, other, nursing_facility, icf_iid)
 
 _PROVIDER_TAXES_BY_CLASS = {
-    # Non-expansion states — kept for completeness; not subject to reduced cap.
+    # Non-expansion states: kept for completeness; not subject to reduced cap.
     "AL": {"hospital": 4.2, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.8, "icf_iid": 0.0},
     "FL": {"hospital": 1.5, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.5, "icf_iid": 0.0},
     "GA": {"hospital": 1.5, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.5, "icf_iid": 0.0},
@@ -140,7 +140,7 @@ _PROVIDER_TAXES_BY_CLASS = {
     "WI": {"hospital": 1.0, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.0, "icf_iid": 0.0},
     "WY": {"hospital": 0.0, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 0.0, "icf_iid": 0.0},
 
-    # Expansion states — NOT exposed (non-exempt taxes all at or below 3.5%, or zero).
+    # Expansion states, NOT exposed (non-exempt taxes all at or below 3.5%, or zero).
     # These 10 states have their meaningful provider taxes on exempt classes only.
     "AK": {"hospital": 0.0, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 0.0, "icf_iid": 0.0},
     "ID": {"hospital": 0.0, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.0, "icf_iid": 3.5},
@@ -153,13 +153,13 @@ _PROVIDER_TAXES_BY_CLASS = {
     "UT": {"hospital": 0.0, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.0, "icf_iid": 0.0},
     "VT": {"hospital": 0.0, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.5, "icf_iid": 0.0},
 
-    # Expansion states — exposed via MCO tax only (hospital tax at or below 3.5%).
+    # Expansion states: exposed via MCO tax only (hospital tax at or below 3.5%).
     # These 3 states account for the gap between 31 total and 28 hospital-exposed.
     "AZ": {"hospital": 3.5, "mco": 4.5, "ambulance": 0.0, "other": 0.0, "nursing_facility": 3.5, "icf_iid": 0.0},
     "NV": {"hospital": 3.5, "mco": 4.5, "ambulance": 0.0, "other": 0.0, "nursing_facility": 3.5, "icf_iid": 0.0},
     "NM": {"hospital": 3.0, "mco": 5.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 4.0, "icf_iid": 0.0},
 
-    # Expansion states — exposed via hospital tax above 3.5% (28 states).
+    # Expansion states: exposed via hospital tax above 3.5% (28 states).
     "AR": {"hospital": 5.9, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.9, "icf_iid": 0.0},
     "CA": {"hospital": 5.5, "mco": 1.8, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.5, "icf_iid": 0.0},
     "CO": {"hospital": 5.5, "mco": 0.0, "ambulance": 0.0, "other": 0.0, "nursing_facility": 5.5, "icf_iid": 0.0},

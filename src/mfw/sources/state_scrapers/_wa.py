@@ -1,5 +1,5 @@
 """
-Washington — Hospital Safety Net Assessment
+Washington: Hospital Safety Net Assessment
 Source: RCW Ch. 74.60
 URL:    https://apps.leg.wa.gov/rcw/default.aspx?cite=74.60&full=true
 Structure: amount_targeted (tier-allocated to hit annual dollar target)
@@ -7,9 +7,9 @@ Verified by Phase 1 fetch.
 
 Rate set annually by HCA to produce $510M inpatient + $386.4M outpatient
 in CY2024. Tiers: standard PPS 100%, rehab 50%, children's 5%/20%.
-Not a single % of revenue — amount-targeted → not_comparable for % cap.
+Not a single % of revenue: amount-targeted → not_comparable for % cap.
 
-MCO tax: 2.0% (seed) — IS a percentage.
+MCO tax: 2.0% (seed): IS a percentage.
 WA exposure is primarily via MCO tax.
 """
 
@@ -62,7 +62,7 @@ class WashingtonScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO rate from seed — verify against WA HCA/CMS SPA.",
+                notes="MCO rate from seed: verify against WA HCA/CMS SPA.",
             ),
         ]
 

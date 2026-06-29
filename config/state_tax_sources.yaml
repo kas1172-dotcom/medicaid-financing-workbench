@@ -1,29 +1,29 @@
 # =============================================================================
-# Phase 1 — Provider-Tax Source Registry
+# Phase 1: Provider-Tax Source Registry
 # =============================================================================
 # Generated: 2026-06-09
 # Method: Web search + HTTP fetch verification for all 50 states + DC.
 #
 # confidence levels:
-#   verified   — URL was fetched and page/document plausibly contains rate data
-#   likely     — credible primary source found; rate not confirmed from fetch
+#   verified  : URL was fetched and page/document plausibly contains rate data
+#   likely    : credible primary source found; rate not confirmed from fetch
 #                (403/redirect/binary PDF) but confirmed via secondary sources
-#   not_found  — no findable primary source; or state has no hospital provider tax
+#   not_found : no findable primary source; or state has no hospital provider tax
 #
 # source_type:  statute | regulation | agency_page | budget_pdf | cms_waiver | other
 # format:       html_table | html_text | pdf_table | pdf_text | image | unknown
 #
-# IMPORTANT — Phase 2 scrapers should be built ONLY for "verified" sources.
+# IMPORTANT: Phase 2 scrapers should be built ONLY for "verified" sources.
 # "likely" sources require manual inspection before coding.
 # "not_found" states fall back to seed data (clearly labeled).
 #
-# Key structural finding: Most states do NOT fix the rate in statute — they
+# Key structural finding: Most states do NOT fix the rate in statute: they
 # delegate rate-setting to the state agency, which publishes annual notices.
 # The statute URL is therefore the authoritative REFERENCE, but the actual
 # current rate often lives in an agency bulletin, preprint, or CMS SPA.
 # =============================================================================
 
-# ─── Expansion states — highest exposure priority ────────────────────────────
+# ─── Expansion states: highest exposure priority ────────────────────────────
 
 - state: Arizona
   abbr: AZ
@@ -33,7 +33,7 @@
       format: html_text
       confidence: verified
       notes: >
-        AHCCCS Hospital Assessment page — fetched and confirmed. Assessment based on
+        AHCCCS Hospital Assessment page: fetched and confirmed. Assessment based on
         inpatient discharges + outpatient NPR by hospital peer group (Pediatric Intensive
         = 80%, Medium Pediatric = 90% of general acute rate). FFY2026 total ~$1.275B in
         directed payments. Per-discharge structure, not a single %-of-revenue rate.
@@ -47,9 +47,9 @@
       format: html_text
       confidence: likely
       notes: >
-        ACA §20-77-1902 — Hospital Assessment Fee on Hospitals to Improve Healthcare
+        ACA §20-77-1902: Hospital Assessment Fee on Hospitals to Improve Healthcare
         Access. Rate set annually by the Director; ranged 1.47–1.70% of net patient
-        revenue in SFY2020–2024. Rate is below the 3.5% floor — AR may be less exposed
+        revenue in SFY2020–2024. Rate is below the 3.5% floor: AR may be less exposed
         than seed data suggests. Seed shows 5.9%; this needs Phase 2 verification.
         Rate frozen at July 2025 level under OBBBA.
 
@@ -88,7 +88,7 @@
       format: html_text
       confidence: likely
       notes: >
-        CGS Chapter 211c (§§12-263a through 12-263e) — Hospital provider tax.
+        CGS Chapter 211c (§§12-263a through 12-263e): Hospital provider tax.
         Inpatient rate: 6% of net inpatient revenue. Outpatient: CMS waiver at ~10%+.
         2025 legislation revises tax base effective July 1, 2026.
         URL is chapter table of contents; specific rates in subsections.
@@ -101,9 +101,9 @@
       format: html_text
       confidence: likely
       notes: >
-        Delaware Hospital Provider Tax (Protect Medicaid Act of 2024) — 1.95% of net
+        Delaware Hospital Provider Tax (Protect Medicaid Act of 2024): 1.95% of net
         patient revenues, effective July 1, 2025. Annual tax in 4 quarterly installments.
-        Estimated ~$40M for FY2026. Very new — below 3.5% floor, so no phase-down
+        Estimated ~$40M for FY2026. Very new: below 3.5% floor, so no phase-down
         exposure. Seed shows 4.0%; rate needs Phase 2 verification.
 
 - state: Hawaii
@@ -115,7 +115,7 @@
       confidence: likely
       notes: >
         Hawaii MedQUEST fee schedule page. Hawaii does not use a standalone hospital
-        gross-receipts provider tax — instead uses General Excise Tax (GET) on Medicaid
+        gross-receipts provider tax, instead uses General Excise Tax (GET) on Medicaid
         payments + hospital access payment pool (CY2026 pool = $241.69M). No single
         % rate applies. HI exposure may be overestimated in seed data; MCO tax exists
         via CMS waiver. Needs direct agency contact to confirm structure.
@@ -128,7 +128,7 @@
       format: html_text
       confidence: likely
       notes: >
-        ILCS Art. V-A (305 ILCS 5) — Hospital Provider Funding statute. HB2771 (2025)
+        ILCS Art. V-A (305 ILCS 5): Hospital Provider Funding statute. HB2771 (2025)
         amends the Hospital Assessment Program. Specific rate not in statute text; set
         administratively by HFS. Rate near 5.9% of net revenue per HFS annual notice.
         Contact: HFS.ProviderAssessmentUnit@illinois.gov for current rate schedule.
@@ -154,7 +154,7 @@
       format: pdf_text
       confidence: likely
       notes: >
-        Iowa Code Chapter 249M — Hospital Health Care Access Assessment.
+        Iowa Code Chapter 249M: Hospital Health Care Access Assessment.
         Rate = 1.26% of net patient revenue using FY2008 Medicare cost report as base.
         Iowa is expansion state. Rate is well below 3.5%; seed shows 5.5% which may be
         incorrect. Needs Phase 2 verification.
@@ -167,7 +167,7 @@
       format: html_text
       confidence: verified
       notes: >
-        KY Department of Revenue Health Care Provider Tax page — fetched and confirmed.
+        KY Department of Revenue Health Care Provider Tax page: fetched and confirmed.
         MCO rate: 5.5% of gross revenues. ICF-MR rate: 5.5% of gross revenues.
         Hospital rate under KRS 142.303: 2.5% of gross revenues. NF rates: per-bed-day.
         Note: hospital rate (2.5%) is well below seed value of 5.5%.
@@ -195,7 +195,7 @@
       confidence: likely
       notes: >
         MDH OBBBA one-pager (July 2025) confirms three provider taxes: hospital,
-        nursing facility, and MCO assessment — $1.17B at federal risk.
+        nursing facility, and MCO assessment: $1.17B at federal risk.
         NF quality assessment projected below 6% of operating revenue per FY2025 JCR.
         Specific hospital rate not confirmed from fetch. Seed shows 5.5%.
 
@@ -219,7 +219,7 @@
       format: html_text
       confidence: verified
       notes: >
-        MCL 333.20161 — Quality Assurance Assessment Program (QAAP). Rate set at
+        MCL 333.20161: Quality Assurance Assessment Program (QAAP). Rate set at
         variable amount up to federal maximum (~6%). Generates up to $6B in QAAP revenue.
         State retention = 13.2% of federal match. Page fetched and structure confirmed.
         Exact current % set by DHHS rule/annual notice, not in the statute itself.
@@ -232,10 +232,10 @@
       format: html_text
       confidence: verified
       notes: >
-        MN Statute 256.9657 — Hospital assessment: outpatient = 5.96% of net outpatient
+        MN Statute 256.9657: Hospital assessment: outpatient = 5.96% of net outpatient
         revenue; inpatient = $120.22 per patient day. Page fetched and rates confirmed.
         ALSO: MinnesotaCare tax (MN Stat. 295.52) at 1.8% of gross revenues for
-        hospitals/surgical centers — a separate two-tier system. Hospital directed
+        hospitals/surgical centers: a separate two-tier system. Hospital directed
         payment program also under MN Stat. 256B.1974.
 
 - state: Missouri
@@ -246,7 +246,7 @@
       format: html_text
       confidence: likely
       notes: >
-        RSMo §208.471 — Federal Reimbursement Allowance (FRA) hospital tax.
+        RSMo §208.471: Federal Reimbursement Allowance (FRA) hospital tax.
         Current FRA rate = 5% for SFY2027 per MO HealthNet emergency regulation.
         Four provider taxes total ~$900M from hospitals in Missouri.
         Rate not in the specific statutory section; set by emergency regulation.
@@ -259,10 +259,10 @@
       format: html_text
       confidence: likely
       notes: >
-        NV DHCFP Private Hospital Assessment Program — SFY2025 rates: inpatient 7.139%,
+        NV DHCFP Private Hospital Assessment Program: SFY2025 rates: inpatient 7.139%,
         outpatient 6% of net non-Medicare patient revenue. Statutory authority: NRS 422.3794.
         URL redirects to nevadamedicaid.nv.gov; rates confirmed from search excerpts
-        citing the program bulletin. Inpatient rate exceeds 6% cap — CMS non-uniformity
+        citing the program bulletin. Inpatient rate exceeds 6% cap: CMS non-uniformity
         waiver likely in effect.
 
 - state: New Hampshire
@@ -273,7 +273,7 @@
       format: html_text
       confidence: likely
       notes: >
-        NH DRA — Medicaid Enhancement Tax (MET): 5.4% of net patient service revenue
+        NH DRA: Medicaid Enhancement Tax (MET): 5.4% of net patient service revenue
         on all 26 acute care hospitals per RSA 84-A. Generated ~$348M SFY2025.
         URL returned 403 on fetch but rate confirmed from NH Fiscal Policy Institute
         analysis. Will phase down to 3.5% by October 2031.
@@ -286,10 +286,10 @@
       format: html_text
       confidence: verified
       notes: >
-        NJ DOH Health Care Facility Assessments — fetched and confirmed. Hospital
+        NJ DOH Health Care Facility Assessments: fetched and confirmed. Hospital
         assessment: $12.50 per adjusted admission (P.L.2025, c.70). Ambulatory care:
         2.5% of gross receipts. Subacute: $35/admission. Per-admission structure (not
-        % of revenue) for hospitals — different from seed value approach.
+        % of revenue) for hospitals: different from seed value approach.
 
 - state: New Mexico
   abbr: NM
@@ -313,7 +313,7 @@
       format: html_table
       confidence: likely
       notes: >
-        NY DOH 2025 Quarterly Provider-Specific Tax Reports — 403 on direct fetch.
+        NY DOH 2025 Quarterly Provider-Specific Tax Reports: 403 on direct fetch.
         Hospital tax: 4–5% of net patient revenue per NYS DOH rate methodology records.
         MCO per-member-per-month tax approved by CMS effective Jan 1, 2025.
         Key source for quarterly detail; rate confirmed from secondary sources.
@@ -339,7 +339,7 @@
       format: html_text
       confidence: verified
       notes: >
-        OAC Rule 5160-2-30 — Hospital Franchise Fee. Rate: 3.37% of total facility costs
+        OAC Rule 5160-2-30: Hospital Franchise Fee. Rate: 3.37% of total facility costs
         for program years ending CY2022–2025; rising to 4.37% for CY2026+. Supplemental
         rate: additional 3.641923% starting 2026. Page fetched and rates confirmed.
         Note: seed value of 5.9% appears to combine base + supplemental rates.
@@ -352,7 +352,7 @@
       format: html_text
       confidence: verified
       notes: >
-        ORS 414.855 — Hospital assessment. Rate not fixed in statute; set by OHA Director
+        ORS 414.855: Hospital assessment. Rate not fixed in statute; set by OHA Director
         by rule (~6% per legislative background). Caps: ≤30% of Medicare FFS inpatient
         + ≤41% of Medicare FFS outpatient payments. Expired Sept 30, 2025; HB2010 extends
         to Dec 2032. Page fetched and rate methodology confirmed.
@@ -365,7 +365,7 @@
       format: html_text
       confidence: verified
       notes: >
-        PA Bulletin — Hospital Assessment rates for FY2021–2023: 3.32% of net inpatient
+        PA Bulletin: Hospital Assessment rates for FY2021–2023: 3.32% of net inpatient
         revenue + 1.73% of net outpatient revenue. Statute: 62 P.S. §803-G (Article VIII-G).
         Act 14 of 2025 eliminated sunset. Page fetched and rates confirmed for FY2022–23.
         Current 2025 rate expected to be similar structure; annual rate-setting bulletin
@@ -379,8 +379,8 @@
       format: html_text
       confidence: likely
       notes: >
-        RI General Laws 23-17-38.1 — Hospital licensing fee. Tier 1 inpatient: 13.12%
-        of inpatient NPR (CMS non-uniformity waiver in effect — high rate legally valid
+        RI General Laws 23-17-38.1: Hospital licensing fee. Tier 1 inpatient: 13.12%
+        of inpatient NPR (CMS non-uniformity waiver in effect: high rate legally valid
         but a significant OBBBA compliance risk). State-government hospital: 5.25% NPR.
         Rate per RI Division of Taxation notice 2023-02. Statute URL not fetched directly.
 
@@ -392,7 +392,7 @@
       format: html_text
       confidence: verified
       notes: >
-        12VAC30-160-10 — Hospital assessment. Effectively ~6% of net patient service
+        12VAC30-160-10: Hospital assessment. Effectively ~6% of net patient service
         revenue (confirmed: 63 private acute care hospitals, $572M revenue in 2025).
         Rate calculated quarterly as coverage assessment amount ÷ total NPR; not a fixed
         statutory % but near 6%. Page fetched and methodology confirmed.
@@ -405,10 +405,10 @@
       format: html_text
       confidence: verified
       notes: >
-        RCW Ch. 74.60 — Hospital Safety Net Assessment. Rate set annually by HCA to
+        RCW Ch. 74.60: Hospital Safety Net Assessment. Rate set annually by HCA to
         produce $510M inpatient + $386.4M outpatient in CY2024. Tiers: rehab 50%,
         children's hospitals 5%/20%, standard PPS 100% of target amount. Fetched and
-        rate methodology confirmed. Not a single % — amount-targeted, allocated by tier.
+        rate methodology confirmed. Not a single %: amount-targeted, allocated by tier.
 
 - state: West Virginia
   abbr: WV
@@ -418,7 +418,7 @@
       format: html_text
       confidence: verified
       notes: >
-        WV Code §11-27-38 — Hospital directed payment tax: 0.75% base rate; increased
+        WV Code §11-27-38: Hospital directed payment tax: 0.75% base rate; increased
         per Administrative Notice 2024-11 to 3.86% effective 30 days after notice.
         Additional §11-27-39: 0.13%. Total ~3.99% of gross receipts. Page fetched and
         rates confirmed. Below seed value of 5.5%; Phase 2 should verify current rate.
@@ -431,13 +431,13 @@
       format: html_text
       confidence: verified
       notes: >
-        D.C. Code §44-664.13 — Hospital provider fee: dollar-capped amount based on
+        D.C. Code §44-664.13: Hospital provider fee: dollar-capped amount based on
         inpatient NPR (not a % rate). Total fee generates no more than $8,454,038/year.
         Exemptions: DC government psychiatric hospitals, Howard University Hospital.
-        Page fetched and confirmed. Very small program — seed value of 5.5% is
+        Page fetched and confirmed. Very small program: seed value of 5.5% is
         likely incorrect; DC exposure may be overstated.
 
-# ─── Expansion states — lower/no subject-class exposure ─────────────────────
+# ─── Expansion states: lower/no subject-class exposure ─────────────────────
 
 - state: Alaska
   abbr: AK
@@ -447,7 +447,7 @@
       format: unknown
       confidence: not_found
       notes: >
-        Alaska has NO Medicaid provider tax of any kind — confirmed by MACPAC, KFF,
+        Alaska has NO Medicaid provider tax of any kind: confirmed by MACPAC, KFF,
         and Alaska Legislative documents. Only state with zero provider taxes. Seed
         value correctly shows 0.0 for all classes. No source to scrape.
 
@@ -459,10 +459,10 @@
       format: html_text
       confidence: verified
       notes: >
-        IC §56-1404 — Idaho Hospital Assessment Act. Rate is formula-based (% that when
+        IC §56-1404: Idaho Hospital Assessment Act. Rate is formula-based (% that when
         applied to assessment base = upper payment limit payment); general fund Medicaid
         contribution raises effective rate. Additional 30% assessed starting July 1, 2023.
-        Page fetched and structure confirmed. Seed shows 0.0 for hospital — verify in Phase 2.
+        Page fetched and structure confirmed. Seed shows 0.0 for hospital: verify in Phase 2.
 
 - state: Iowa
   abbr: IA
@@ -472,9 +472,9 @@
       format: pdf_text
       confidence: likely
       notes: >
-        Iowa Code Chapter 249M — Hospital Health Care Access Assessment.
+        Iowa Code Chapter 249M: Hospital Health Care Access Assessment.
         Rate = 1.26% of net patient revenue (FY2008 Medicare cost report base).
-        Well below 3.5% floor; no phase-down exposure. Seed shows 5.5% — significant
+        Well below 3.5% floor; no phase-down exposure. Seed shows 5.5%: significant
         discrepancy to verify in Phase 2.
 
 - state: Maine
@@ -485,10 +485,10 @@
       format: pdf_text
       confidence: likely
       notes: >
-        MRS Title 36, Chapter 373 — Health Care Provider Tax. Hospital rate historically
+        MRS Title 36, Chapter 373: Health Care Provider Tax. Hospital rate historically
         6% of net patient revenues (increased from 5.5% effective Oct 1, 2011).
         PDF binary-encoded on fetch; rate confirmed from search text excerpts.
-        Seed shows 0.0 — significant discrepancy; Phase 2 verification required.
+        Seed shows 0.0: significant discrepancy; Phase 2 verification required.
 
 - state: Montana
   abbr: MT
@@ -498,11 +498,11 @@
       format: html_text
       confidence: verified
       notes: >
-        MT Department of Revenue — Hospital Facility Utilization Fee (HUF).
+        MT Department of Revenue: Hospital Facility Utilization Fee (HUF).
         Rate: $70 per inpatient bed day + 0.90% of outpatient revenue.
         Due March 31 annually. Authority: MCA Title 15, Chapter 66.
         Page fetched and rates confirmed. Per-bed-day + % hybrid structure;
-        seed shows 0.0 for hospital — rate is low but not zero.
+        seed shows 0.0 for hospital: rate is low but not zero.
 
 - state: Nebraska
   abbr: NE
@@ -512,7 +512,7 @@
       format: html_text
       confidence: likely
       notes: >
-        NE Rev. Stat. §68-2103 — Hospital Quality Assurance and Access Assessment Act.
+        NE Rev. Stat. §68-2103: Hospital Quality Assurance and Access Assessment Act.
         Rate set by department rule; not fixed in statute. DHHS sets rate with federal
         approval. Page fetched and structure confirmed but no % in statute. Seed shows 0.0.
 
@@ -537,10 +537,10 @@
       confidence: likely
       notes: >
         Oklahoma Health Care Authority Supplemental Hospital Offset Payment Program
-        (SHOPP) — rate at 4% of net revenue per SB1045 (Title 63 §5020A). OK is
-        expansion state. Rate 4% > 3.5% floor — phase-down exposure begins 2028.
+        (SHOPP): rate at 4% of net revenue per SB1045 (Title 63 §5020A). OK is
+        expansion state. Rate 4% > 3.5% floor: phase-down exposure begins 2028.
         Page not confirmed via direct fetch; rate from OHCA budget review documents.
-        Seed shows 0.0 for hospital — significant discrepancy.
+        Seed shows 0.0 for hospital: significant discrepancy.
 
 - state: South Dakota
   abbr: SD
@@ -574,11 +574,11 @@
       format: pdf_text
       confidence: likely
       notes: >
-        VT Joint Fiscal Office Provider Tax Overview (Jan 2026) — hospital provider
+        VT Joint Fiscal Office Provider Tax Overview (Jan 2026): hospital provider
         tax accounts for 93% of VT provider tax revenue; rate >5.5% (VT among ~13
         states above 5.5%). OBBBA phases down from 6% to 3.5% by 2032.
         PDF binary-encoded on fetch. Statute: 18 VSA §9410 area.
-        Seed shows 0.0 — significant discrepancy. Phase 2 verification required.
+        Seed shows 0.0: significant discrepancy. Phase 2 verification required.
 
 # ─── Non-expansion states ─────────────────────────────────────────────────────
 
@@ -590,10 +590,10 @@
       format: html_text
       confidence: verified
       notes: >
-        AL Department of Revenue FAQ — Hospital Assessment Fee: 6.0% of net patient
+        AL Department of Revenue FAQ: Hospital Assessment Fee: 6.0% of net patient
         revenue, due quarterly. Authority: Code of Alabama §§40-26B-70 through 40-26B-88.
         Non-expansion state; rate frozen at July 2025 level under OBBBA.
-        Page fetched and 6% rate confirmed. Seed shows 4.2% — seed appears low.
+        Page fetched and 6% rate confirmed. Seed shows 4.2%: seed appears low.
 
 - state: Florida
   abbr: FL
@@ -603,7 +603,7 @@
       format: html_text
       confidence: likely
       notes: >
-        FL Statutes §409.911 — hospital provider assessments. FL is non-expansion state.
+        FL Statutes §409.911: hospital provider assessments. FL is non-expansion state.
         Hospital provider tax near 6% per MACPAC data. Specific rate not retrieved via
         fetch. FL uses directed payment programs approved by CMS.
 
@@ -615,10 +615,10 @@
       format: html_text
       confidence: verified
       notes: >
-        GA DCH Hospital Provider Fee Payment — fetched and confirmed. Regular hospitals:
+        GA DCH Hospital Provider Fee Payment: fetched and confirmed. Regular hospitals:
         1.45% of net patient revenue; trauma centers: 1.40%. Also 11.88% add-on to
         inpatient base rates effective July 1, 2020. Authority: Ga. Comp. R. & Regs.
-        r. 111-3-9.01 (SB24 of 2013). Non-expansion state. Seed shows 1.5% — close match.
+        r. 111-3-9.01 (SB24 of 2013). Non-expansion state. Seed shows 1.5%: close match.
 
 - state: Kansas
   abbr: KS
@@ -628,7 +628,7 @@
       format: html_text
       confidence: verified
       notes: >
-        KSA 65-6208 — Hospital assessment: not greater than 6% of net inpatient and
+        KSA 65-6208: Hospital assessment: not greater than 6% of net inpatient and
         outpatient operating revenue. CMS approved KS 2025 preprint at 6% (increased
         from 3%). Non-expansion state. Page fetched and 6% ceiling confirmed.
         MCO tax also exists per seed data.
@@ -641,7 +641,7 @@
       format: html_text
       confidence: likely
       notes: >
-        MS Code §43-13-145 — Assessment on health care facilities. Hospital tax at
+        MS Code §43-13-145: Assessment on health care facilities. Hospital tax at
         maximum 6% of net patient service revenue for SFY2025 per state budget analysis.
         Non-expansion state. URL fetched (FindLaw reprint); rate from secondary sources.
 
@@ -653,7 +653,7 @@
       format: html_text
       confidence: likely
       notes: >
-        SC DOR — Indigent Care Assessment Tax on all DHEC-licensed general hospitals.
+        SC DOR: Indigent Care Assessment Tax on all DHEC-licensed general hospitals.
         Quarterly payments. Specific rate not shown on public page. SCDHHS administers
         program. Non-expansion state.
 
@@ -665,7 +665,7 @@
       format: html_text
       confidence: likely
       notes: >
-        TN SOS Rules 1200-13 — TennCare Medicaid rules. Hospital assessment: ~3.52%
+        TN SOS Rules 1200-13: TennCare Medicaid rules. Hospital assessment: ~3.52%
         of net patient revenue per Tennessee Hospital Association analysis. NF assessment:
         6% per TCA 71-5-1003. MCO tax exists (TennCare). Non-expansion state.
 
@@ -677,9 +677,9 @@
       format: html_text
       confidence: likely
       notes: >
-        Texas Health & Safety Code Ch. 300 — Local Provider Participation Fund (LPPF).
+        Texas Health & Safety Code Ch. 300: Local Provider Participation Fund (LPPF).
         County/hospital district assessments up to 6% of private hospital net patient
-        revenue. Note: LPPF is not a statewide state-agency provider tax — it operates
+        revenue. Note: LPPF is not a statewide state-agency provider tax: it operates
         at the county/hospital district level. No single "Texas rate" exists; structure
         is fundamentally different from other states. Seed shows 1.5% as placeholder.
 
@@ -691,10 +691,10 @@
       format: html_text
       confidence: likely
       notes: >
-        Wis. Stat. §50.38 — Hospital Assessment. Rate increased to 6% of net patient
-        revenues in 2025-27 budget (2025 Act 15, signed July 3, 2025 — just before
+        Wis. Stat. §50.38: Hospital Assessment. Rate increased to 6% of net patient
+        revenues in 2025-27 budget (2025 Act 15, signed July 3, 2025: just before
         OBBBA freeze). Previously 1.8%; now generates ~$1.087B additional revenue/year.
-        Non-expansion state. Seed shows 1.0% — significantly outdated.
+        Non-expansion state. Seed shows 1.0%: significantly outdated.
 
 - state: Wyoming
   abbr: WY
@@ -704,7 +704,7 @@
       format: pdf_text
       confidence: likely
       notes: >
-        CMS SPA WY-23-0015 — Wyoming hospital provider tax methodology. Assessment
+        CMS SPA WY-23-0015: Wyoming hospital provider tax methodology. Assessment
         calculated as outpatient assessment payment percentage × annual outpatient amount
         × provider's MIUR. 403 on direct fetch. Non-expansion state. Specific % not
         confirmed but structure suggests a low rate.

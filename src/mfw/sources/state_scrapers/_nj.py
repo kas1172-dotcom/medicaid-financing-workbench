@@ -1,5 +1,5 @@
 """
-New Jersey — Health Care Facility Assessments
+New Jersey: Health Care Facility Assessments
 Source: NJ DOH Health Care Facility Assessments
 URL:    https://www.nj.gov/health/hcf/assessments/
 Structure: unit_based (per-admission for hospitals)
@@ -48,7 +48,7 @@ class NewJerseyScraper(StateScraperBase):
                 retrieved_date=today,
                 confidence=confidence,
                 notes=(
-                    "Per-admission structure — not comparable to % cap without "
+                    "Per-admission structure, not comparable to % cap without "
                     "volume data. Do NOT derive a % without confirmed NPR base. "
                     "Seed (5.8%) is an approximation; not used for phase-down calc."
                 ),
@@ -65,7 +65,7 @@ class NewJerseyScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=confidence,
-                notes="Ambulatory care assessment (below 3.5% floor — not exposed).",
+                notes="Ambulatory care assessment (below 3.5% floor, not exposed).",
             ),
         ]
 

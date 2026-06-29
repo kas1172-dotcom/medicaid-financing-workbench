@@ -1,14 +1,14 @@
 """
-Analysis 3 — Work-requirements coverage loss.
+Analysis 3: Work-requirements coverage loss.
 
 THE QUESTION: the law's largest single Medicaid saving (~$326B/10yr per CBO) comes
 from work requirements. How many expansion adults are likely to LOSE coverage by
-state — and, crucially, WHY?
+state, and, crucially, WHY?
 
 THE METHOD, and the key analytical point: KFF's research shows most adults subject
 to requirements already work or qualify for an exemption. So modeled coverage loss
-is driven overwhelmingly by ADMINISTRATIVE CHURN — eligible people losing coverage
-because they fail to navigate monthly reporting — not by people refusing to work.
+is driven overwhelmingly by ADMINISTRATIVE CHURN: eligible people losing coverage
+because they fail to navigate monthly reporting, not by people refusing to work.
 We make that explicit by decomposing the estimate:
 
   subject_adults            = expansion_adults (those in the expansion group)
@@ -18,7 +18,7 @@ We make that explicit by decomposing the estimate:
 
 The churn rate is calibrated against the documented Arkansas experience (~18,000
 losses) and Georgia's low-enrollment Pathways model. The output reports loss as
-"procedural / administrative," never as "failure to work" — that framing is the
+"procedural / administrative," never as "failure to work": that framing is the
 finding.
 """
 

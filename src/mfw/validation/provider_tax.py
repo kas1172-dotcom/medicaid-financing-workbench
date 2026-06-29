@@ -182,11 +182,11 @@ def run_scrape_vs_kff() -> dict:
 
     if not SCRAPED_TAXES_FILE.exists():
         return {**result_base, "result": "data_unavailable",
-                "notes": "state_provider_taxes.csv not present — run the scraper first."}
+                "notes": "state_provider_taxes.csv not present: run the scraper first."}
 
     if not KFF_PROVIDER_TAXES_FILE.exists():
         return {**result_base, "result": "data_unavailable",
-                "notes": "kff_provider_taxes.csv not present — upload via data/inbox/."}
+                "notes": "kff_provider_taxes.csv not present: upload via data/inbox/."}
 
     try:
         scraped = pd.read_csv(SCRAPED_TAXES_FILE)
@@ -281,7 +281,7 @@ def run_scrape_vs_kff() -> dict:
                 "delta_pp": delta,
                 "flagged": flagged,
                 "note": (
-                    f"Scraped {scraped_rate:.2f}% vs KFF {kff_rate:.2f}% — "
+                    f"Scraped {scraped_rate:.2f}% vs KFF {kff_rate:.2f}%: "
                     f"{'FLAGGED' if flagged else 'within tolerance'} "
                     f"(threshold ±{DELTA_FLAG_THRESHOLD_PP}pp)"
                 ),
@@ -306,7 +306,7 @@ def run_scrape_vs_kff() -> dict:
             "output_file": str(SCRAPE_VS_KFF_DELTAS_FILE),
             "notes": (
                 f"{n_flagged}/{n_checked} state+class pairs diverge >{DELTA_FLAG_THRESHOLD_PP}pp from KFF. "
-                "Divergence is informational — review before publication."
+                "Divergence is informational: review before publication."
                 if n_flagged else
                 f"All {n_checked} checked pairs within ±{DELTA_FLAG_THRESHOLD_PP}pp of KFF."
             ),

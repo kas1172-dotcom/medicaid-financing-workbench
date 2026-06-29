@@ -1,5 +1,5 @@
 """
-Nevada — Private Hospital Assessment Program
+Nevada: Private Hospital Assessment Program
 Source: NV DHCFP
 URL:    https://dhcfp.nv.gov/Providers/PI/Provider_Assessments/
 Structure: percentage (above 6% inpatient via CMS non-uniformity waiver)
@@ -53,7 +53,7 @@ class NevadaScraper(StateScraperBase):
                     "MCO 4.5% also exists and IS standard exposure."
                 ),
             ),
-            # MCO: rate from seed — not confirmed from primary source URL.
+            # MCO: rate from seed, not confirmed from primary source URL.
             RateRow(
                 state=self.state, abbr=self.abbr, expansion=self.expansion,
                 provider_class="mco",
@@ -65,7 +65,7 @@ class NevadaScraper(StateScraperBase):
                 source_url=URL,
                 retrieved_date=today,
                 confidence=CONFIDENCE_LIKELY,
-                notes="MCO 4.5% > 3.5% — standard phase-down exposure. Verify against NV DHCFP/CMS SPA.",
+                notes="MCO 4.5% > 3.5%: standard phase-down exposure. Verify against NV DHCFP/CMS SPA.",
             ),
         ]
 

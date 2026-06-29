@@ -1,5 +1,5 @@
 """
-Scenario engine — counterfactuals without rewriting analyses.
+Scenario engine: counterfactuals without rewriting analyses.
 
 The analyst asks "what if 25 states had to cut to exactly 3.5% by 2030?" or
 "what if the churn rate is really 25%, not 18%?" by passing parameter overrides.

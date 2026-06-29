@@ -1,5 +1,5 @@
 """
-CMS Medicaid enrollment — data.medicaid.gov.
+CMS Medicaid enrollment: data.medicaid.gov.
 
 Three datasets, all public (no key required):
 

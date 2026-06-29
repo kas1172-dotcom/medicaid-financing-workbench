@@ -1,5 +1,5 @@
 """
-Alabama — Hospital Assessment Fee (non-expansion state)
+Alabama: Hospital Assessment Fee (non-expansion state)
 Source: AL Department of Revenue FAQ
 URL:    https://www.revenue.alabama.gov/faqs/hospital-assessment-fee/
 
@@ -10,7 +10,7 @@ or "6 percent" and the extraction succeeds.
 
 Non-expansion state: exposure to the reduced cap is ZERO.
 Rate frozen at July 2025 level under OBBBA.
-Seed (4.2%) appears understated — Phase 1 confirmed 6.0%.
+Seed (4.2%) appears understated: Phase 1 confirmed 6.0%.
 """
 
 from __future__ import annotations
@@ -49,7 +49,7 @@ class AlabamaScraper(StateScraperBase):
                 confidence=confidence,
                 notes=(
                     "Live-parsed from AL DOR FAQ page. "
-                    "Non-expansion state — zero phase-down exposure. "
+                    "Non-expansion state: zero phase-down exposure. "
                     "Rate frozen at July 2025 level under OBBBA. "
                     f"Seed (4.2%) understated; Phase 1 confirmed {rate:.1f}%."
                 ),

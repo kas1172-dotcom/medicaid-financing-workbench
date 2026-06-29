@@ -1,9 +1,9 @@
 """
-Connecticut — Hospital Provider Tax
+Connecticut: Hospital Provider Tax
 Source: CGS Chapter 211c (§§12-263a through 12-263e)
 URL:    https://www.cga.ct.gov/2021/pub/chap_211c.htm
 Structure: percentage (6% inpatient NPR; outpatient rate >6% via CMS waiver)
-Phase 1 confidence: likely — statute URL loads; rate confirmed from statute text.
+Phase 1 confidence: likely: statute URL loads; rate confirmed from statute text.
 
 Inpatient rate: 6% of net inpatient revenue.
 Outpatient: CMS waiver rate reportedly >10%, but we do not confirm a rate above 6%
@@ -48,7 +48,7 @@ class ConnecticutScraper(StateScraperBase):
                 notes=(
                     "Inpatient 6% confirmed from statute text. "
                     "Outpatient rate >6% reportedly via CMS waiver; not confirmed from "
-                    "primary source — excluded pending CMS waiver document retrieval. "
+                    "primary source: excluded pending CMS waiver document retrieval. "
                     "2025 legislation revises base effective July 1, 2026."
                 ),
             ),

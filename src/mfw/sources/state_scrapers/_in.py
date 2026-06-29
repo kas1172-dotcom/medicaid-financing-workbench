@@ -1,9 +1,9 @@
 """
-Indiana — Hospital Assessment Fee (HAF)
+Indiana: Hospital Assessment Fee (HAF)
 Source: HB1004 (2025); IC 6-8 + IC 16-21
 URL:    https://iga.in.gov/pdf-documents/124/2025/house/bills/HB1004/HB1004.02.COMH.pdf
 Structure: percentage (~6% non-Medicare revenue; CMS-approved April 28, 2025)
-Phase 1 confidence: likely — PDF binary-encoded on fetch; rate from bill analysis.
+Phase 1 confidence: likely: PDF binary-encoded on fetch; rate from bill analysis.
 
 HB1004 (2025) redesigns HAF to capture full federal maximum (~6%) effective July 1, 2025.
 CMS approved revised HAF on April 28, 2025 (retroactive). Also adds new MCO assessment.
@@ -54,7 +54,7 @@ class IndianaScraper(StateScraperBase):
         resp = self._fetch(URL)
         if resp is None:
             return _FALLBACK_RATE, CONFIDENCE_LIKELY
-        # PDF content — check for text markers
+        # PDF content: check for text markers
         content = resp.content
         if b"HB1004" in content or b"hospital assessment" in content.lower():
             return _FALLBACK_RATE, CONFIDENCE_LIKELY   # confirmed program, rate from bill analysis

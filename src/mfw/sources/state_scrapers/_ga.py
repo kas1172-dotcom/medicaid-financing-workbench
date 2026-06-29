@@ -1,5 +1,5 @@
 """
-Georgia — Hospital Provider Fee (non-expansion state)
+Georgia: Hospital Provider Fee (non-expansion state)
 Source: GA DCH Hospital Provider Fee Payment page
 URL:    https://dch.georgia.gov/providers/provider-types/hospital-providers/provider-fee-payment
 
@@ -52,7 +52,7 @@ class GeorgiaScraper(StateScraperBase):
                 confidence=confidence,
                 notes=(
                     "Live-parsed from GA DCH provider-fee page. "
-                    "Non-expansion state — zero phase-down exposure. "
+                    "Non-expansion state: zero phase-down exposure. "
                     f"Seed (1.5%) close match to confirmed rate ({rate:.2f}%)."
                 ),
             ),

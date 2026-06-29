@@ -1,5 +1,5 @@
 """
-Louisiana — Hospital Assessment (tiered NPR rates)
+Louisiana: Hospital Assessment (tiered NPR rates)
 Source: LA Legislative Fiscal Note on HCR 363
 URL:    https://www.legis.la.gov/Legis/ViewDocument.aspx?d=1417157
 Structure: percentage (tiered; acute care above 6% via CMS preprint)
@@ -11,7 +11,7 @@ FY2025/26 hospital assessment rates:
   Certain hospital service districts: 4.99%
 
 CMS preprint submitted May 16, 2025. The acute care rate (6.49%/6.74%) exceeds the
-current 6% ceiling — the state appears to be operating under a CMS non-uniformity waiver
+current 6% ceiling: the state appears to be operating under a CMS non-uniformity waiver
 or a pending preprint approval. We flag this and report the acute care rate with a note.
 """
 

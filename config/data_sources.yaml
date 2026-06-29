@@ -6,16 +6,16 @@
 # (tier: manual_upload or tier: pdf), and how to prompt when a file is missing.
 #
 # Field definitions:
-#   id                — machine key, used as filename prefix in data/current/
-#   name              — human-readable label shown in the UI
-#   tier              — api | manual_upload | pdf
-#   method            — plain-language description of how the data is obtained
-#   url               — where a human goes to get it (used in prompts + UI)
-#   expected_filename — exact filename to save in data/inbox/ (null for api)
-#   refresh_frequency — weekly | monthly | quarterly | annual | once
-#   validate_against  — id of a second source used to cross-check (null if none)
-#   uses              — list of analysis fields this source populates
-#   description       — one-sentence plain-language description
+#   id               : machine key, used as filename prefix in data/current/
+#   name             : human-readable label shown in the UI
+#   tier             : api | manual_upload | pdf
+#   method           : plain-language description of how the data is obtained
+#   url              : where a human goes to get it (used in prompts + UI)
+#   expected_filename: exact filename to save in data/inbox/ (null for api)
+#   refresh_frequency: weekly | monthly | quarterly | annual | once
+#   validate_against : id of a second source used to cross-check (null if none)
+#   uses             : list of analysis fields this source populates
+#   description      : one-sentence plain-language description
 # =============================================================================
 
 sources:
@@ -23,7 +23,7 @@ sources:
     name: "CMS-64 Medicaid Financial Management Data"
     tier: api
     method: >
-      REST API via data.medicaid.gov — "Medicaid CMS-64 New Adult Group
+      REST API via data.medicaid.gov: "Medicaid CMS-64 New Adult Group
       Expenditures" dataset (ID 00505e90-f8ac-5921-b12f-5e23ba7ffcf3).
       Four quarters are summed to produce annual federal fiscal year totals.
       No API key required.
@@ -44,7 +44,7 @@ sources:
     name: "CMS Medicaid Beneficiary Enrollment Data"
     tier: api
     method: >
-      REST API via data.medicaid.gov — three datasets combined:
+      REST API via data.medicaid.gov: three datasets combined:
       (1) "Program Information for Medicaid and CHIP Beneficiaries by Year"
           (ID 5c267647-50e9-4a81-b2f2-8f23cec6631a) for total enrollment;
       (2) "Major Eligibility Group Information by Year"
@@ -62,10 +62,10 @@ sources:
       - duals
     description: >
       State-level Medicaid enrollment by program type, eligibility group, and
-      dual status — sourced from CMS MBES/T-MSIS data via data.medicaid.gov.
+      dual status: sourced from CMS MBES/T-MSIS data via data.medicaid.gov.
 
   - id: kff_provider_taxes
-    name: "KFF State Health Facts — Provider Taxes by Class"
+    name: "KFF State Health Facts: Provider Taxes by Class"
     tier: manual_upload
     method: >
       Download the CSV export from the KFF State Health Facts provider taxes
@@ -83,7 +83,7 @@ sources:
       Per-state provider tax rates broken out by provider class. The primary
       source for cap-exposure analysis, because it distinguishes exempt
       (nursing facility, ICF/IID) from subject (hospital, MCO, ambulance)
-      classes — a distinction the analysis requires.
+      classes: a distinction the analysis requires.
 
   - id: kff_cbo_state_allocations
     name: "KFF CBO State-Level Allocation Estimates"
@@ -115,7 +115,7 @@ sources:
       Only sources classified "verified" in config/state_tax_sources.yaml have
       full adapters; "likely" sources produce stubs with confidence=likely.
       States where the structure is not_comparable (unit-based, capped,
-      amount-targeted) carry effective_rate_pct=null — never fabricated.
+      amount-targeted) carry effective_rate_pct=null, never fabricated.
     url: "https://github.com/kas1172-dotcom/medicaid-financing-workbench/blob/main/config/state_tax_sources.yaml"
     expected_filename: null
     refresh_frequency: quarterly

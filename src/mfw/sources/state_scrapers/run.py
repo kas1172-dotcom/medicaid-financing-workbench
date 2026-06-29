@@ -5,8 +5,8 @@ Usage:
     python -m mfw.sources.state_scrapers.run [--states AL,OH,...] [--dry-run]
 
 Iterates all registered state adapters, collects RateRows, writes:
-  data/current/state_provider_taxes.csv   — one row per (state, provider_class)
-  data/raw/scrape_log_<timestamp>.json    — per-state run log
+  data/current/state_provider_taxes.csv  : one row per (state, provider_class)
+  data/raw/scrape_log_<timestamp>.json   : per-state run log
 
 One state failing NEVER crashes the run. Failed states are emitted with
 confidence=failed and null rates so gaps are always visible.
@@ -121,7 +121,7 @@ def run_scrapers(
     """
     Run all (or selected) scrapers. Returns (DataFrame, log_dict).
 
-    Never raises — all failures are captured in the log and emitted as
+    Never raises: all failures are captured in the log and emitted as
     confidence=failed rows.
     """
     if scraper_classes is None:
@@ -171,7 +171,7 @@ def run_scrapers(
                     f"{r['provider_class']}={r['effective_rate_pct'] or r['native_rate']}"
                     for r in dicts
                 ]
-                print(f"ok ({len(dicts)} rows, {elapsed}s) — {'; '.join(rates[:3])}")
+                print(f"ok ({len(dicts)} rows, {elapsed}s): {'; '.join(rates[:3])}")
 
         except Exception as exc:
             elapsed = round(time.time() - start, 2)
@@ -195,7 +195,7 @@ def run_scrapers(
             all_rows.append(failed.to_dict())
 
             if verbose:
-                print(f"FAILED ({elapsed}s) — {exc}")
+                print(f"FAILED ({elapsed}s): {exc}")
 
         log[abbr] = entry
 

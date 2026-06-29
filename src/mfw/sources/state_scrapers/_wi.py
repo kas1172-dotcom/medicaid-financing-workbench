@@ -1,14 +1,14 @@
 """
-Wisconsin — Hospital Assessment (Wis. Stat. §50.38)
+Wisconsin: Hospital Assessment (Wis. Stat. §50.38)
 Source: Wisconsin Legislature statutes
 URL:    https://docs.legis.wisconsin.gov/statutes/statutes/50/ii/38/7/c
 Structure: percentage (6% of net patient revenues; 2025 Act 15)
-Phase 1 confidence: likely — statute URL accessible; rate from 2025 Act 15.
+Phase 1 confidence: likely: statute URL accessible; rate from 2025 Act 15.
 
-Rate increased to 6% in 2025-27 budget (2025 Act 15, signed July 3, 2025 — just
+Rate increased to 6% in 2025-27 budget (2025 Act 15, signed July 3, 2025: just
 before OBBBA freeze). Previously 1.8%; now generates ~$1.087B additional revenue/year.
 Non-expansion state: zero phase-down exposure regardless of rate.
-Seed shows 1.0% — significantly outdated.
+Seed shows 1.0%: significantly outdated.
 """
 
 from __future__ import annotations
@@ -47,7 +47,7 @@ class WisconsinScraper(StateScraperBase):
                 confidence=confidence,
                 notes=(
                     f"Rate increased from 1.8% to {_FALLBACK_RATE}% in 2025-27 budget "
-                    "(2025 Act 15, signed July 3, 2025). Non-expansion state — "
+                    "(2025 Act 15, signed July 3, 2025). Non-expansion state: "
                     "zero phase-down exposure. Generates ~$1.087B additional revenue/year. "
                     "Seed (1.0%) significantly outdated."
                 ),

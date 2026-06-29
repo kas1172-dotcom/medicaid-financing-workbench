@@ -1,5 +1,5 @@
 """
-Census American Community Survey (ACS) — api.census.gov.
+Census American Community Survey (ACS): api.census.gov.
 
 Provides state-level Medicaid/public-coverage counts to cross-validate CMS
 enrollment and to compute coverage context (uninsured rates, expansion-adult

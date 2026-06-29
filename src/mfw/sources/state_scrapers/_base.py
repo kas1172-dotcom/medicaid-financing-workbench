@@ -7,11 +7,11 @@ Every state adapter:
   3. Returns one RateRow per (state, provider_class) that has data.
 
 Rate rows carry provenance on every field:
-  effective_rate_pct  — % of revenue base; null for non-percentage structures
-  native_rate         — rate in its published units ("5.96% outpatient NPR",
+  effective_rate_pct : % of revenue base; null for non-percentage structures
+  native_rate        : rate in its published units ("5.96% outpatient NPR",
                         "$12.50/admission", "$70/bed-day + 0.9% outpatient")
-  rate_basis          — reported | derived | not_comparable
-  structure           — percentage | unit_based | capped | amount_targeted | none
+  rate_basis         : reported | derived | not_comparable
+  structure          : percentage | unit_based | capped | amount_targeted | none
 
 For cap-exposure analysis, only rows where rate_basis != 'not_comparable'
 contribute a numeric effective_rate_pct. States flagged not_comparable appear
@@ -19,7 +19,7 @@ in a separate "non-percentage structures" panel, never as a fabricated bar.
 
 Compliance-risk states (RI, NV) operate above 6% via CMS non-uniformity
 waivers and carry waiver_flag='non_uniformity_waiver'. They are NOT treated
-as standard cap-exposure — they face a different compliance risk under OBBBA
+as standard cap-exposure: they face a different compliance risk under OBBBA
 (tightened uniformity requirements), tracked separately.
 """
 
@@ -44,7 +44,7 @@ RATE_BASIS_REPORTED = "reported"
 RATE_BASIS_DERIVED = "derived"
 RATE_BASIS_NOT_COMPARABLE = "not_comparable"
 # Seed-carryover: rate copied from seed/MACPAC/KFF secondary sources, not confirmed
-# from a primary state source URL. Treated identically to seed everywhere downstream —
+# from a primary state source URL. Treated identically to seed everywhere downstream:
 # the rate value is present but MUST NOT be labeled "scraped" in any UI element.
 RATE_BASIS_SEED_CARRYOVER = "seed_carryover"
 
@@ -58,7 +58,7 @@ CONFIDENCE_VERIFIED = "verified"
 CONFIDENCE_LIKELY = "likely"
 CONFIDENCE_FAILED = "failed"
 
-# Provider class constants — must match seed.py and analysis/provider_tax.py
+# Provider class constants: must match seed.py and analysis/provider_tax.py
 EXEMPT_CLASSES = frozenset({"nursing_facility", "icf_iid"})
 SUBJECT_CLASSES = frozenset({"hospital", "mco", "ambulance", "other"})
 
@@ -111,7 +111,7 @@ class StateScraperBase(ABC):
         """
         Fetch and parse the primary source for this state's provider-tax rates.
 
-        Must NEVER raise an exception — failures must be caught internally and
+        Must NEVER raise an exception: failures must be caught internally and
         returned as RateRow entries with confidence=failed and null rates.
 
         Returns one RateRow per (state, provider_class) with data.

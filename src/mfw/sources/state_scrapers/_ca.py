@@ -1,9 +1,9 @@
 """
-California — Hospital Quality Assurance Fee (HQAF)
+California: Hospital Quality Assurance Fee (HQAF)
 Source: CA DHCS HQAF Program page
 URL:    https://www.dhcs.ca.gov/provgovpart/Pages/HospitalQualityAssuranceFeeProgram.aspx
 Structure: percentage (~5.03% of NPR; Prop 52 permanent program)
-Phase 1 confidence: likely — rate confirmed from CHA secondary analysis, not page fetch.
+Phase 1 confidence: likely: rate confirmed from CHA secondary analysis, not page fetch.
 
 Statutory authority: Prop 52 (2016) + SB 239 (2013). Rate ~5.03% of net patient revenue
 per California Hospital Association analysis. DHCS page loads but does not display the

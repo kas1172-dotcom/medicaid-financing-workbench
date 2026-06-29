@@ -1,5 +1,5 @@
 """
-Pennsylvania — Hospital Assessment Program
+Pennsylvania: Hospital Assessment Program
 Source: PA Code and Bulletin (annual rate-setting bulletin)
 URL:    https://www.pacodeandbulletin.gov/Display/pabull?file=/secure/pabulletin/data/vol51/51-27/1057.html
 Structure: percentage (split inpatient + outpatient)
@@ -11,7 +11,7 @@ Confirmed rates (FY2022–2023):
 
 For cap-exposure, inpatient rate (3.32%) is below 3.5% and not exposed.
 Outpatient rate (1.73%) is also below 3.5%.
-Important: these rates are below the 3.5% floor — PA may have LESS exposure
+Important: these rates are below the 3.5% floor: PA may have LESS exposure
 than seed data (5.9%) suggests. Phase 2 should seek the current-year bulletin.
 """
 
@@ -38,7 +38,7 @@ _STALENESS_NOTE = (
     "⚠ STALE: Source is PA Bulletin FY2022-23 (Vol. 51, No. 27). "
     "PA resets rates annually; current-year bulletin required before use. "
     "Both 2022-23 rates (3.32% inpatient, 1.73% outpatient) are below the "
-    "3.5% phase-down floor — PA may not be exposed, but this must be confirmed "
+    "3.5% phase-down floor: PA may not be exposed, but this must be confirmed "
     "with the current bulletin. Seed (5.9%) is likely overstated."
 )
 _NOTES = _STALENESS_NOTE

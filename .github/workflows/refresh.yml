@@ -2,11 +2,11 @@ name: Refresh site data
 
 # Fetches live API sources (CMS-64, Census ACS) then rebuilds and publishes
 # the dashboard. Manual-upload sources (KFF provider taxes, KFF CBO
-# allocations, CMS managed care enrollment) cannot be automated — ingest those
+# allocations, CMS managed care enrollment) cannot be automated: ingest those
 # locally with `mfw refresh`, commit data/current/, then re-run this action.
 #
 # Required secret: ANTHROPIC_API_KEY (for LLM narrative; falls back to
-# reviewed stubs if absent — the action will not fail without it).
+# reviewed stubs if absent: the action will not fail without it).
 
 on:
   workflow_dispatch:

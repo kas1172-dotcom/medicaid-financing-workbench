@@ -1,22 +1,22 @@
 """
-Analysis 1 — Provider tax financing analysis (three-tier model).
+Analysis 1: Provider tax financing analysis (three-tier model).
 
 Three tiers, each applicable to some or all of the 51 jurisdictions:
 
-Tier 1 — Budget dependence (all 51, headline metric)
+Tier 1: Budget dependence (all 51, headline metric)
    provider_tax_revenue ÷ nonfederal_spending
    Source: CMS-64 T-19 when available; KFF-anchor rate-model estimate when not.
    Answers: "How much of the state's non-federal Medicaid budget depends on
    provider-tax revenue that is now at risk or under new constraints?"
 
-Tier 2 — Rate-based exposure (expansion states with a real percentage rate)
+Tier 2: Rate-based exposure (expansion states with a real percentage rate)
    Distance above 3.5% floor → implied dollar gap → phase-down trajectory.
    Subject classes only: hospital, MCO, ambulance, other.
    Exempt classes: nursing_facility, icf_iid.
    Preserves known findings: PA below floor (3.32%), KY exposure via MCO 5.5%
    not hospital 2.5%, OH base 4.37% CY2026+, WV 3.99%.
 
-Tier 3 — Structural outliers (three sub-panels)
+Tier 3: Structural outliers (three sub-panels)
    a. Waiver states (RI 13.12%, NV 7.139%): CMS non-uniformity waiver; primary
       risk is waiver revocation, not the 3.5% phase-down.
    b. Non-percentage structures (NJ, WA, AZ-hospital, MT, ID, OR, DC):
@@ -25,7 +25,7 @@ Tier 3 — Structural outliers (three sub-panels)
    c. No-tax expansion states (AK; per registry): confirmed absence of
       subject provider taxes.
 
-Result schema — every state appears exactly once:
+Result schema: every state appears exactly once:
    tier                  int      Primary tier (1|2|3)
    dependence_share_pct  float?   % of nonfederal share from provider taxes
                                   (null = unavailable, NEVER rendered as zero)
@@ -209,7 +209,7 @@ def run(df: pd.DataFrame, params: dict) -> dict:
             dependence_share_pct = None
             dependence_source = _DEP_SRC_NON_PCT
         elif structure == "mixed" and pt_revenue is None:
-            # Has some pct classes — estimate from those
+            # Has some pct classes: estimate from those
             dependence_share_pct, dependence_source = _estimate_dependence_from_rate(
                 max_subject, nonfed, pt_revenue
             )

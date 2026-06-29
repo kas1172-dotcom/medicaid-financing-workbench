@@ -1,12 +1,12 @@
 """
-Massachusetts — Hospital Assessment (MGL c.118E §63)
+Massachusetts: Hospital Assessment (MGL c.118E §63)
 Source: MGL c.118E §63
 URL:    https://www.mass.gov/info-details/mass-general-laws-c118e-ss-63
 Structure: amount_targeted (per-patient-day + per-visit; not a simple % of revenue)
 Phase 1 confidence: likely
 
 2025 appropriation: $1.48B total assessment for SFY2025 (St.2025, c.9 §48).
-Rate is per-patient-day + per-visit — complex structure not_comparable to % cap.
+Rate is per-patient-day + per-visit: complex structure not_comparable to % cap.
 Seed value of 5.9% is an approximation based on total assessment ÷ estimated NPR.
 """
 
@@ -42,7 +42,7 @@ class MassachusettsScraper(StateScraperBase):
                 retrieved_date=today,
                 confidence=confidence,
                 notes=(
-                    "Complex per-unit structure (per-patient-day + per-visit) — "
+                    "Complex per-unit structure (per-patient-day + per-visit): "
                     "not comparable to % cap without per-unit volumes. "
                     "Total assessment ~$1.48B SFY2025; seed (5.9%) is an approximation. "
                     "Seek MA EOHHS rate schedule for current per-unit rates."
