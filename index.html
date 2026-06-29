@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3"></script>
 <style>
 :root {
   --navy: #0B1829;
@@ -404,6 +405,55 @@ svg text { font-family: 'DM Sans', sans-serif; }
   /* Mobile timeline toggle button */
   .timeline-toggle { display: block; font-size: 12px; min-height: 44px; padding: 0 16px; margin: 4px 0 8px; border: 1px solid var(--teal); border-radius: 3px; background: #fff; color: var(--teal); cursor: pointer; }
 }
+
+/* ── Sortable / filterable tables ─────────────────────────────────── */
+th.sortable { cursor: pointer; user-select: none; white-space: nowrap; }
+th.sortable:hover { color: var(--teal); }
+th.sortable .sort-arrow { opacity: 0.35; font-size: 9px; margin-left: 3px; }
+th.sortable.sort-asc .sort-arrow, th.sortable.sort-desc .sort-arrow { opacity: 1; color: var(--teal); }
+.tbl-toolbar { display: flex; justify-content: flex-end; margin-bottom: 8px; }
+.tbl-filter { font-size: 12px; padding: 6px 10px; border: 1px solid var(--border); border-radius: 4px; width: 220px; max-width: 60%; }
+tbody tr.clickable { cursor: pointer; }
+tbody tr.clickable:hover td { background: rgba(13,143,130,0.10); }
+.spark { vertical-align: middle; }
+
+/* ── HCBS weight sliders ──────────────────────────────────────────── */
+.weight-panel { background: #fff; border: 1px solid var(--border); border-radius: 6px; padding: 14px 18px; margin-bottom: 16px; }
+.weight-panel .wp-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; }
+.weight-panel h4 { font-size: 13px; color: var(--navy); font-family: 'IBM Plex Serif', serif; }
+.weight-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 24px; }
+.weight-row { display: grid; grid-template-columns: 140px 1fr 38px; align-items: center; gap: 10px; font-size: 12px; }
+.weight-row input[type=range] { width: 100%; accent-color: var(--teal); }
+.weight-row .wv { font-variant-numeric: tabular-nums; color: var(--teal); font-weight: 600; text-align: right; }
+.weight-reset { font-size: 11px; padding: 5px 12px; border: 1px solid var(--border); border-radius: 4px; background: #fff; color: var(--muted); cursor: pointer; }
+.weight-reset:hover { border-color: var(--teal); color: var(--teal); }
+@media (max-width: 640px) { .weight-grid { grid-template-columns: 1fr; } }
+
+/* ── Choropleth map ───────────────────────────────────────────────── */
+.metric-switch { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.metric-btn { font-size: 12px; padding: 7px 14px; border: 1px solid var(--border); border-radius: 20px; background: #fff; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.metric-btn:hover { border-color: var(--teal); color: var(--teal); }
+.metric-btn.active { background: var(--teal); border-color: var(--teal); color: #fff; }
+.map-state { stroke: #fff; stroke-width: 0.6; cursor: pointer; transition: opacity 0.15s; }
+.map-state:hover { opacity: 0.75; }
+.map-legend text { font-size: 10px; fill: var(--muted); }
+
+/* ── State drill-down drawer ──────────────────────────────────────── */
+#state-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 380px; max-width: 92vw; background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,0.18); transform: translateX(105%); transition: transform 0.28s cubic-bezier(.4,0,.2,1); z-index: 1000; overflow-y: auto; }
+#state-drawer.open { transform: translateX(0); }
+.drawer-head { position: sticky; top: 0; background: var(--navy); color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+.drawer-head h2 { font-family: 'IBM Plex Serif', serif; font-size: 20px; }
+.drawer-close { background: none; border: none; color: #fff; font-size: 24px; line-height: 1; cursor: pointer; opacity: 0.8; }
+.drawer-close:hover { opacity: 1; }
+.drawer-body { padding: 18px 20px; }
+.dd-block { border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; margin-bottom: 12px; }
+.dd-block h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 8px; }
+.dd-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
+.dd-row .k { color: var(--muted); }
+.dd-row .v { font-weight: 600; color: var(--navy); font-variant-numeric: tabular-nums; }
+.dd-empty { font-size: 12px; color: var(--muted); font-style: italic; }
+#drawer-scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.25); opacity: 0; pointer-events: none; transition: opacity 0.28s; z-index: 999; }
+#drawer-scrim.open { opacity: 1; pointer-events: auto; }
 </style>
 </head>
 <body>
@@ -416,6 +466,7 @@ svg text { font-family: 'DM Sans', sans-serif; }
 
 <nav class="tab-bar" id="tab-bar" role="tablist" aria-label="Analysis tabs">
   <button class="tab-btn active" data-tab="financing" role="tab">Financing</button>
+  <button class="tab-btn" data-tab="map" role="tab">Map</button>
   <button class="tab-btn" data-tab="hcbs" role="tab">HCBS</button>
   <button class="tab-btn" data-tab="managed_care" role="tab">Managed Care</button>
   <button class="tab-btn" data-tab="dual_eligibles" role="tab">Dual Eligibles</button>
@@ -725,6 +776,19 @@ svg text { font-family: 'DM Sans', sans-serif; }
     <!-- ═══════════════════════════════════════════════════════════════
          TAB 2: HCBS (SCAFFOLD)
     ═══════════════════════════════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAB: MAP (geographic view, all metrics)
+    ═══════════════════════════════════════════════════════════════ -->
+    <div class="tab-panel" id="tab-map" role="tabpanel">
+      <div class="section-head">
+        <h2>Geographic view</h2>
+        <p>One map, four lenses. Switch the metric to see how financing exposure, HCBS risk, dual-eligible concentration, and modeled coverage loss are distributed across the country. Click any state to open its full cross-analysis profile.</p>
+      </div>
+      <div class="metric-switch" id="map-metric-switch"></div>
+      <div class="viz-container" id="viz-map"></div>
+      <div id="map-legend-note" style="font-size:11px;color:var(--muted);margin-top:8px"></div>
+    </div>
+
     <div class="tab-panel" id="tab-hcbs" role="tabpanel">
       <div id="scaffold-hcbs"></div>
     </div>
@@ -875,7 +939,7 @@ function buildProviderTaxTable(rows) {
   if (tbl) tbl.classList.add('mobile-card');
   const thead = `<tr>
     <th>State</th><th>Tier</th><th>Dependence</th><th>Exp.</th><th>Max Subject Rate</th>
-    <th>Final Gap $M</th><th>% of Nonfed Share</th><th>Classes at Risk</th>
+    <th>Final Gap $M</th><th>2028→2032</th><th>% of Nonfed Share</th><th>Classes at Risk</th>
   </tr>`;
   const tierTagHtml = r => {
     if (r.waiver_flag) return '<span class="tier-tag tier-tag-w">W</span>';
@@ -894,6 +958,7 @@ function buildProviderTaxTable(rows) {
     const rateStr = (r.provider_tax_rate || 0) > 0
       ? `${Number(r.provider_tax_rate).toFixed(1)}%`
       : r.structure === 'non_percentage' ? 'non-%' : '–';
+    const spark = r.exposed ? sparklineSvg(YEARS.map(y => (r.gap_by_year && r.gap_by_year[y]) || 0), { color: 'var(--high)' }) : '<span style="color:var(--muted)">–</span>';
     return `<tr>
       <td data-label="State">${escHtml(r.state)}</td>
       <td data-label="Tier">${tierTagHtml(r)}</td>
@@ -901,6 +966,7 @@ function buildProviderTaxTable(rows) {
       <td data-label="Expansion">${r.expansion ? '✓' : '–'}</td>
       <td data-label="Max Rate" class="${(r.provider_tax_rate||0) > 3.5 ? 'above-cap' : ''}">${rateStr}</td>
       <td data-label="Gap $M">${r.exposed ? '$' + r.final_gap_millions.toLocaleString() + 'M' : '–'}</td>
+      <td data-label="Trajectory">${spark}</td>
       <td data-label="% Nonfed">${r.exposed ? (r.gap_share_of_nonfederal_pct||0).toFixed(1) + '%' : '–'}</td>
       <td data-label="Classes" style="font-size:11px;color:var(--muted)">${escHtml(classBreakdown)}</td>
     </tr>`;
@@ -967,6 +1033,236 @@ function seedNoteHtml() {
     Figures derive from the bundled <strong>seed dataset</strong> (illustrative values anchored to
     KFF-published magnitudes). Run <code>mfw build --live</code> for authoritative CMS figures. This is a
     risk screen, not a forecast of cuts.</p>`;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Cross-cutting state: index every analysis by state for map + drill-down
+// ════════════════════════════════════════════════════════════════════
+const MFW = { analyses: {}, stateIndex: {}, nameToAbbr: {}, us: null, mapMetric: 'exposure' };
+
+const FIPS_TO_ABBR = { '01':'AL','02':'AK','04':'AZ','05':'AR','06':'CA','08':'CO','09':'CT','10':'DE','11':'DC','12':'FL','13':'GA','15':'HI','16':'ID','17':'IL','18':'IN','19':'IA','20':'KS','21':'KY','22':'LA','23':'ME','24':'MD','25':'MA','26':'MI','27':'MN','28':'MS','29':'MO','30':'MT','31':'NE','32':'NV','33':'NH','34':'NJ','35':'NM','36':'NY','37':'NC','38':'ND','39':'OH','40':'OK','41':'OR','42':'PA','44':'RI','45':'SC','46':'SD','47':'TN','48':'TX','49':'UT','50':'VT','51':'VA','53':'WA','54':'WV','55':'WI','56':'WY' };
+
+function buildStateIndex(analyses) {
+  const idx = {}, n2a = {};
+  Object.entries(analyses).forEach(([key, a]) => {
+    (a && a.rows || []).forEach(r => {
+      if (!r.abbr) return;
+      (idx[r.abbr] = idx[r.abbr] || { abbr: r.abbr, state: r.state })[key] = r;
+      if (r.state) n2a[r.state.toLowerCase()] = r.abbr;
+    });
+  });
+  MFW.stateIndex = idx;
+  MFW.nameToAbbr = n2a;
+}
+
+// ── Sortable / filterable / clickable tables ────────────────────────
+function cellNum(s) {
+  const n = parseFloat(String(s).replace(/[^0-9.\-]/g, ''));
+  return isNaN(n) ? null : n;
+}
+function enhanceTable(tableId, opts = {}) {
+  const tbl = document.getElementById(tableId);
+  if (!tbl) return;
+  const tbody = tbl.tBodies[0];
+  const ths = [...tbl.tHead.rows[0].cells];
+
+  if (opts.filter) {
+    const wrap = tbl.closest('.table-wrap') || tbl.parentElement;
+    if (wrap && !wrap.previousElementSibling?.classList?.contains('tbl-toolbar')) {
+      const bar = document.createElement('div');
+      bar.className = 'tbl-toolbar';
+      bar.innerHTML = `<input class="tbl-filter" type="search" placeholder="Filter states…" aria-label="Filter table">`;
+      wrap.parentNode.insertBefore(bar, wrap);
+      bar.querySelector('input').addEventListener('input', e => {
+        const q = e.target.value.toLowerCase();
+        [...tbody.rows].forEach(tr => { tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none'; });
+      });
+    }
+  }
+
+  ths.forEach((th, ci) => {
+    th.classList.add('sortable');
+    th.insertAdjacentHTML('beforeend', '<span class="sort-arrow">▲▼</span>');
+    th.addEventListener('click', () => {
+      const asc = !th.classList.contains('sort-asc');
+      ths.forEach(t => t.classList.remove('sort-asc', 'sort-desc'));
+      th.classList.add(asc ? 'sort-asc' : 'sort-desc');
+      const rows = [...tbody.rows];
+      rows.sort((a, b) => {
+        const x = a.cells[ci]?.textContent.trim() ?? '', y = b.cells[ci]?.textContent.trim() ?? '';
+        const nx = cellNum(x), ny = cellNum(y);
+        const cmp = (nx !== null && ny !== null) ? nx - ny : x.localeCompare(y);
+        return asc ? cmp : -cmp;
+      });
+      rows.forEach(r => tbody.appendChild(r));
+    });
+  });
+
+  if (opts.stateCol != null) bindRowDrill(tableId, opts.stateCol);
+}
+
+function bindRowDrill(tableId, stateCol) {
+  const tbody = document.getElementById(tableId)?.tBodies[0];
+  if (!tbody) return;
+  [...tbody.rows].forEach(tr => {
+    const name = tr.cells[stateCol]?.textContent.trim().toLowerCase();
+    const abbr = MFW.nameToAbbr[name] || (name && name.length === 2 ? name.toUpperCase() : null);
+    if (abbr && MFW.stateIndex[abbr]) {
+      tr.classList.add('clickable');
+      tr.onclick = () => openStateDetail(abbr);
+    }
+  });
+}
+
+// ── Inline sparkline (e.g. 2028→2032 gap trajectory) ────────────────
+function sparklineSvg(vals, opts = {}) {
+  const w = opts.w || 70, h = opts.h || 18, color = opts.color || 'var(--teal)';
+  const max = Math.max(...vals, 1);
+  if (vals.every(v => !v)) return '<span style="color:var(--muted)">–</span>';
+  const pts = vals.map((v, i) => `${(i / (vals.length - 1)) * (w - 2) + 1},${h - 1 - (v / max) * (h - 3)}`).join(' ');
+  const last = vals[vals.length - 1];
+  return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.5"/>
+    <circle cx="${(w - 1)}" cy="${h - 1 - (last / max) * (h - 3)}" r="1.8" fill="${color}"/></svg>`;
+}
+
+// ── State drill-down drawer ─────────────────────────────────────────
+function ensureDrawer() {
+  if (document.getElementById('state-drawer')) return;
+  const scrim = document.createElement('div'); scrim.id = 'drawer-scrim';
+  const d = document.createElement('div'); d.id = 'state-drawer';
+  d.innerHTML = `<div class="drawer-head"><h2 id="dd-title"></h2><button class="drawer-close" aria-label="Close">×</button></div><div class="drawer-body" id="dd-body"></div>`;
+  document.body.appendChild(scrim); document.body.appendChild(d);
+  scrim.addEventListener('click', closeDrawer);
+  d.querySelector('.drawer-close').addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+}
+function closeDrawer() {
+  document.getElementById('state-drawer')?.classList.remove('open');
+  document.getElementById('drawer-scrim')?.classList.remove('open');
+}
+function ddRow(k, v) { return `<div class="dd-row"><span class="k">${escHtml(k)}</span><span class="v">${v}</span></div>`; }
+function openStateDetail(abbr) {
+  ensureDrawer();
+  const si = MFW.stateIndex[abbr];
+  if (!si) return;
+  document.getElementById('dd-title').textContent = si.state;
+  let html = '';
+  const pt = si.provider_tax;
+  if (pt) {
+    const vals = YEARS.map(y => (pt.gap_by_year && pt.gap_by_year[y]) || 0);
+    html += `<div class="dd-block"><h4>Provider-tax financing</h4>
+      ${ddRow('Tier', 'T' + (pt.tier || 1) + (pt.waiver_flag ? ' · waiver' : ''))}
+      ${ddRow('Max subject rate', (pt.provider_tax_rate || 0) > 0 ? pt.provider_tax_rate.toFixed(1) + '%' : '–')}
+      ${ddRow('Exposed at 3.5%', pt.exposed ? 'Yes' : 'No')}
+      ${pt.exposed ? ddRow('Final gap (2032)', '$' + (pt.final_gap_millions || 0).toLocaleString() + 'M') : ''}
+      ${pt.exposed ? ddRow('Phase-down 2028→2032', sparklineSvg(vals, { color: 'var(--high)' })) : ''}</div>`;
+  }
+  const mc = si.managed_care;
+  if (mc) html += `<div class="dd-block"><h4>Managed care (MCO tax)</h4>
+      ${ddRow('MCO tax rate', mc.mco_rate + '%')}
+      ${ddRow('Exposed above 3.5%', mc.exposed ? 'Yes' : 'No')}</div>`;
+  const h = si.hcbs;
+  if (h) html += `<div class="dd-block"><h4>HCBS vulnerability</h4>
+      ${ddRow('Index (0–10)', '<span class="risk-pill tier-' + h.risk_tier + '">' + h.hcbs_index + ' ' + h.risk_tier + '</span>')}
+      ${ddRow('HCBS share of spend', h.hcbs_share + '%')}
+      ${ddRow('Projected 10yr cut', '$' + (h.projected_cut_millions || 0).toLocaleString() + 'M')}</div>`;
+  const du = si.dual_eligibles;
+  if (du) html += `<div class="dd-block"><h4>Dual eligibles</h4>
+      ${ddRow('Enrollment share', du.dual_enroll_share_pct + '%')}
+      ${ddRow('Spending share', du.dual_spend_share_pct + '%')}
+      ${ddRow('Concentration', du.concentration_ratio + 'x')}</div>`;
+  const wr = si.work_requirements;
+  if (wr) html += `<div class="dd-block"><h4>Work requirements</h4>
+      ${ddRow('Subject adults', (wr.subject_adults || 0).toLocaleString())}
+      ${ddRow('Modeled coverage loss', (wr.modeled_coverage_loss || 0).toLocaleString())}
+      ${ddRow('Loss % of subject', (wr.loss_pct_of_subject || 0).toFixed(1) + '%')}</div>`;
+  document.getElementById('dd-body').innerHTML = html || '<p class="dd-empty">No analysis rows for this state.</p>';
+  document.getElementById('state-drawer').classList.add('open');
+  document.getElementById('drawer-scrim').classList.add('open');
+}
+
+// ── Choropleth map ──────────────────────────────────────────────────
+const MAP_METRICS = [
+  { id: 'exposure', label: 'Financing exposure', source: 'provider_tax', value: r => r.exposed ? (r.final_gap_millions || 0) : 0, fmt: v => '$' + d3.format(',.0f')(v) + 'M', interp: d3.interpolateOrRd, blurb: 'Projected annual provider-tax revenue gap at the 3.5% floor (2032). Grey = not exposed.' },
+  { id: 'hcbs', label: 'HCBS risk', source: 'hcbs', value: r => r.hcbs_index, fmt: v => v.toFixed(1), interp: d3.interpolatePuRd, blurb: 'Composite 0–10 HCBS vulnerability index (a risk screen, not a forecast).' },
+  { id: 'duals', label: 'Dual spend share', source: 'dual_eligibles', value: r => r.dual_spend_share_pct, fmt: v => v.toFixed(1) + '%', interp: d3.interpolateGnBu, blurb: 'Estimated dual-eligible share of Medicaid spending.' },
+  { id: 'loss', label: 'Coverage loss', source: 'work_requirements', value: r => r.modeled_coverage_loss || 0, fmt: v => d3.format(',')(v), interp: d3.interpolateBuPu, blurb: 'Modeled coverage loss from work requirements (procedural churn).' },
+];
+
+function initMapSwitch() {
+  const sw = document.getElementById('map-metric-switch');
+  if (!sw) return;
+  sw.innerHTML = MAP_METRICS.map(m =>
+    `<button class="metric-btn${m.id === MFW.mapMetric ? ' active' : ''}" data-metric="${m.id}">${escHtml(m.label)}</button>`).join('');
+  sw.addEventListener('click', e => {
+    const btn = e.target.closest('.metric-btn'); if (!btn) return;
+    MFW.mapMetric = btn.dataset.metric;
+    sw.querySelectorAll('.metric-btn').forEach(b => b.classList.toggle('active', b === btn));
+    paintMap();
+  });
+}
+
+async function buildMap() {
+  const container = document.getElementById('viz-map');
+  if (!container || MFW._mapDrawn) return;
+  MFW._mapDrawn = true;
+  if (typeof topojson === 'undefined') { container.innerHTML = '<p class="chart-missing">Map library failed to load (offline?).</p>'; return; }
+  try {
+    if (!MFW.us) MFW.us = await d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json');
+  } catch (e) { container.innerHTML = '<p class="chart-missing">Could not load map geometry.</p>'; return; }
+
+  const W = Math.max(container.clientWidth || 720, 320), H = W * 0.62;
+  const svg = rsvg(container, W, H);
+  const states = topojson.feature(MFW.us, MFW.us.objects.states).features;
+  const path = d3.geoPath(d3.geoAlbersUsa().fitSize([W, H - 40], topojson.feature(MFW.us, MFW.us.objects.states)));
+  const tip = makeTooltip();
+  MFW._mapPaths = svg.append('g').selectAll('path').data(states).enter().append('path')
+    .attr('class', 'map-state').attr('d', path)
+    .attr('data-abbr', d => FIPS_TO_ABBR[d.id] || '')
+    .on('mouseover', (ev, d) => showTip(tip, mapTipHtml(d), ev))
+    .on('mousemove', (ev, d) => showTip(tip, mapTipHtml(d), ev))
+    .on('mouseout', () => { if (!isMobile()) hideTip(tip); })
+    .on('click', (ev, d) => { ev.stopPropagation(); const a = FIPS_TO_ABBR[d.id]; if (a && MFW.stateIndex[a]) openStateDetail(a); });
+  MFW._mapLegend = svg.append('g').attr('class', 'map-legend').attr('transform', `translate(${W - 220},${H - 26})`);
+  paintMap();
+}
+
+function metricValByAbbr(m) {
+  const out = {};
+  (MFW.analyses[m.source] && MFW.analyses[m.source].rows || []).forEach(r => { out[r.abbr] = m.value(r); });
+  return out;
+}
+function mapTipHtml(d) {
+  const a = FIPS_TO_ABBR[d.id]; const m = MAP_METRICS.find(x => x.id === MFW.mapMetric);
+  const si = MFW.stateIndex[a];
+  if (!si) return `<strong>${a || ''}</strong>\nNo data`;
+  const val = metricValByAbbr(m)[a];
+  return `<strong>${si.state}</strong>\n${m.label}: ${val == null ? 'n/a' : m.fmt(val)}\n<em>click for full profile</em>`;
+}
+function paintMap() {
+  if (!MFW._mapPaths) return;
+  const m = MAP_METRICS.find(x => x.id === MFW.mapMetric);
+  const byAbbr = metricValByAbbr(m);
+  const max = d3.max(Object.values(byAbbr)) || 1;
+  const color = d3.scaleSequential([0, max], m.interp);
+  MFW._mapPaths.transition().duration(500).attr('fill', d => {
+    const v = byAbbr[FIPS_TO_ABBR[d.id]];
+    return (v == null || v === 0) ? '#e8e6e1' : color(v);
+  });
+  // legend gradient
+  const leg = MFW._mapLegend; leg.selectAll('*').remove();
+  const gw = 180, gh = 8, id = 'mapgrad';
+  let defs = d3.select('#viz-map svg defs'); if (defs.empty()) defs = d3.select('#viz-map svg').append('defs');
+  defs.select('#' + id).remove();
+  const grad = defs.append('linearGradient').attr('id', id);
+  d3.range(0, 1.01, 0.1).forEach(t => grad.append('stop').attr('offset', (t * 100) + '%').attr('stop-color', color(t * max)));
+  leg.append('rect').attr('width', gw).attr('height', gh).attr('fill', `url(#${id})`).attr('rx', 2);
+  leg.append('text').attr('x', 0).attr('y', -4).text('0');
+  leg.append('text').attr('x', gw).attr('y', -4).attr('text-anchor', 'end').text(m.fmt(max));
+  leg.append('text').attr('x', 0).attr('y', gh + 12).style('font-weight', 600).attr('fill', 'var(--navy)').text(m.label);
+  const note = document.getElementById('map-legend-note');
+  if (note) note.textContent = m.blurb;
 }
 
 // ── Generic horizontal-bar ranking (animated) ───────────────────────
@@ -1093,53 +1389,124 @@ function scatterChart(containerId, items, opts) {
 }
 
 // ── TAB: HCBS vulnerability ──────────────────────────────────────────
+const HCBS_COMPONENTS = [
+  { key: 'hcbs_spending_share', label: 'HCBS share (stakes)' },
+  { key: 'provider_tax_reliance', label: 'Provider-tax reliance' },
+  { key: 'federal_cut_magnitude', label: 'Projected federal cut' },
+  { key: 'nonfederal_share_strain', label: 'Nonfederal strain' },
+];
+function hcbsTier(x) { return x >= 6.5 ? 'High' : (x >= 4.0 ? 'Medium' : 'Low'); }
+
 function buildHcbsTab(containerId, a) {
   const el = document.getElementById(containerId);
   if (!el || !a) return;
-  const rows = a.rows || [];
-  const tc = a.tier_counts || {};
-  const top = rows[0] || {};
+  const baseRows = a.rows || [];
+  const defaults = a.weights || { hcbs_spending_share: 0.3, provider_tax_reliance: 0.3, federal_cut_magnitude: 0.25, nonfederal_share_strain: 0.15 };
+  let live = baseRows.map(r => ({ ...r }));
+
+  const color = d => RISK_COLOR[d.risk_tier] || 'var(--teal)';
+  const tip = d => `<strong>${d.state}</strong>\nIndex: ${d.hcbs_index} (${d.risk_tier})\nHCBS share: ${d.hcbs_share}%\nProj. cut: $${(d.projected_cut_millions||0).toLocaleString()}M`;
+
+  const tableCols = [
+    { label: '#', fmt: (r, i) => i + 1 },
+    { label: 'State', key: 'state' },
+    { label: 'Index', fmt: r => `<strong>${r.hcbs_index}</strong>` },
+    { label: 'Risk', fmt: r => `<span class="risk-pill tier-${r.risk_tier}">${r.risk_tier}</span>` },
+    { label: 'HCBS share', fmt: r => `${r.hcbs_share}%` },
+    { label: 'HCBS spend', fmt: r => `$${(r.hcbs_spend_millions || 0).toLocaleString()}M` },
+    { label: 'Proj. 10yr cut', fmt: r => `$${(r.projected_cut_millions || 0).toLocaleString()}M` },
+  ];
 
   el.innerHTML = `
     <div class="section-head"><h2>${escHtml(a.label || 'HCBS')}</h2>
       <p>${escHtml(a.analytical_question || '')}</p></div>
-    ${statBarHtml([
-      { val: `${(top.hcbs_index ?? 0)}`, lbl: `Top: ${top.abbr || ''} index` },
-      { val: tc.High || 0, lbl: 'High-risk states' },
-      { val: tc.Medium || 0, lbl: 'Medium-risk states' },
-      { val: tc.Low || 0, lbl: 'Low-risk states' },
-    ])}
-    ${vizCardHtml('viz-hcbs-ranking', `${top.state || 'The top state'} leads the HCBS vulnerability screen`,
-      'Composite 0-10 index. Red = High (>=6.5), orange = Medium (>=4.0), green = Low. Hover a bar for the components.')}
+    <div id="hcbs-stats"></div>
+    <div class="weight-panel">
+      <div class="wp-head">
+        <h4>Argue with the model: re-weight the four index components and watch the ranking re-sort</h4>
+        <button class="weight-reset" id="hcbs-reset">Reset to defaults</button>
+      </div>
+      <div class="weight-grid">
+        ${HCBS_COMPONENTS.map(c => `<div class="weight-row">
+          <label>${escHtml(c.label)}</label>
+          <input type="range" min="0" max="0.6" step="0.05" value="${defaults[c.key]}" data-key="${c.key}">
+          <span class="wv" data-wv="${c.key}">${Number(defaults[c.key]).toFixed(2)}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    ${vizCardHtml('viz-hcbs-ranking', `${(baseRows[0]||{}).state || 'The top state'} leads the HCBS vulnerability screen`,
+      'Composite 0-10 index. Red = High (>=6.5), orange = Medium (>=4.0), green = Low. Drag the sliders above to re-weight; hover a bar for detail.')}
     ${vizCardHtml('viz-hcbs-scatter', 'Stakes vs. exposure: where high HCBS reliance meets a large projected cut',
-      'X = HCBS share of Medicaid spending (stakes). Y = projected 10-year federal cut (exposure). Bubble size = HCBS spend. Upper-right = most vulnerable.')}
-    ${tableHtml('tbl-hcbs', [
-      { label: '#', fmt: (r, i) => i + 1 },
-      { label: 'State', key: 'state' },
-      { label: 'Index', fmt: r => `<strong>${r.hcbs_index}</strong>` },
-      { label: 'Risk', fmt: r => `<span class="risk-pill tier-${r.risk_tier}">${r.risk_tier}</span>` },
-      { label: 'HCBS share', fmt: r => `${r.hcbs_share}%` },
-      { label: 'HCBS spend', fmt: r => `$${(r.hcbs_spend_millions || 0).toLocaleString()}M` },
-      { label: 'Proj. 10yr cut', fmt: r => `$${(r.projected_cut_millions || 0).toLocaleString()}M` },
-    ], rows)}
+      'X = HCBS share of Medicaid spending (stakes). Y = projected 10-year federal cut (exposure). Bubble size = HCBS spend. Color follows the live risk tier.')}
+    ${tableHtml('tbl-hcbs', tableCols, live)}
     ${seedNoteHtml()}
     ${methodBlockHtml(a)}
   `;
 
-  const color = d => RISK_COLOR[d.risk_tier] || 'var(--teal)';
-  const tip = d => `<strong>${d.state}</strong>\nIndex: ${d.hcbs_index} (${d.risk_tier})\nHCBS share: ${d.hcbs_share}%\nProj. cut: $${(d.projected_cut_millions||0).toLocaleString()}M`;
-  lazyChart('viz-hcbs-ranking', () => hbar('viz-hcbs-ranking', rows.slice(0, 25), {
-    value: d => d.hcbs_index, color, tip, xMax: 10,
-    barLabel: d => d.hcbs_index,
-    refs: [{ x: 4.0, label: 'Medium 4.0', color: 'var(--medium)' }, { x: 6.5, label: 'High 6.5', color: 'var(--high)' }],
-    legend: [{ fill: 'var(--high)', label: 'High risk' }, { fill: 'var(--medium)', label: 'Medium' }, { fill: 'var(--low)', label: 'Low' }],
-  }));
-  lazyChart('viz-hcbs-scatter', () => scatterChart('viz-hcbs-scatter', rows, {
-    x: d => d.hcbs_share, y: d => d.projected_cut_millions, size: d => d.hcbs_spend_millions,
-    color, tip, rank: d => d.hcbs_index,
-    xFmt: v => v + '%', yFmt: v => '$' + d3.format('.2s')(v),
-    xLabel: 'HCBS share of Medicaid spending', yLabel: 'Projected 10-year federal cut',
-  }));
+  function readWeights() {
+    const w = {};
+    el.querySelectorAll('input[type=range][data-key]').forEach(s => { w[s.dataset.key] = parseFloat(s.value); });
+    return w;
+  }
+  function recompute(w) {
+    const sum = Object.values(w).reduce((x, y) => x + y, 0) || 1;
+    live.forEach(r => {
+      const c = r.components || {};
+      const s = HCBS_COMPONENTS.reduce((acc, comp) => acc + (w[comp.key] / sum) * (c[comp.key] || 0), 0);
+      r.hcbs_index = Math.round(s * 10 * 10) / 10;
+      r.risk_tier = hcbsTier(r.hcbs_index);
+    });
+    live.sort((p, q) => q.hcbs_index - p.hcbs_index);
+  }
+  function renderStats() {
+    const tc = { High: 0, Medium: 0, Low: 0 };
+    live.forEach(r => tc[r.risk_tier]++);
+    document.getElementById('hcbs-stats').innerHTML = statBarHtml([
+      { val: `${(live[0] || {}).hcbs_index ?? 0}`, lbl: `Top: ${(live[0] || {}).abbr || ''} index` },
+      { val: tc.High, lbl: 'High-risk states' },
+      { val: tc.Medium, lbl: 'Medium-risk states' },
+      { val: tc.Low, lbl: 'Low-risk states' },
+    ]);
+  }
+  function renderTable() {
+    const tb = document.querySelector('#tbl-hcbs tbody');
+    if (!tb) return;
+    tb.innerHTML = live.map((r, i) => '<tr>' + tableCols.map(c => `<td>${c.fmt ? c.fmt(r, i) : escHtml(String(r[c.key] ?? ''))}</td>`).join('') + '</tr>').join('');
+    bindRowDrill('tbl-hcbs', 1);
+  }
+  function drawRanking() {
+    hbar('viz-hcbs-ranking', live.slice(0, 25), {
+      value: d => d.hcbs_index, color, tip, xMax: 10, barLabel: d => d.hcbs_index,
+      refs: [{ x: 4.0, label: 'Medium 4.0', color: 'var(--medium)' }, { x: 6.5, label: 'High 6.5', color: 'var(--high)' }],
+      legend: [{ fill: 'var(--high)', label: 'High risk' }, { fill: 'var(--medium)', label: 'Medium' }, { fill: 'var(--low)', label: 'Low' }],
+    });
+  }
+  function drawScatter() {
+    scatterChart('viz-hcbs-scatter', live, {
+      x: d => d.hcbs_share, y: d => d.projected_cut_millions, size: d => d.hcbs_spend_millions,
+      color, tip, rank: d => d.hcbs_index, xFmt: v => v + '%', yFmt: v => '$' + d3.format('.2s')(v),
+      xLabel: 'HCBS share of Medicaid spending', yLabel: 'Projected 10-year federal cut',
+    });
+  }
+
+  let raf = null;
+  function onWeightChange() {
+    el.querySelectorAll('.wv').forEach(s => { const k = s.dataset.wv; s.textContent = (parseFloat(el.querySelector(`input[data-key="${k}"]`).value)).toFixed(2); });
+    if (raf) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => { recompute(readWeights()); renderStats(); renderTable(); drawRanking(); drawScatter(); });
+  }
+  el.querySelectorAll('input[type=range][data-key]').forEach(s => s.addEventListener('input', onWeightChange));
+  el.querySelector('#hcbs-reset').addEventListener('click', () => {
+    HCBS_COMPONENTS.forEach(c => { el.querySelector(`input[data-key="${c.key}"]`).value = defaults[c.key]; });
+    onWeightChange();
+  });
+
+  recompute(defaults);
+  renderStats();
+  renderTable();
+  enhanceTable('tbl-hcbs', { filter: true, stateCol: 1 });
+  lazyChart('viz-hcbs-ranking', drawRanking);
+  lazyChart('viz-hcbs-scatter', drawScatter);
 }
 
 // ── TAB: Managed care MCO-tax exposure ───────────────────────────────
@@ -1177,6 +1544,7 @@ function buildManagedCareTab(containerId, a) {
     ${methodBlockHtml(a)}
   `;
 
+  enhanceTable('tbl-mco', { filter: true, stateCol: 1 });
   lazyChart('viz-mco-rates', () => hbar('viz-mco-rates', rows, {
     value: d => d.mco_rate, color: mcoColor, tip,
     xMax: Math.max(6, (a.max_rate || 6) * 1.1), barLabel: d => d.mco_rate + '%',
@@ -1229,6 +1597,7 @@ function buildDualsTab(containerId, a) {
     ${methodBlockHtml(a)}
   `;
 
+  enhanceTable('tbl-duals', { filter: true, stateCol: 1 });
   lazyChart('viz-duals-scatter', () => scatterChart('viz-duals-scatter', rows, {
     x: d => d.dual_enroll_share_pct, y: d => d.dual_spend_share_pct, size: d => d.est_dual_spend_millions,
     color, tip, rank: d => d.dual_spend_share_pct, diagonal: true,
@@ -2551,14 +2920,22 @@ async function loadDashboard() {
     buildNarrative('narrative-work_requirements', narr.work_requirements, charts.work_requirements);
 
     const analyses = data.analyses || {};
+    MFW.analyses = analyses;
+    buildStateIndex(analyses);
+    ensureDrawer();
+
     const ptRows = analyses.provider_tax ? (analyses.provider_tax.rows || []) : [];
     const wrRows = analyses.work_requirements ? (analyses.work_requirements.rows || []) : [];
-    if (ptRows.length) buildProviderTaxTable(ptRows);
-    if (wrRows.length) buildWRTable(wrRows);
+    if (ptRows.length) { buildProviderTaxTable(ptRows); enhanceTable('tbl-provider_tax', { filter: true, stateCol: 0 }); }
+    if (wrRows.length) { buildWRTable(wrRows); enhanceTable('tbl-work_requirements', { filter: true, stateCol: 0 }); }
 
     // D3 interactive visualizations
     const ptAnalysis = analyses.provider_tax || {};
     buildFinancingViz(ptAnalysis, wrRows);
+
+    // Map tab (geographic view across all metrics)
+    initMapSwitch();
+    lazyChart('viz-map', () => buildMap());
 
     // HCBS, Managed Care, Dual Eligibles tabs (dynamic)
     buildHcbsTab('scaffold-hcbs', analyses.hcbs);

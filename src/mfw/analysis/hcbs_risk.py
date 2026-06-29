@@ -52,6 +52,13 @@ def run(df: pd.DataFrame, params: dict) -> dict:
     # Component 4: nonfederal share strain.
     c_strain = _normalize(d["nonfederal_share"] / d["total_medicaid_spend"])
 
+    # Normalized 0-1 components are independent of the weights, so we ship them
+    # with each row: the dashboard can re-weight and re-rank live without a rebuild.
+    d["c_hcbs"] = c_hcbs.round(4)
+    d["c_reliance"] = c_reliance.round(4)
+    d["c_cut"] = c_cut.round(4)
+    d["c_strain"] = c_strain.round(4)
+
     score01 = (
         w["hcbs_spending_share"] * c_hcbs
         + w["provider_tax_reliance"] * c_reliance
@@ -73,6 +80,12 @@ def run(df: pd.DataFrame, params: dict) -> dict:
             "hcbs_spend_millions": float(r["hcbs_spend"]),
             "projected_cut_millions": float(r["projected_cut_millions"]),
             "expansion": bool(r["expansion"]),
+            "components": {
+                "hcbs_spending_share": float(r["c_hcbs"]),
+                "provider_tax_reliance": float(r["c_reliance"]),
+                "federal_cut_magnitude": float(r["c_cut"]),
+                "nonfederal_share_strain": float(r["c_strain"]),
+            },
         }
         for _, r in d.sort_values("hcbs_index", ascending=False).iterrows()
     ]
