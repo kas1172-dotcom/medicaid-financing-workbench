@@ -104,3 +104,7 @@ src/mfw/outputs/                # charts, fact sheets, dashboard data
 dashboard/                      # static UI (deploys to GitHub Pages)
 notebooks/                      # worked analysis with narrative
 ```
+
+## Offline correctness checks
+
+Run `PYTHONPATH=src python -m unittest discover -s tests`. Tests cover zero denominators, invalid enrollee counts, empty input, and scenario probability bounds without fetching data or calling a model. An undefined ratio is returned as `None`, not a fabricated zero or infinity. The committed dashboard is a dated research artifact; source changes do not silently refresh policy assumptions or historical data.

@@ -62,7 +62,7 @@ def run_scenario(df: pd.DataFrame, base_params: dict, overrides: dict) -> dict:
                 scen_gaps.get(abbr, 0.0) - base_gaps.get(abbr, 0.0), 1
             ),
         }
-        for abbr in set(list(base_gaps) + list(scen_gaps))
+        for abbr in sorted(set(base_gaps) | set(scen_gaps))
         if scen_gaps.get(abbr, 0.0) != base_gaps.get(abbr, 0.0)
     ]
     state_deltas.sort(key=lambda x: -abs(x["replacement_dollars_delta"]))

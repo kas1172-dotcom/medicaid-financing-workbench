@@ -24,6 +24,8 @@ finding.
 
 from __future__ import annotations
 
+import math
+
 import pandas as pd
 
 from ..sources import seed
@@ -33,6 +35,9 @@ def run(df: pd.DataFrame, params: dict) -> dict:
     wr = params["work_requirements"]
     exempt_share = wr["already_working_or_exempt_share"]
     churn = wr["administrative_churn_rate"]
+    for name, value in (("already_working_or_exempt_share", exempt_share), ("administrative_churn_rate", churn)):
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not 0 <= value <= 1:
+            raise ValueError(f"{name} must be a finite proportion between 0 and 1")
 
     rows = []
     for _, r in df.iterrows():
@@ -65,5 +70,5 @@ def run(df: pd.DataFrame, params: dict) -> dict:
         "churn_rate": churn,
         "arkansas_anchor": wr["arkansas_coverage_loss"],
         "top_state": rows[0]["state"] if rows else None,
-        "data_provenance": df["data_provenance"].iloc[0],
+        "data_provenance": df["data_provenance"].iloc[0] if not df.empty else "No input data",
     }
